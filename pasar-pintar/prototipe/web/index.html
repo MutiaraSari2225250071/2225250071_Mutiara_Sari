@@ -112,6 +112,26 @@ body.kp-open .wrap{padding-bottom:340px}
 .top p{color:var(--muted);font-size:.85rem}
 .icon-btn{min-width:48px;min-height:48px;border:0;background:transparent;border-radius:12px;display:grid;place-items:center;margin-left:-10px}
 .icon-btn.kanan{margin-left:0;margin-right:-10px;color:var(--primary)}
+/* Pinta AI */
+.fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:26;display:flex;align-items:center;gap:6px;min-height:48px;padding:4px 16px 4px 6px;border-radius:999px;border:0;background:var(--sun);color:var(--sun-ink);font-weight:800;box-shadow:var(--lift)}
+.fab .m-badan{fill:var(--surface)}
+body.kp-open .fab{display:none}
+body.ada-fab .wrap{padding-bottom:190px}
+.lembar-latar{position:fixed;inset:0;z-index:55;background:rgba(5,12,10,.45)}
+.lembar{position:fixed;left:0;right:0;bottom:0;z-index:56;background:var(--surface);border-radius:20px 20px 0 0;box-shadow:var(--shadow);max-height:80dvh;display:flex;flex-direction:column;gap:10px;padding-top:14px;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.lembar > *{width:100%;max-width:560px;margin-left:auto;margin-right:auto}
+.lembar-kepala{display:flex;align-items:center;gap:10px}
+.lembar-kepala .icon-btn{margin-left:auto;margin-right:-10px}
+.obrolan{overflow-y:auto;display:flex;flex-direction:column;gap:8px;min-height:90px;flex:1 1 auto}
+.gelembung{margin:0;padding:10px 12px;border-radius:14px;max-width:88%;line-height:1.5}
+.gelembung.pinta{background:var(--sun-soft);align-self:flex-start;border-bottom-left-radius:4px}
+.gelembung.siswa{background:var(--primary-soft);align-self:flex-end;border-bottom-right-radius:4px}
+.kirim-row{display:flex;gap:8px}
+.kirim-row .input{flex:1;min-width:0;font-size:16px}
+.kirim-row .btn{width:auto}
+.ai-galat{color:var(--salah)}
+@keyframes kedip{0%,100%{opacity:.45}50%{opacity:1}}
+.memuat{animation:kedip 1.2s ease-in-out infinite}
 .vol-row{display:grid;gap:2px}
 .vol-row input[type=range]{width:100%;min-height:36px;accent-color:var(--primary)}
 .pill-btn{min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--primary);background:var(--primary-soft);color:var(--primary);font-weight:800;font-size:.9rem}
@@ -388,6 +408,10 @@ body.no-anim *,body.no-anim *::before,body.no-anim *::after{animation:none!impor
 "use strict";
 var app = document.getElementById('app');
 var kp = document.getElementById('keypad');
+
+/* Alamat perantara AI (Cloudflare Worker, lihat folder ai-worker/ dan docs/14).
+   Kosong = fitur AI disembunyikan. API key TIDAK PERNAH ditaruh di aplikasi. */
+var AI_URL = '';
 
 /* ================= Matematika (data umum → JavaScript) ================= */
 function grp(s){ return String(s).replace(/\B(?=(\d{3})+(?!\d))/g,'.'); }
@@ -1260,6 +1284,7 @@ var S = {
   mods:{}, cur:null, mOpen:false, lit:newLit(), litOpen:false, pasar:newPasar(), pasarOpen:false,
   anim:store.get('anim', true), kunci:'', rayakan:false,
   musik:store.get('musik', true), efek:store.get('efek', true), sfx:null,
+  ai:{buka:false, pesan:[], memuat:false, galat:null, sisa:5, draf:''},
   vals:{}, fs:{}, units:{}, active:null, keyAction:null, labels:{}, scrollTo:false, zoom:false, confirmReset:false
 };
 if(!S.stats || typeof S.stats!=='object') S.stats = defStats();
@@ -1269,6 +1294,7 @@ if(!S.stats.paas) S.stats.paas = [];
 if(!S.stats.litDone) S.stats.litDone = {};
 if(!S.stats.pasarDone) S.stats.pasarDone = {};
 if(!S.stats.pg) S.stats.pg = {benar:0, total:0};
+if(!S.stats.ai) S.stats.ai = {tanya:0, jelaskan:0};
 function saveStats(){ store.set('stats', S.stats); }
 function mk(code){ if(code){ S.stats.mk[code] = (S.stats.mk[code]||0) + 1; } }
 function val(k, unit){ var v = S.vals[k]; if(!v) return NaN; return unit==='persen' ? parseFloat(v.replace(',','.')) : parseInt(v,10); }
@@ -1409,6 +1435,7 @@ function wajibChips(s){ return s.chips ? Object.keys(s.chips).filter(function(k)
 function resetSoal(){
   var m = M(), s = m.soal[m.i];
   m.step = s.chips ? 'pahami' : (s.op ? 'operasi' : 'hitung');
+  S.ai = aiBaru(); m.aiJelas = null; m.jawabSiswa = null;
   m.tapped={}; m.ditanya=null; m.dtMark=null; m.dtOk=false; m.dtTry=0; m.op=null; m.opMark=null; m.opOk=false; m.opTry=0; m.cekPilih=null; m.tries=0; m.hint=0; m.fb=null; m.ok=null; m.cek=null; m.bahas=0;
   clearFields();
   if(m.step==='hitung'){ S.active = s.f[0].key; }
@@ -1441,7 +1468,7 @@ function rModul(){
         '<li><span class="n">'+(n+1)+'</span><div style="display:grid;gap:8px"><span class="t">'+B.t+'</span><div class="eq"><span>'+B.pre+'</span>'+field('rump',B.label,B.unit)+'</div></div></li></ol></section>'+fbBox(m.fb)
     )+actionbar(done ? btn('Mulai latihan','keLatihan') : btn('Periksa','rumpangPeriksa',{dis:!S.vals.rump}));
   }
-  if(m.tahap==='latihan') return rLatihan(d, m);
+  if(m.tahap==='latihan') return rLatihan(d, m) + aiUI(m);
   if(m.tahap==='paas'){
     var b=''; for(var x=1;x<=9;x++){ b += '<button data-act="paas" data-arg="'+x+'" aria-pressed="'+(m.paas===x)+'">'+x+'</button>'; }
     return header('Skala usaha','Satu pertanyaan singkat','tutupModul')+wrap(
@@ -1522,7 +1549,7 @@ function rLatihan(d, m){
       (m.bahas<s.bahas.length ? btn('Langkah berikutnya','bahasNext',{cls:'ghost'}) : '')+'</section>';
   }
   var last = m.i===m.soal.length-1;
-  return header(title,sub,'tutupModul')+wrap((s.dk?'':'<section class="card"><p class="tanya">'+s.tanya+'</p></section>')+fbBox(m.fb)+cekHtml+bahas)+
+  return header(title,sub,'tutupModul')+wrap((s.dk?'':'<section class="card"><p class="tanya">'+s.tanya+'</p></section>')+fbBox(m.fb)+aiJelasCard(m)+cekHtml+bahas)+
     actionbar(btn(last?'Selesai':'Soal berikutnya','soalNext',{dis:m.cek===null}));
 }
 
@@ -1798,7 +1825,7 @@ var ACT = {
       else r = {msg:f.cekLagi};
     }
     mk(r.mk);
-    if(m.tries>=2){ m.ok=false; S.stats.dijawab++; saveStats(); m.step='hasil'; m.fb={ok:false,msg:r.msg+' Lihat pembahasan di bawah.'}; window.scrollTo(0,0); }
+    if(m.tries>=2){ m.ok=false; m.jawabSiswa=JSON.parse(JSON.stringify(S.vals)); S.ai.buka=false; S.stats.dijawab++; saveStats(); m.step='hasil'; m.fb={ok:false,msg:r.msg+' Lihat pembahasan di bawah.'}; window.scrollTo(0,0); }
     else m.fb={ok:false,msg:r.msg};
     buzz(30);
   },
@@ -1945,6 +1972,15 @@ var ACT = {
     if(!pasang.prompt) return;
     var p = pasang.prompt; pasang.prompt = null;
     try{ p.prompt(); p.userChoice.then(function(){ render(); }, function(){}); }catch(e){}
+  },
+  aiBuka:function(){ S.ai.buka=true; S.ai.galat=null; S.active=null; },
+  aiTutup:function(){ S.ai.buka=false; },
+  aiCepat:function(a){ tanyaAI(TANYA_CEPAT[+a]); },
+  aiKirimTeks:function(){ var el=document.getElementById('ai-teks'); var v=(el?el.value:'').trim().slice(0,200); if(!v) return; S.ai.draf=''; tanyaAI(v); },
+  jelaskanSalah:function(){
+    var m=M(); if(m.aiJelas && m.aiJelas.memuat) return;
+    m.aiJelas={memuat:true}; S.stats.ai.jelaskan++; saveStats();
+    aiKirim('kesalahan', '', [], function(h){ m.aiJelas = h.teks ? {teks:h.teks} : {galat:h.galat}; if(M()===m) render(); });
   },
   animToggle:function(){ S.anim=!S.anim; store.set('anim', S.anim); },
   musikToggle:function(){ S.musik=!S.musik; store.set('musik', S.musik); if(S.musik) Suara.mulai(); else Suara.henti(); },
@@ -2093,6 +2129,7 @@ function layarFokus(){
 /* Slider volume: diubah langsung tanpa menggambar ulang layar */
 document.addEventListener('input', function(e){
   var id = e.target && e.target.id;
+  if(id==='ai-teks'){ S.ai.draf = e.target.value; return; }
   if(id!=='vol-musik' && id!=='vol-efek') return;
   var vm = +document.getElementById('vol-musik').value, ve = +document.getElementById('vol-efek').value;
   store.set('volMusik', vm); store.set('volEfek', ve);
@@ -2104,6 +2141,83 @@ document.addEventListener('change', function(e){
 document.addEventListener('visibilitychange', function(){ if(document.hidden) Suara.jeda(); else if(S.musik) Suara.lanjut(); });
 function saklarRow(id, label, on, act){
   return '<div class="dk-row"><span id="'+id+'">'+label+'</span><button class="saklar" role="switch" aria-labelledby="'+id+'" aria-checked="'+(on?'true':'false')+'" data-act="'+act+'"><span></span></button></div>';
+}
+
+/* ================= Pinta AI: Tanya Pinta & Jelaskan kesalahanku ================= */
+/* Hanya aktif di versi web (GitHub Pages) dan jika AI_URL sudah diisi. Tidak ada nama/kode siswa yang dikirim. */
+function aiTersedia(){ return !!AI_URL && !!window.PP_WEB; }
+function aiBaru(){ return {buka:false, pesan:[], memuat:false, galat:null, sisa:5, draf:''}; }
+var TANYA_CEPAT = ['Aku bingung mulai dari mana', 'Rumus apa yang dipakai?', 'Apakah isianku sudah benar?'];
+function bersih(html){ return String(html||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim(); }
+function fmtAI(t){ return esc(t).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/\n+/g,'<br>'); }
+function konteksSoal(){
+  var m = M(), d = D(), s = m.soal[m.i];
+  var teks = s.kal ? s.kal.map(function(t){ return t.replace(/\{\{(\w+)\}\}/g, function(_,k){ return s.chips[k] ? s.chips[k].teks : ''; }); }).join(' ') : s.tanya;
+  return {
+    modul: d.kode+' '+d.judul, level: s.level, soal: teks,
+    diketahui: (s.dk||[]).map(function(r){ return bersih(r.lbl)+': '+r.isi; }),
+    ditanya: s.ditanya ? bersih(s.ditanya.lbl) : '',
+    tahap: {pahami:'memahami soal', operasi:'memilih rumus', hitung:'menghitung', hasil:'sudah selesai'}[m.step] || m.step,
+    langkah: s.f.map(function(f,i){
+      var isian = (m.jawabSiswa && m.jawabSiswa[f.key]) || S.vals[f.key] || '';
+      return {no:i+1, nama:f.label, rumus:bersih(f.eq), satuan:f.unit, benar:f.jawab, isianSiswa: isian ? isian.replace(',','.') : '(belum diisi)'};
+    })
+  };
+}
+function aiKirim(jenis, pertanyaan, riwayat, selesai){
+  if(navigator.onLine===false){ selesai({galat:'Pinta butuh internet untuk menjawab. Periksa koneksimu.'}); return; }
+  var s = M().soal[M().i];
+  var body = { jenis:jenis, konteks:konteksSoal(), pertanyaan:pertanyaan||'',
+    riwayat:(riwayat||[]).slice(-4).map(function(p){ return {peran:p.dari==='siswa'?'user':'assistant', isi:p.teks}; }),
+    rahasia: jenis==='petunjuk' ? [s.f[s.f.length-1].jawab] : [] };
+  var ctrl = (typeof AbortController!=='undefined') ? new AbortController() : null;
+  var waktu = setTimeout(function(){ if(ctrl) ctrl.abort(); }, 25000);
+  fetch(AI_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body), signal: ctrl ? ctrl.signal : undefined})
+    .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j}; }, function(){ return {ok:false, j:{}}; }); })
+    .then(function(x){ clearTimeout(waktu); selesai(x.ok && x.j.jawab ? {teks:x.j.jawab} : {galat:(x.j && x.j.galat) || 'Pinta belum bisa menjawab. Coba lagi.'}); })
+    .catch(function(){ clearTimeout(waktu); selesai({galat:'Pinta tidak bisa dihubungi. Coba lagi sebentar lagi.'}); });
+}
+function tanyaAI(q){
+  var ai = S.ai;
+  if(ai.memuat || ai.sisa<=0 || !q) return;
+  ai.pesan.push({dari:'siswa', teks:q}); ai.memuat = true; ai.galat = null; ai.sisa--;
+  S.stats.ai.tanya++; saveStats();
+  aiKirim('petunjuk', q, ai.pesan.slice(0,-1), function(h){
+    ai.memuat = false;
+    if(h.teks) ai.pesan.push({dari:'pinta', teks:h.teks}); else { ai.galat = h.galat; ai.sisa++; }
+    if(ai===S.ai){ render(); var ob = document.querySelector('.obrolan'); if(ob) ob.scrollTop = ob.scrollHeight; }
+  });
+}
+function aiUI(m){
+  if(!aiTersedia() || m.tahap!=='latihan' || m.step==='hasil') return '';
+  var ai = S.ai;
+  var fab = '<button class="fab" data-act="aiBuka" aria-haspopup="dialog">'+maskot('senang','mini')+'Tanya Pinta</button>';
+  if(!ai.buka) return fab;
+  var obrolan = (ai.pesan.length ? '' : '<p class="gelembung pinta">Halo! Aku bisa memberi petunjuk, tapi tidak memberi jawabannya. Mau tanya apa?</p>')+
+    ai.pesan.map(function(p){ return '<p class="gelembung '+(p.dari==='siswa'?'siswa':'pinta')+'">'+(p.dari==='siswa'?esc(p.teks):fmtAI(p.teks))+'</p>'; }).join('')+
+    (ai.memuat ? '<p class="gelembung pinta memuat">Pinta sedang berpikir…</p>' : '')+
+    (ai.galat ? '<p class="small ai-galat">'+esc(ai.galat)+'</p>' : '');
+  var habis = ai.sisa<=0;
+  return '<div class="lembar-latar" data-act="aiTutup"></div>'+
+    '<section class="lembar" role="dialog" aria-label="Tanya Pinta">'+
+      '<div class="lembar-kepala">'+maskot('senang','mini')+'<div><b>Tanya Pinta</b><br><span class="small muted">Sisa '+ai.sisa+' pertanyaan untuk soal ini</span></div>'+
+        '<button class="icon-btn" data-act="aiTutup" aria-label="Tutup">'+I.back.replace('M15 5l-7 7 7 7','M6 6l12 12M18 6L6 18')+'</button></div>'+
+      '<div class="obrolan" aria-live="polite">'+obrolan+'</div>'+
+      (habis ? '<p class="small muted">Pertanyaan untuk soal ini sudah habis. Coba pakai tombol Petunjuk, ya.</p>' :
+        '<div class="chips">'+TANYA_CEPAT.map(function(t,i){ return '<button class="tog" data-act="aiCepat" data-arg="'+i+'"'+(ai.memuat?' disabled':'')+'>'+t+'</button>'; }).join('')+'</div>'+
+        '<div class="kirim-row"><input id="ai-teks" class="input" maxlength="200" autocomplete="off" enterkeyhint="send" placeholder="Tulis pertanyaanmu…" value="'+esc(ai.draf)+'">'+
+        btn('Kirim','aiKirimTeks',{dis:ai.memuat})+'</div>')+
+      '<p class="small muted">Pertanyaanmu dikirim ke layanan AI (DeepSeek) tanpa nama atau kode siswa.</p>'+
+    '</section>';
+}
+function aiJelasCard(m){
+  if(!aiTersedia() || m.ok!==false) return '';
+  var j = m.aiJelas, isi;
+  if(!j) isi = '<p class="small muted">Pinta bisa menjelaskan di langkah mana kamu keliru.</p>'+btn('Jelaskan kesalahanku','jelaskanSalah',{cls:'secondary'});
+  else if(j.memuat) isi = '<p class="muted memuat">Pinta sedang memeriksa jawabanmu…</p>';
+  else if(j.teks) isi = '<p>'+fmtAI(j.teks)+'</p>';
+  else isi = '<p class="small ai-galat">'+esc(j.galat)+'</p>'+btn('Coba lagi','jelaskanSalah',{cls:'secondary'});
+  return '<section class="card"><div class="judul-ikon">'+maskot(j && j.teks ? 'senang' : 'mikir','mini')+'<b>Kenapa jawabanku salah?</b></div>'+isi+'</section>';
 }
 
 /* ================= Animasi layar & perayaan ================= */
@@ -2142,6 +2256,7 @@ function render(){
   else html = rBeranda();
   app.innerHTML = html;
   document.body.classList.toggle('no-anim', !S.anim);
+  document.body.classList.toggle('ada-fab', !!app.querySelector('.fab'));
   var kunci = kunciLayar();
   if(kunci!==S.kunci){ S.kunci = kunci; var w = app.querySelector('.wrap'); if(w) w.classList.add('masuk'); }
   if(S.rayakan){ S.rayakan = false; S.sfx = 'rayakan'; konfeti(); }
@@ -2172,6 +2287,7 @@ document.addEventListener('click', function(e){
 });
 document.addEventListener('keydown', function(e){
   if(e.key==='Enter' && e.target && e.target.id==='nama'){ ACT.mulaiNama(); render(); return; }
+  if(e.key==='Enter' && e.target && e.target.id==='ai-teks'){ ACT.aiKirimTeks(); render(); e.preventDefault(); return; }
   if(!S.active) return;
   if(/^[0-9]$/.test(e.key)){ ACT.key(e.key); render(); bunyikan(); e.preventDefault(); }
   else if(e.key===',' || e.key==='.'){ ACT.key(','); render(); bunyikan(); e.preventDefault(); }

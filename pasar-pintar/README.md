@@ -35,6 +35,7 @@ Keduanya terhubung lewat file CSV yang diekspor dari aplikasi.
 | [docs/10-literasi-matematika.md](docs/10-literasi-matematika.md) | Kerangka literasi (PISA/AKM), siklus pemodelan, jenis aktivitas, level L1–L3, indikator dan rapor literasi | Peneliti, desainer konten |
 | [docs/11-distribusi-dan-instalasi.md](docs/11-distribusi-dan-instalasi.md) | Membuka di browser, memasang PWA & APK tanpa toko aplikasi, hosting, QR code dan brosur | Developer, guru, siswa |
 | [docs/12-analisis-data-python.md](docs/12-analisis-data-python.md) | Alur data, format instrumen, analisis statistik dengan Python, rumus, dan aturan kode | Peneliti, developer |
+| [docs/14-integrasi-ai.md](docs/14-integrasi-ai.md) | Fitur AI Tanya Pinta dan Jelaskan kesalahanku (DeepSeek lewat Cloudflare Worker), privasi, panduan pemasangan API key | Developer, peneliti |
 | [docs/13-optimasi-smartphone.md](docs/13-optimasi-smartphone.md) | Perangkat sasaran, anggaran kinerja, tata letak, Keypad Rupiah, interaksi sentuh, keamanan data, daftar periksa smartphone | Developer, desainer |
 
 ## Urutan Membaca yang Disarankan

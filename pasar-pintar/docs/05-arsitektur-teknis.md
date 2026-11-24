@@ -252,6 +252,10 @@ streamlit run dasbor/app.py  # opsional
 - APK ditandatangani dengan *keystore* milik pengembang. Simpan *keystore* dan kata sandinya dengan aman, karena keduanya dibutuhkan untuk setiap pembaruan
 - Izin Android minimal: tanpa kamera, lokasi, atau kontak
 
+## 7b. Perantara AI (sudah dibuat)
+
+Fitur Pinta AI memakai **Cloudflare Worker** (`ai-worker/worker.js`, JavaScript) sebagai perantara ke API DeepSeek. Worker ini menyimpan API key sebagai Secret, memegang aturan AI, membatasi asal permintaan dan jumlah permintaan, serta menyembunyikan jawaban akhir. Rincian ada di [14-integrasi-ai.md](14-integrasi-ai.md). Worker hanya meneruskan permintaan AI dan tidak menyimpan data siswa.
+
 ## 8. Rencana Versi 2
 
 - Backend **Python (FastAPI)** + database (misalnya PostgreSQL/Supabase) untuk sinkronisasi progres dan dasbor guru daring. Statistik kelas tetap dihitung dengan Python, sesuai aturan pembagian bahasa
