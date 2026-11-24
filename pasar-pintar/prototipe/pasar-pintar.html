@@ -382,7 +382,7 @@ var store = {
   get:function(k,d){ try{ var v=localStorage.getItem('pp_'+k); return v?JSON.parse(v):d; }catch(e){ return d; } },
   set:function(k,v){ try{ localStorage.setItem('pp_'+k, JSON.stringify(v)); }catch(e){} }
 };
-function defStats(){ return {dijawab:0, benar:0, paas:[], mk:{}, modul:{}, litDone:{}, pasarDone:{}}; }
+function defStats(){ return {dijawab:0, benar:0, paas:[], mk:{}, modul:{}, litDone:{}, pasarDone:{}, pg:{benar:0,total:0}}; }
 
 /* ================= Ikon & label warna tetap ================= */
 var I = {
@@ -1223,7 +1223,7 @@ var LIT = [
 function litById(id){ for(var i=0;i<LIT.length;i++){ if(LIT[i].id===id) return LIT[i]; } return null; }
 
 /* ================= State ================= */
-function newLit(id){ return {id:id||null, step:1, info:{}, ok:{}, u:{}, hint:0, pilih:null, alasan:null, fb:null, pikir:false}; }
+function newLit(id){ return {id:id||null, step:1, info:{}, ok:{}, u:{}, uMark:{}, try2:0, hint:0, pilih:null, alasan:null, pMark:null, aMark:null, try4:0, fb:null, pikir:false}; }
 function newPasar(id){ var Mi = id ? misiById(id) : null; return {id:id||null, step:(Mi && Mi.jenis==='jual')?'hitung':'pilih', keranjang:[], fb:null, over:false, hint:0, putus:null, putusOk:false}; }
 var S = {
   route:'beranda', nama:store.get('nama', null), stats:store.get('stats', defStats()),
@@ -1237,6 +1237,7 @@ if(!S.stats.mk) S.stats.mk = {};
 if(!S.stats.paas) S.stats.paas = [];
 if(!S.stats.litDone) S.stats.litDone = {};
 if(!S.stats.pasarDone) S.stats.pasarDone = {};
+if(!S.stats.pg) S.stats.pg = {benar:0, total:0};
 function saveStats(){ store.set('stats', S.stats); }
 function mk(code){ if(code){ S.stats.mk[code] = (S.stats.mk[code]||0) + 1; } }
 function val(k, unit){ var v = S.vals[k]; if(!v) return NaN; return unit==='persen' ? parseFloat(v.replace(',','.')) : parseInt(v,10); }
@@ -1288,6 +1289,20 @@ function fbBox(fb){
 }
 function opt(label, act, arg, pressed, state){
   return '<button class="opt'+(state?' '+state:'')+'" data-act="'+act+'" data-arg="'+arg+'" aria-pressed="'+(pressed?'true':'false')+'"><span class="mark"></span><span>'+label+'</span></button>';
+}
+/* Pilihan ganda: pilih dulu (netral), benar/salah baru tampil setelah "Periksa".
+   tanda: null = belum diperiksa, 'ok' = benar, 'no' = salah, 'ungkap' = salah 2 kali, jawaban tepat ditunjukkan */
+function pgCls(id, pilih, tanda, benarId){
+  if(tanda==='ungkap' && id===benarId) return 'ok';
+  if(tanda && id===pilih) return tanda==='ok' ? 'ok' : 'no';
+  return '';
+}
+function cariOpsi(list, id){ for(var i=0;i<list.length;i++){ if(list[i][0]===id) return list[i]; } return null; }
+/* Catat hasil percobaan PERTAMA setiap pilihan ganda (untuk Rapor dan data penelitian) */
+function catatPG(obj, kunci, ok){
+  obj.pgDicatat = obj.pgDicatat || {};
+  if(obj.pgDicatat[kunci]) return;
+  obj.pgDicatat[kunci] = 1; S.stats.pg.total++; if(ok) S.stats.pg.benar++; saveStats();
 }
 function stepsList(L){
   return '<ol class="steps">'+L.map(function(l,i){ return '<li><span class="n">'+(i+1)+'</span><div><span class="t">'+l[0]+'</span><span class="num">'+l[1]+'</span></div></li>'; }).join('')+'</ol>';
@@ -1362,7 +1377,7 @@ function wajibChips(s){ return s.chips ? Object.keys(s.chips).filter(function(k)
 function resetSoal(){
   var m = M(), s = m.soal[m.i];
   m.step = s.chips ? 'pahami' : (s.op ? 'operasi' : 'hitung');
-  m.tapped={}; m.ditanya=null; m.op=null; m.tries=0; m.hint=0; m.fb=null; m.ok=null; m.cek=null; m.bahas=0;
+  m.tapped={}; m.ditanya=null; m.dtMark=null; m.dtOk=false; m.dtTry=0; m.op=null; m.opMark=null; m.opOk=false; m.opTry=0; m.cekPilih=null; m.tries=0; m.hint=0; m.fb=null; m.ok=null; m.cek=null; m.bahas=0;
   clearFields();
   if(m.step==='hitung'){ S.active = s.f[0].key; }
 }
@@ -1428,28 +1443,29 @@ function rLatihan(d, m){
       var cls = st==='no' ? 'no' : (st ? 'c-'+(c.cls||'netral') : '');
       return '<button class="chip '+cls+'" data-act="tap" data-arg="'+k+'" aria-pressed="'+(!!st)+'">'+c.teks+'</button>'; })+'</p>'; }).join('');
     var siap = wajibChips(s).every(function(k){ return m.tapped[k]===true; });
-    var benarDt = s.ditanya ? m.ditanya===s.ditanya.benar : siap;
+    var dtOk = s.ditanya ? !!m.dtOk : siap;
     var dt = '';
     if(siap && s.ditanya){
-      dt = '<section class="card"><h2>Apa yang ditanya?</h2><div class="opts">'+s.ditanya.opsi.map(function(o){
-        var on = m.ditanya===o[0]; return opt(o[1],'ditanya',o[0],on,on?(o[0]===s.ditanya.benar?'ok':'no'):''); }).join('')+'</div></section>';
+      dt = '<section class="card"><h2>Apa yang ditanya?</h2><p class="small muted">Pilih satu, lalu tekan Periksa.</p><div class="opts">'+s.ditanya.opsi.map(function(o){
+        return opt(o[1],'ditanya',o[0],m.ditanya===o[0],pgCls(o[0],m.ditanya,m.dtMark,s.ditanya.benar)); }).join('')+'</div></section>';
     }
     return header(title,sub,'tutupModul')+wrap(
       '<section class="card soal"><span class="eyebrow">Ketuk angka yang penting</span>'+kal+'</section>'+
       '<section class="card"><span class="eyebrow">Diketahui</span><div class="dk">'+
         s.dk.map(function(r){ return '<div class="dk-row">'+r.lbl+'<span class="dk-val">'+(m.tapped[r.k]===true?r.isi:'—')+'</span></div>'; }).join('')+
-        (s.ditanya ? '<div class="dk-row"><span class="eyebrow">Ditanya</span><span class="dk-val">'+(m.ditanya===s.ditanya.benar?s.ditanya.lbl:'—')+'</span></div>' : '')+
+        (s.ditanya ? '<div class="dk-row"><span class="eyebrow">Ditanya</span><span class="dk-val">'+(m.dtOk?s.ditanya.lbl:'—')+'</span></div>' : '')+
       '</div></section>'+dt+fbBox(m.fb)
-    )+actionbar(btn('Lanjut','lanjutPahami',{dis:!(siap && benarDt)}));
+    )+actionbar(siap && s.ditanya && !dtOk ? btn('Periksa','periksaDitanya',{dis:!m.ditanya || m.dtMark==='no'})
+                                            : btn('Lanjut','lanjutPahami',{dis:!(siap && dtOk)}));
   }
   var mini = s.dk ? '<div class="dk-mini">'+s.dk.map(function(r){ return '<span>'+r.lbl+' <b>'+r.isi+'</b></span>'; }).join('')+(s.ditanya?'<span>Ditanya: '+s.ditanya.lbl+'</span>':'')+'</div>'
                   : '<section class="card"><p class="tanya">'+s.tanya+'</p>'+(s.visual && m.step!=='hasil' ? s.visual : '')+'</section>';
   if(m.step==='operasi'){
-    var o0 = null; s.op.opsi.forEach(function(o){ if(o[0]===m.op) o0 = o; });
+    var opBenar = s.op.opsi.filter(function(o){ return o[2]; })[0][0];
     return header(title,sub,'tutupModul')+wrap(mini+
-      '<section class="card"><h2>'+s.op.tanya+'</h2><div class="opts">'+s.op.opsi.map(function(o){
-        var on = m.op===o[0]; return opt(o[1],'operasi',o[0],on,on?(o[2]?'ok':'no'):''); }).join('')+'</div></section>'+fbBox(m.fb)
-    )+actionbar(btn('Lanjut','lanjutHitung',{dis:!(o0 && o0[2])}));
+      '<section class="card"><h2>'+s.op.tanya+'</h2><p class="small muted">Pilih satu, lalu tekan Periksa.</p><div class="opts">'+s.op.opsi.map(function(o){
+        return opt(o[1],'operasi',o[0],m.op===o[0],pgCls(o[0],m.op,m.opMark,opBenar)); }).join('')+'</div></section>'+fbBox(m.fb)
+    )+actionbar(m.opOk ? btn('Lanjut','lanjutHitung') : btn('Periksa','periksaOperasi',{dis:!m.op || m.opMark==='no'}));
   }
   if(m.step==='hitung'){
     S.keyAction = 'periksa';
@@ -1462,7 +1478,10 @@ function rLatihan(d, m){
   }
   // hasil
   var C = s.cek, cekHtml = '<section class="card"><span class="eyebrow">Cek kewajaran</span><p>'+C.q+'</p>';
-  if(m.cek===null){ cekHtml += '<div class="row">'+C.opsi.map(function(o,i){ return btn(o[0],'cek',{arg:i,cls:'secondary'}); }).join('')+'</div>'; }
+  if(m.cek===null){
+    cekHtml += '<div class="row">'+C.opsi.map(function(o,i){ return opt(o[0],'pilihCek',i,m.cekPilih===i,''); }).join('')+'</div>'+
+      btn('Periksa','cek',{arg:(m.cekPilih==null?'':m.cekPilih),dis:m.cekPilih==null});
+  }
   else { var benarCek = !!C.opsi[m.cek][1]; cekHtml += fbBox(benarCek ? {ok:true,title:'Betul',msg:C.ok} : {ok:false,title:'Coba bandingkan lagi',msg:C.no}); }
   cekHtml += '</section>';
   var bahas = '';
@@ -1485,6 +1504,7 @@ function pesanSalah(h, v, u){
   if(Array.isArray(m)){ mk(m[1]); return m[0]; }
   return m;
 }
+function alasanBenar(P){ return P.alasan.filter(function(a){ return a[2]; })[0][0]; }
 function fmtUnit(v, unit){ return unit==='persen' ? pct(v) : (unit==='kg' ? grp(v)+' kg' : fmt(v)); }
 
 function rLiterasi(){
@@ -1515,9 +1535,10 @@ function rLiterasi(){
     act = L.ok[1] ? btn('Lanjut','litLanjut') : btn('Periksa','litCek1',{dis:!Object.keys(L.info).some(function(k){ return L.info[k]; })});
   } else if(L.step===2){
     body = mini+T.ubah.map(function(u,qi){
-      return '<section class="card"><h2>'+u.tanya+'</h2><div class="opts">'+u.opsi.map(function(o){ return opt(o[1],'ubah',qi+':'+o[0],L.u[qi]===o[0]); }).join('')+'</div></section>';
+      var benarId = u.opsi.filter(function(o){ return o[2]; })[0][0];
+      return '<section class="card"><h2>'+u.tanya+'</h2><div class="opts">'+u.opsi.map(function(o){ return opt(o[1],'ubah',qi+':'+o[0],L.u[qi]===o[0],pgCls(o[0],L.u[qi],L.uMark[qi],benarId)); }).join('')+'</div></section>';
     }).join('')+fbBox(L.fb);
-    var lengkap = T.ubah.every(function(_,qi){ return !!L.u[qi]; });
+    var lengkap = T.ubah.every(function(_,qi){ return !!L.u[qi] && L.uMark[qi]!=='no'; });
     act = L.ok[2] ? btn('Lanjut','litLanjut') : btn('Periksa','litCek2',{dis:!lengkap});
   } else if(L.step===3){
     S.keyAction = L.ok[3] ? null : 'litCek3';
@@ -1529,11 +1550,11 @@ function rLiterasi(){
     var P = T.putus, selesai = L.ok[4];
     body = '<section class="card"><span class="eyebrow">Hasil hitunganmu</span><div class="banding">'+P.banding.map(function(b,i){
         return '<div class="b '+(i?'bb':'ba')+'"><span>'+b[0]+'</span><strong>'+b[1]+'</strong></div>'; }).join('')+'</div></section>'+
-      '<section class="card"><h2>'+P.tanya+'</h2><div class="row">'+P.pilihan.map(function(p){ return opt(p[1],'litPilih',p[0],L.pilih===p[0]); }).join('')+'</div></section>'+
-      '<section class="card"><h2>Alasanku</h2><div class="opts">'+P.alasan.map(function(a){ return opt(a[1],'alasan',a[0],L.alasan===a[0]); }).join('')+'</div></section>'+fbBox(L.fb)+
+      '<section class="card"><h2>'+P.tanya+'</h2><div class="row">'+P.pilihan.map(function(p){ return opt(p[1],'litPilih',p[0],L.pilih===p[0],pgCls(p[0],L.pilih,L.pMark,P.benar)); }).join('')+'</div></section>'+
+      '<section class="card"><h2>Alasanku</h2><div class="opts">'+P.alasan.map(function(a){ return opt(a[1],'alasan',a[0],L.alasan===a[0],pgCls(a[0],L.alasan,L.aMark,alasanBenar(P))); }).join('')+'</div></section>'+fbBox(L.fb)+
       (selesai ? '<section class="card"><span class="eyebrow">Pikirkan lagi</span><p>'+T.pikir.q+'</p>'+
         (L.pikir ? '<p class="num">'+T.pikir.a+'</p>' : btn('Lihat jawaban','litPikir',{cls:'secondary'}))+'</section>' : '');
-    act = selesai ? btn('Ulangi','litUlang',{cls:'secondary'})+btn('Tantangan lain','tutupLit') : btn('Periksa','litCek4',{dis:!(L.pilih&&L.alasan)});
+    act = selesai ? btn('Ulangi','litUlang',{cls:'secondary'})+btn('Tantangan lain','tutupLit') : btn('Periksa','litCek4',{dis:!(L.pilih&&L.alasan) || L.pMark==='no' || L.aMark==='no'});
   }
   var ov = S.zoom ? '<div class="overlay" role="dialog" aria-label="Gambar diperbesar"><div class="ov-in">'+T.stim+btn('Tutup','zoom',{cls:'secondary'})+'</div></div>' : '';
   return header(T.judul, T.modul+' · '+T.sub, 'tutupLit', (L.step===3 && !L.ok[3] ? '<button class="pill-btn" data-act="litHint"'+(L.hint>=3?' disabled':'')+'>Petunjuk</button>' : ''))+
@@ -1615,9 +1636,10 @@ function rJual(Mi, P){
   if(P.step==='putus'){
     return header(Mi.judul, sub, 'tutupMisi')+wrap(
       '<section class="card"><span class="eyebrow">Hasil hitunganmu</span><div class="lapor">'+Mi.f.map(function(f){ return '<div class="ln"><span class="muted">'+f.label+'</span><b>'+fmtUnit(f.jawab, f.unit||'rp')+'</b></div>'; }).join('')+'</div></section>'+
-      '<section class="card"><h2>'+Mi.putus.tanya+'</h2><div class="opts">'+Mi.putus.opsi.map(function(o,i){
-        var on = P.putus===i; return opt(o[0],'jualPutus',i,on,on?(o[1]?'ok':'no'):''); }).join('')+'</div></section>'+fbBox(P.fb)
-    )+actionbar(btn('Lanjut','jualSelesai',{dis:!P.putusOk}));
+      '<section class="card"><h2>'+Mi.putus.tanya+'</h2><p class="small muted">Pilih satu, lalu tekan Periksa.</p><div class="opts">'+Mi.putus.opsi.map(function(o,i){
+        var benarI = Mi.putus.opsi.map(function(x){ return x[1]; }).indexOf(1);
+        return opt(o[0],'jualPutus',i,P.putus===i,pgCls(i,P.putus,P.putusMark,benarI)); }).join('')+'</div></section>'+fbBox(P.fb)
+    )+actionbar(P.putusOk ? btn('Lanjut','jualSelesai') : btn('Periksa','periksaPutus',{dis:P.putus==null || P.putusMark==='no'}));
   }
   return header('Misi selesai', Mi.judul, 'tutupMisi')+wrap(
     fbBox({ok:true,title:'Hebat!',msg:Mi.selesai})+
@@ -1640,6 +1662,7 @@ function rRapor(){
       '<div class="stat"><b>'+Object.keys(st.litDone).length+'/'+LIT.length+'</b><span>Tantangan literasi selesai</span></div>'+
       '<div class="stat"><b>'+Object.keys(st.pasarDone).length+'/'+MISI.length+'</b><span>Misi pasar selesai</span></div>'+
       '<div class="stat"><b>'+URUTAN.filter(function(k){return st.modul[k];}).length+'/'+URUTAN.length+'</b><span>Modul selesai</span></div>'+
+      '<div class="stat"><b>'+st.pg.benar+'/'+st.pg.total+'</b><span>Pilihan ganda benar di percobaan pertama</span></div>'+
     '</div>'+
     '<section class="card"><span class="eyebrow">Hasil terbaik per modul</span>'+URUTAN.map(function(k){
       var r = st.modul[k]; return '<div class="rapor-mod"><span><b>'+k+'</b> '+MODUL[k].judul+'</span><span class="num muted">'+(r? r.benar+'/'+r.total : 'belum')+'</span></div>'; }).join('')+'</section>'+
@@ -1700,16 +1723,28 @@ var ACT = {
     if(c.pengecoh){ m.tapped[k]='no'; m.fb={ok:false,title:'Info ini tidak dipakai',msg:c.pengecoh}; return; }
     m.tapped[k]=true; m.fb=null;
   },
-  ditanya:function(a){
-    var m=M(), dt=m.soal[m.i].ditanya; m.ditanya=a;
-    if(a===dt.benar){ m.fb=null; return; }
-    dt.opsi.forEach(function(o){ if(o[0]===a) m.fb={ok:false,msg:o[2]}; });
+  ditanya:function(a){ var m=M(); if(m.dtOk) return; m.ditanya=a; m.dtMark=null; m.fb=null; },
+  periksaDitanya:function(){
+    var m=M(), dt=m.soal[m.i].ditanya, o=cariOpsi(dt.opsi,m.ditanya), ok=m.ditanya===dt.benar;
+    catatPG(m,'dt',ok);
+    if(ok){ m.dtMark='ok'; m.dtOk=true; m.fb={ok:true,msg:'Yang ditanya: '+o[1].toLowerCase()+'.'}; buzz(15); return; }
+    m.dtTry++;
+    if(m.dtTry>=2){ m.dtMark='ungkap'; m.dtOk=true; m.fb={ok:false,title:'Perhatikan jawaban yang tepat',msg:o[2]+' Jawaban yang tepat ditandai hijau.'}; }
+    else { m.dtMark='no'; m.fb={ok:false,msg:o[2]+' Pilih jawaban lain, lalu periksa lagi.'}; }
+    buzz(30);
   },
   lanjutPahami:function(){ var m=M(), s=m.soal[m.i]; m.fb=null; if(s.op) m.step='operasi'; else { m.step='hitung'; S.active=s.f[0].key; S.scrollTo=true; } },
-  operasi:function(a){
-    var m=M(), s=m.soal[m.i]; m.op=a;
-    s.op.opsi.forEach(function(o){ if(o[0]===a){ m.fb={ok:!!o[2],msg:o[3]}; if(!o[2]) mk(o[4]); } });
+  operasi:function(a){ var m=M(); if(m.opOk) return; m.op=a; m.opMark=null; m.fb=null; },
+  periksaOperasi:function(){
+    var m=M(), s=m.soal[m.i], o=cariOpsi(s.op.opsi,m.op), ok=!!o[2];
+    catatPG(m,'op',ok);
+    if(ok){ m.opMark='ok'; m.opOk=true; m.fb={ok:true,msg:o[3]}; buzz(15); return; }
+    mk(o[4]); m.opTry++;
+    if(m.opTry>=2){ m.opMark='ungkap'; m.opOk=true; m.fb={ok:false,title:'Perhatikan jawaban yang tepat',msg:o[3]+' Rumus yang tepat ditandai hijau.'}; }
+    else { m.opMark='no'; m.fb={ok:false,msg:o[3]+' Pilih rumus lain, lalu periksa lagi.'}; }
+    buzz(30);
   },
+  pilihCek:function(a){ var m=M(); if(m.cek!==null) return; m.cekPilih=+a; },
   lanjutHitung:function(){ var m=M(); m.step='hitung'; m.fb=null; S.active=m.soal[m.i].f[0].key; S.scrollTo=true; },
   hint:function(){ var m=M(); if(m.hint<3) m.hint++; },
   periksa:function(){
@@ -1731,7 +1766,11 @@ var ACT = {
     else m.fb={ok:false,msg:r.msg};
     buzz(30);
   },
-  cek:function(a){ var m=M(), s=m.soal[m.i], i=+a; m.cek=i; m.bahas=1; if(!s.cek.opsi[i][1]) mk(s.cek.mkNo); },
+  cek:function(a){
+    var m=M(), s=m.soal[m.i]; if(a===null || a==='' || m.cek!==null) return;
+    var i=+a, ok=!!s.cek.opsi[i][1]; m.cek=i; m.bahas=1; catatPG(m,'cek',ok);
+    if(!ok) mk(s.cek.mkNo);
+  },
   bahasNext:function(){ M().bahas++; },
   soalNext:function(){ var m=M(); if(m.i<m.soal.length-1){ m.i++; resetSoal(); } else { m.tahap='paas'; m.paas=null; S.active=null; } window.scrollTo(0,0); },
   paas:function(a){ M().paas=+a; },
@@ -1756,12 +1795,22 @@ var ACT = {
     else { L.fb={ok:true,msg:'Kamu memilih semua info yang dibutuhkan dan mengabaikan info yang tidak penting.'}; L.ok[1]=true; buzz(15); }
   },
   litLanjut:function(){ var L=S.lit, T=litById(L.id); L.step++; L.fb=null; clearFields(); if(L.step===3){ S.active=T.hitung[0].key; } window.scrollTo(0,0); },
-  ubah:function(a){ var p=a.split(':'); S.lit.u[p[0]]=p[1]; S.lit.fb=null; },
+  ubah:function(a){ var L=S.lit, p=a.split(':'); if(L.ok[2] || L.uMark[p[0]]==='ok') return; L.u[p[0]]=p[1]; L.uMark[p[0]]=null; L.fb=null; },
   litCek2:function(){
     var L=S.lit, T=litById(L.id), msg=[];
-    T.ubah.forEach(function(u,qi){ u.opsi.forEach(function(o){ if(o[0]===L.u[qi] && !o[2]){ msg.push(o[3]); mk(o[4]); } }); });
-    if(msg.length){ L.fb={ok:false,msg:msg.join(' ')}; buzz(30); }
-    else { L.fb={ok:true,msg:'Kamu sudah mengubah situasi menjadi cara menghitung.'}; L.ok[2]=true; buzz(15); }
+    T.ubah.forEach(function(u,qi){
+      var o=cariOpsi(u.opsi, L.u[qi]), ok=!!(o && o[2]);
+      catatPG(L,'u'+qi,ok);
+      L.uMark[qi] = ok ? 'ok' : 'no';
+      if(!ok){ msg.push(o[3]); mk(o[4]); }
+    });
+    if(!msg.length){ L.fb={ok:true,msg:'Kamu sudah mengubah situasi menjadi cara menghitung.'}; L.ok[2]=true; buzz(15); return; }
+    L.try2++;
+    if(L.try2>=2){
+      T.ubah.forEach(function(_,qi){ if(L.uMark[qi]==='no') L.uMark[qi]='ungkap'; });
+      L.ok[2]=true; L.fb={ok:false,title:'Perhatikan jawaban yang tepat',msg:msg.join(' ')+' Jawaban yang tepat ditandai hijau.'};
+    } else L.fb={ok:false,msg:msg.join(' ')+' Ganti pilihan yang salah, lalu periksa lagi.'};
+    buzz(30);
   },
   litHint:function(){ if(S.lit.hint<3) S.lit.hint++; },
   litCek3:function(){
@@ -1770,21 +1819,28 @@ var ACT = {
     if(msg.length){ L.fb={ok:false,msg:msg.join(' ')}; buzz(30); }
     else { L.fb={ok:true,msg:'Semua hitunganmu benar.'}; L.ok[3]=true; buzz(15); }
   },
-  litPilih:function(a){ S.lit.pilih=a; S.lit.fb=null; },
-  alasan:function(a){ S.lit.alasan=a; S.lit.fb=null; },
+  litPilih:function(a){ var L=S.lit; if(L.ok[4] || L.pMark==='ok') return; L.pilih=a; L.pMark=null; L.fb=null; },
+  alasan:function(a){ var L=S.lit; if(L.ok[4] || L.aMark==='ok') return; L.alasan=a; L.aMark=null; L.fb=null; },
   litCek4:function(){
-    var L=S.lit, T=litById(L.id), P=T.putus, al=null;
-    P.alasan.forEach(function(a){ if(a[0]===L.alasan) al=a; });
-    if(L.pilih===P.benar && al && al[2]){
+    var L=S.lit, T=litById(L.id), P=T.putus, al=cariOpsi(P.alasan, L.alasan);
+    var okP = L.pilih===P.benar, okA = !!(al && al[2]);
+    catatPG(L,'pilih',okP); catatPG(L,'alasan',okA);
+    L.pMark = okP ? 'ok' : 'no'; L.aMark = okA ? 'ok' : 'no';
+    if(okP && okA){
       L.fb={ok:true,msg:P.ok}; L.ok[4]=true;
       if(!S.stats.litDone[L.id]){ S.stats.litDone[L.id]=1; saveStats(); }
       S.rayakan=true; buzz(15); return;
     }
     var msg=[];
-    if(L.pilih!==P.benar) msg.push(P.salahPilih);
-    if(al && !al[2]){ msg.push(al[3]); mk(al[4]); }
-    if(!msg.length) msg.push('Periksa lagi pilihan dan alasanmu.');
-    L.fb={ok:false,msg:msg.join(' ')}; buzz(30);
+    if(!okP) msg.push(P.salahPilih);
+    if(!okA){ msg.push(al[3]); mk(al[4]); }
+    L.try4++;
+    if(L.try4>=2){
+      if(!okP) L.pMark='ungkap'; if(!okA) L.aMark='ungkap';
+      L.ok[4]=true; if(!S.stats.litDone[L.id]){ S.stats.litDone[L.id]=1; saveStats(); }
+      L.fb={ok:false,title:'Perhatikan jawaban yang tepat',msg:msg.join(' ')+' Jawaban yang tepat ditandai hijau.'};
+    } else L.fb={ok:false,msg:msg.join(' ')+' Ganti pilihan yang salah, lalu periksa lagi.'};
+    buzz(30);
   },
   litPikir:function(){ S.lit.pikir=true; },
   litUlang:function(){ S.lit=newLit(S.lit.id); clearFields(); window.scrollTo(0,0); },
@@ -1837,10 +1893,15 @@ var ACT = {
     if(salah){ P.fb={ok:false,msg:salah}; buzz(30); return; }
     P.step='putus'; P.fb={ok:true,msg:'Semua hitunganmu benar. Sekarang ambil keputusan.'}; buzz(15); window.scrollTo(0,0);
   },
-  jualPutus:function(a){
-    var P=S.pasar, Mi=misiById(P.id), o=Mi.putus.opsi[+a]; P.putus=+a;
-    if(o[1]){ P.putusOk=true; P.fb={ok:true,msg:o[2]||'Keputusanmu tepat.'}; buzz(15); }
-    else { P.putusOk=false; P.fb={ok:false,msg:o[2]}; mk(o[3]); buzz(30); }
+  jualPutus:function(a){ var P=S.pasar; if(P.putusOk) return; P.putus=+a; P.putusMark=null; P.fb=null; },
+  periksaPutus:function(){
+    var P=S.pasar, Mi=misiById(P.id), o=Mi.putus.opsi[P.putus], ok=!!o[1];
+    catatPG(P,'putus',ok);
+    if(ok){ P.putusMark='ok'; P.putusOk=true; P.fb={ok:true,msg:o[2]||'Keputusanmu tepat.'}; buzz(15); return; }
+    mk(o[3]); P.putusTry=(P.putusTry||0)+1;
+    if(P.putusTry>=2){ P.putusMark='ungkap'; P.putusOk=true; P.fb={ok:false,title:'Perhatikan jawaban yang tepat',msg:o[2]+' Jawaban yang tepat ditandai hijau.'}; }
+    else { P.putusMark='no'; P.fb={ok:false,msg:o[2]+' Pilih jawaban lain, lalu periksa lagi.'}; }
+    buzz(30);
   },
   jualSelesai:function(){ var P=S.pasar; P.step='hasil'; P.fb=null; S.rayakan=true; if(!S.stats.pasarDone[P.id]){ S.stats.pasarDone[P.id]=1; saveStats(); } window.scrollTo(0,0); },
 

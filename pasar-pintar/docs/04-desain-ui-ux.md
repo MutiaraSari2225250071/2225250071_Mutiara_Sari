@@ -288,3 +288,14 @@ Tujuannya membuat aplikasi lebih menarik **tanpa menambah beban ekstrinsik** (DS
 | Animasi | Pendek (≤ 0,6 detik): layar masuk, umpan balik muncul (salah: bergoyang pelan), model batang tumbuh, bintang muncul. Animasi diputar hanya saat layar berganti, bukan setiap kali tombol ditekan |
 | Perayaan | Konfeti hanya saat modul, tantangan literasi, atau misi selesai |
 | Kendali siswa | Saklar "Animasi dan efek perayaan" di Rapor Saya. Otomatis mati jika HP memakai pengaturan "kurangi gerakan" |
+
+## 9. Aturan Pilihan Ganda (v0.4.1)
+
+Agar pilihan ganda benar-benar menguji pemahaman, bukan menebak dengan mengetuk satu per satu:
+
+1. **Pilih dulu.** Pilihan yang diketuk hanya tersorot netral, tanpa warna benar atau salah.
+2. **Tekan "Periksa".** Benar atau salah beserta alasannya baru muncul setelah itu.
+3. **Maksimal 2 kali.** Jika salah, siswa harus mengganti pilihan sebelum bisa memeriksa lagi. Setelah 2 kali salah, jawaban yang tepat ditandai hijau beserta penjelasannya, lalu siswa boleh lanjut.
+4. **Dicatat.** Hasil percobaan pertama setiap pilihan ganda disimpan (`stats.pg`) dan ditampilkan di Rapor sebagai "Pilihan ganda benar di percobaan pertama".
+
+Berlaku untuk: Apa yang ditanya, Pilih operasi, Cek kewajaran (1 kali periksa), keputusan misi berjualan, serta langkah Ubah dan Putuskan (pilihan + alasan) di Tantangan Literasi.
