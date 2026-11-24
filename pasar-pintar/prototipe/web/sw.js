@@ -1,6 +1,6 @@
 // Service worker Pasar Pintar: menyimpan file aplikasi agar bisa dipakai tanpa internet.
 // Naikkan VERSI setiap kali index.html diubah, supaya HP siswa mengambil versi baru.
-const VERSI = 'pasar-pintar-v0.5.2';
+const VERSI = 'pasar-pintar-v0.5.3';
 const FILE_INTI = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (event) => {

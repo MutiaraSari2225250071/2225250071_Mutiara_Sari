@@ -1704,7 +1704,7 @@ function rRapor(){
       (Suara.ada ? saklarRow('lbl-musik','Musik latar',S.musik,'musikToggle')+
         '<label class="vol-row" for="vol-musik"><span class="small muted">Volume musik</span><input type="range" id="vol-musik" min="0" max="100" step="5" value="'+store.get('volMusik',70)+'"></label>'+
         saklarRow('lbl-efek','Efek suara tombol',S.efek,'efekToggle')+
-        '<label class="vol-row" for="vol-efek"><span class="small muted">Volume efek suara</span><input type="range" id="vol-efek" min="0" max="100" step="5" value="'+store.get('volEfek',80)+'"></label>' : '')+
+        '<label class="vol-row" for="vol-efek"><span class="small muted">Volume efek suara</span><input type="range" id="vol-efek" min="0" max="100" step="5" value="'+store.get('volEfek',100)+'"></label>' : '')+
       saklarRow('lbl-anim','Animasi dan efek perayaan',S.anim,'animToggle')+
       '<p class="small muted">Musik otomatis dikecilkan saat kamu mengerjakan soal. Matikan apa saja yang terasa mengganggu.</p></section>'+
     (S.confirmReset ? '<section class="card"><p><b>Hapus semua progres di HP ini?</b> Tindakan ini tidak bisa dibatalkan.</p><div class="row">'+btn('Batal','resetBatal',{cls:'secondary'})+btn('Hapus','resetYa')+'</div></section>'
@@ -2062,11 +2062,11 @@ var Suara = (function(){
   function efek(jenis){
     if(!siap()) return;
     var t = ctx.currentTime + 0.01;
-    if(jenis==='ketik') nada(79, t, {serang:0.004, lepas:0.08, vol:0.12, ke:gEfek});
-    else if(jenis==='benar'){ nada(72, t, {serang:0.02, lepas:0.7, vol:0.26, ke:gEfek}); nada(79, t+0.14, {serang:0.02, lepas:0.9, vol:0.22, ke:gEfek}); }
-    else if(jenis==='salah') nada(64, t, {serang:0.03, lepas:0.45, vol:0.24, ke:gEfek, geser:60});
-    else if(jenis==='rayakan'){ [72,76,79,84].forEach(function(m,i){ nada(m, t+i*0.16, {serang:0.03, lepas:1.3, vol:0.2, ke:gEfek}); }); }
-    else nada(72, t, {serang:0.006, lepas:0.14, vol:0.2, ke:gEfek, geser:68});   // "pop" lembut untuk tombol biasa
+    if(jenis==='ketik') nada(79, t, {serang:0.004, lepas:0.09, vol:0.3, ke:gEfek});
+    else if(jenis==='benar'){ nada(72, t, {serang:0.02, lepas:0.7, vol:0.5, ke:gEfek}); nada(79, t+0.14, {serang:0.02, lepas:0.9, vol:0.42, ke:gEfek}); }
+    else if(jenis==='salah') nada(64, t, {serang:0.03, lepas:0.45, vol:0.46, ke:gEfek, geser:60});
+    else if(jenis==='rayakan'){ [72,76,79,84].forEach(function(m,i){ nada(m, t+i*0.16, {serang:0.03, lepas:1.3, vol:0.38, ke:gEfek}); }); }
+    else nada(74, t, {serang:0.006, lepas:0.16, vol:0.45, ke:gEfek, geser:70});   // "pop" lembut untuk tombol biasa
   }
   return {
     ada: !!AC,
@@ -2081,7 +2081,7 @@ var Suara = (function(){
     lanjut: function(){ if(ctx && ctx.state==='suspended') ctx.resume(); }
   };
 })();
-Suara.atur(store.get('volMusik', 70)/100, store.get('volEfek', 80)/100);
+Suara.atur(store.get('volMusik', 70)/100, store.get('volEfek', 100)/100);
 /* Layar "fokus" = siswa sedang mengerjakan; musik dikecilkan */
 function layarFokus(){
   var m = M();
