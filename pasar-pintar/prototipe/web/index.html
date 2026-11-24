@@ -31,10 +31,13 @@ img{max-width:100%}
   --awal:#1D4ED8; --awal-soft:#DDE7FD;
   --pot:#C2410C; --pot-soft:#FDE5D6;
   --akhir:#15803D; --akhir-soft:#DAF2E1;
+  --untung:#166534; --untung-soft:#CDEFD8;
+  --rugi:#B91C1C; --rugi-soft:#FDE2E2;
+  --pajak:#6D28D9; --pajak-soft:#EDE7FD;
   --benar:#15803D; --benar-soft:#DAF2E1;
   --salah:#A16207; --salah-soft:#FBF0CF;
   --toko-a:#FFF1C2; --toko-a-ink:#6B4500;
-  --toko-b:#ECE5FB; --toko-b-ink:#4C1D95;
+  --toko-b:#FCE4F1; --toko-b-ink:#9D174D;
   --shadow:0 -6px 20px rgba(15,31,28,.12);
   --display:'Fredoka','Nunito',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
   --font:'Nunito',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
@@ -46,10 +49,13 @@ img{max-width:100%}
     --awal:#8AB4FF; --awal-soft:#1A2A4D;
     --pot:#FDA36B; --pot-soft:#3E2416;
     --akhir:#5BE38E; --akhir-soft:#143421;
+    --untung:#86EFAC; --untung-soft:#12301C;
+    --rugi:#FCA5A5; --rugi-soft:#3B1717;
+    --pajak:#C4B5FD; --pajak-soft:#2A2047;
     --benar:#5BE38E; --benar-soft:#143421;
     --salah:#FACC15; --salah-soft:#3A3010;
     --toko-a:#3B3112; --toko-a-ink:#FFE08A;
-    --toko-b:#2A2145; --toko-b-ink:#D6C6FF;
+    --toko-b:#3D1A2C; --toko-b-ink:#F9A8D4;
     --shadow:0 -6px 20px rgba(0,0,0,.45);
     color-scheme:dark;
   }
@@ -60,10 +66,13 @@ img{max-width:100%}
   --awal:#8AB4FF; --awal-soft:#1A2A4D;
   --pot:#FDA36B; --pot-soft:#3E2416;
   --akhir:#5BE38E; --akhir-soft:#143421;
+  --untung:#86EFAC; --untung-soft:#12301C;
+  --rugi:#FCA5A5; --rugi-soft:#3B1717;
+  --pajak:#C4B5FD; --pajak-soft:#2A2047;
   --benar:#5BE38E; --benar-soft:#143421;
   --salah:#FACC15; --salah-soft:#3A3010;
   --toko-a:#3B3112; --toko-a-ink:#FFE08A;
-  --toko-b:#2A2145; --toko-b-ink:#D6C6FF;
+  --toko-b:#3D1A2C; --toko-b-ink:#F9A8D4;
   --shadow:0 -6px 20px rgba(0,0,0,.45);
   color-scheme:dark;
 }
@@ -95,6 +104,7 @@ body.kp-open .wrap{padding-bottom:340px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
 .card h2{font-size:1.2rem}
 .eyebrow{font-size:.75rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tanya{font-size:1.15rem;font-weight:700}
 
 .btn{min-height:52px;border-radius:14px;border:0;padding:0 18px;font-weight:800;font-size:1rem;width:100%;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .btn.primary{background:var(--primary);color:var(--primary-ink)}
@@ -114,7 +124,7 @@ body.kp-open .actionbar,body.kp-open .bnav{display:none}
 
 .opts{display:flex;flex-direction:column;gap:10px}
 .opt{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;text-align:left;padding:12px 14px;border:2px solid var(--line);border-radius:14px;background:var(--surface);font-weight:700}
-.opt .mark{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:none;display:grid;place-items:center}
+.opt .mark{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:none}
 .opt[aria-pressed="true"]{border-color:var(--primary);background:var(--primary-soft)}
 .opt[aria-pressed="true"] .mark{border-color:var(--primary);background:var(--primary)}
 .opt.ok{border-color:var(--benar);background:var(--benar-soft)}
@@ -125,6 +135,10 @@ body.kp-open .actionbar,body.kp-open .bnav{display:none}
 .lbl-awal{color:var(--awal);background:var(--awal-soft)}
 .lbl-pot{color:var(--pot);background:var(--pot-soft)}
 .lbl-akhir{color:var(--akhir);background:var(--akhir-soft)}
+.lbl-untung{color:var(--untung);background:var(--untung-soft)}
+.lbl-rugi{color:var(--rugi);background:var(--rugi-soft)}
+.lbl-pajak{color:var(--pajak);background:var(--pajak-soft)}
+.lbl-netral{color:var(--text);background:var(--surface-2)}
 
 .dk{display:grid;gap:8px}
 .dk-row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
@@ -134,8 +148,13 @@ body.kp-open .actionbar,body.kp-open .bnav{display:none}
 
 .soal p{font-size:1.1rem;line-height:1.9}
 .chip{display:inline-flex;align-items:center;min-height:40px;padding:2px 10px;margin:2px 0;border-radius:10px;border:2px dashed var(--primary);background:var(--surface);font-weight:800;font-variant-numeric:tabular-nums;vertical-align:middle}
-.chip.h{border-style:solid;border-color:var(--awal);background:var(--awal-soft);color:var(--awal)}
-.chip.d{border-style:solid;border-color:var(--pot);background:var(--pot-soft);color:var(--pot)}
+.chip.c-awal{border-style:solid;border-color:var(--awal);background:var(--awal-soft);color:var(--awal)}
+.chip.c-pot{border-style:solid;border-color:var(--pot);background:var(--pot-soft);color:var(--pot)}
+.chip.c-akhir{border-style:solid;border-color:var(--akhir);background:var(--akhir-soft);color:var(--akhir)}
+.chip.c-untung{border-style:solid;border-color:var(--untung);background:var(--untung-soft);color:var(--untung)}
+.chip.c-rugi{border-style:solid;border-color:var(--rugi);background:var(--rugi-soft);color:var(--rugi)}
+.chip.c-pajak{border-style:solid;border-color:var(--pajak);background:var(--pajak-soft);color:var(--pajak)}
+.chip.c-netral{border-style:solid;border-color:var(--text);background:var(--surface-2)}
 .chip.no{border-style:solid;border-color:var(--salah);background:var(--salah-soft)}
 
 .eq{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-variant-numeric:tabular-nums;font-size:1.05rem}
@@ -144,7 +163,7 @@ body.kp-open .actionbar,body.kp-open .bnav{display:none}
 .field.on{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
 .field.ok{border-color:var(--benar);background:var(--benar-soft)}
 .field.no{border-color:var(--salah);background:var(--salah-soft)}
-.ph{color:var(--muted);font-weight:400}
+.ph{color:var(--muted);font-weight:400;font-size:1rem}
 
 .fb{border-radius:14px;padding:12px 14px;border:2px solid;display:flex;gap:10px;align-items:flex-start}
 .fb .badge{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:800;color:var(--surface)}
@@ -158,13 +177,17 @@ body.kp-open .actionbar,body.kp-open .bnav{display:none}
 .steps{display:grid;gap:10px;margin:0;padding:0;list-style:none}
 .steps li{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start}
 .steps .n{width:30px;height:30px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center;font-weight:800;font-size:.9rem}
-.steps .t{font-weight:800}
+.steps .t{font-weight:800;display:block}
 .steps .num{display:block}
 
 .bar{width:100%;max-width:100%;height:auto;display:block}
-.bar .f-awal{fill:var(--awal)} .bar .f-pot{fill:var(--pot)} .bar .f-akhir{fill:var(--akhir)}
 .bar text{font-family:var(--font);font-size:11px;font-weight:800}
-.bar .t-awal{fill:var(--awal)} .bar .t-pot{fill:var(--pot)} .bar .t-akhir{fill:var(--akhir)}
+.f-awal{fill:var(--awal)} .f-pot{fill:var(--pot)} .f-akhir{fill:var(--akhir)} .f-untung{fill:var(--untung)} .f-rugi{fill:var(--rugi)} .f-pajak{fill:var(--pajak)}
+.t-awal{fill:var(--awal)} .t-pot{fill:var(--pot)} .t-akhir{fill:var(--akhir)} .t-untung{fill:var(--untung)} .t-rugi{fill:var(--rugi)} .t-pajak{fill:var(--pajak)} .t-total{fill:var(--text)}
+.ln-dash{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:3 3;fill:none}
+.grid100{width:100%;max-width:200px;height:auto;display:block;margin:0 auto}
+.g-on{fill:var(--primary)} .g-off{fill:var(--surface-2)}
+.cap{text-align:center;font-size:.875rem;color:var(--muted)}
 
 .dots{display:flex;gap:6px;justify-content:center}
 .dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
@@ -240,16 +263,19 @@ body.kp-open .actionbar,body.kp-open .bnav{display:none}
 .stat span{font-size:.85rem;color:var(--muted)}
 .mod{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:14px;text-align:left;width:100%;min-height:72px}
 .mod .code{width:44px;height:44px;border-radius:12px;background:var(--primary-soft);color:var(--primary);display:grid;place-items:center;font-weight:800;flex:none}
-.mod.off{opacity:.55}
+.mod.done .code{background:var(--benar);color:var(--surface)}
 .mod .tx{flex:1;min-width:0;display:grid}
 .mod .tx span{font-size:.85rem;color:var(--muted)}
+.modlist{display:grid;gap:10px}
+.rapor-mod{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.rapor-mod:last-child{border-bottom:0}
 .note{font-size:.85rem;color:var(--muted);border:1px dashed var(--line);border-radius:12px;padding:10px 12px}
 .input{width:100%;min-height:52px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--text);font:inherit;font-size:1.1rem;padding:0 14px}
 .input:focus{outline:none;border-color:var(--primary)}
 
 #keypad{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface-2);border-top:1px solid var(--line);box-shadow:var(--shadow);padding-top:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .kp-in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.kp-lab{grid-column:1/-1;font-size:.85rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center;min-height:24px}
+.kp-lab{grid-column:1/-1;font-size:.85rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center;min-height:24px;gap:8px}
 .kp-lab b{color:var(--text)}
 .k{min-height:48px;border:0;border-radius:12px;background:var(--surface);font-size:1.3rem;font-weight:800;box-shadow:0 1px 0 var(--line);transition:transform .08s}
 .k:active{transform:scale(.96)}
@@ -258,6 +284,13 @@ body.kp-open .actionbar,body.kp-open .bnav{display:none}
 
 .overlay{position:fixed;inset:0;z-index:60;background:rgba(5,12,10,.72);display:flex;align-items:center;justify-content:center;padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .ov-in{width:100%;max-width:760px;max-height:100%;overflow:auto;background:var(--surface);border-radius:16px;padding:12px;display:grid;gap:10px}
+
+.f-neto{fill:var(--primary)} .t-neto{fill:var(--primary)} .f-tara{fill:var(--muted)} .t-tara{fill:var(--muted)} .f-bunga{fill:var(--primary)} .t-bunga{fill:var(--primary)}
+.b-c{fill:var(--surface)} .b-c-t{fill:var(--text)}
+.sec-t{font-size:1.05rem;margin-top:6px}
+.lapor{display:grid;gap:6px;font-variant-numeric:tabular-nums}
+.lapor .ln{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.cerita p{line-height:1.7}
 
 @media (min-width:600px){ .items{grid-template-columns:repeat(4,1fr)} }
 @media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important;scroll-behavior:auto!important} }
@@ -274,12 +307,14 @@ body.kp-open .actionbar,body.kp-open .bnav{display:none}
 var app = document.getElementById('app');
 var kp = document.getElementById('keypad');
 
-/* ---------- Matematika (data umum → JavaScript) ---------- */
+/* ================= Matematika (data umum → JavaScript) ================= */
 function grp(s){ return String(s).replace(/\B(?=(\d{3})+(?!\d))/g,'.'); }
 function fmt(n){ return 'Rp' + grp(Math.round(n)); }
+function pct(n){ return String(Math.round(n*100)/100).replace('.',',') + '%'; }
 function potongan(h,d){ return Math.round(h*d/100); }
 function hargaAkhir(h,d){ return h - potongan(h,d); }
 function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
 function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
 function buzz(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms); }catch(e){} }
 var reduceMotion = false;
@@ -289,11 +324,12 @@ var store = {
   get:function(k,d){ try{ var v=localStorage.getItem('pp_'+k); return v?JSON.parse(v):d; }catch(e){ return d; } },
   set:function(k,v){ try{ localStorage.setItem('pp_'+k, JSON.stringify(v)); }catch(e){} }
 };
-function defStats(){ return {dijawab:0, benar:0, paas:[], literasi:0, pasar:0, mk:{}}; }
+function defStats(){ return {dijawab:0, benar:0, paas:[], mk:{}, modul:{}, litDone:{}, pasarDone:{}}; }
 
-/* ---------- Ikon ---------- */
+/* ================= Ikon & label warna tetap ================= */
 var I = {
   back:'<svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>',
+  next:'<svg class="ic" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>',
   home:'<svg class="ic" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
   book:'<svg class="ic" viewBox="0 0 24 24"><path d="M5 4h12a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2z"/><path d="M5 18a2 2 0 0 1 2-2h12"/></svg>',
   cart:'<svg class="ic" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/><path d="M3 4h2l2.4 11h10.2L20 8H6.2"/></svg>',
@@ -301,56 +337,634 @@ var I = {
   search:'<svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>',
   tag:'<svg class="ic" viewBox="0 0 16 16"><path d="M1.5 8.5V2.5a1 1 0 0 1 1-1h6l6 6-6.5 6.5z"/><circle cx="5" cy="5" r="1"/></svg>',
   cut:'<svg class="ic" viewBox="0 0 16 16"><circle cx="4" cy="4" r="2"/><circle cx="4" cy="12" r="2"/><path d="M5.6 5.2L14 12M5.6 10.8L14 4"/></svg>',
-  pay:'<svg class="ic" viewBox="0 0 16 16"><rect x="1.5" y="3.5" width="13" height="9" rx="1.5"/><path d="M1.5 6.5h13"/></svg>'
+  pay:'<svg class="ic" viewBox="0 0 16 16"><rect x="1.5" y="3.5" width="13" height="9" rx="1.5"/><path d="M1.5 6.5h13"/></svg>',
+  up:'<svg class="ic" viewBox="0 0 16 16"><path d="M8 13V3M4 7l4-4 4 4"/></svg>',
+  down:'<svg class="ic" viewBox="0 0 16 16"><path d="M8 3v10M4 9l4 4 4-4"/></svg>',
+  receipt:'<svg class="ic" viewBox="0 0 16 16"><path d="M3 1.5h10v13l-2-1.2-2 1.2-2-1.2-2 1.2-2-1.2z"/><path d="M5.5 5h5M5.5 8h5"/></svg>',
+  pct:'<svg class="ic" viewBox="0 0 16 16"><circle cx="4.5" cy="4.5" r="1.8"/><circle cx="11.5" cy="11.5" r="1.8"/><path d="M13 3L3 13"/></svg>'
 };
+function lbl(cls, icon, teks){ return '<span class="lbl lbl-'+cls+'">'+icon+teks+'</span>'; }
 var LBL = {
-  awal:'<span class="lbl lbl-awal">'+I.tag+'Harga Awal</span>',
-  pot:'<span class="lbl lbl-pot">'+I.cut+'Potongan</span>',
-  diskon:'<span class="lbl lbl-pot">'+I.cut+'Diskon</span>',
-  akhir:'<span class="lbl lbl-akhir">'+I.pay+'Harga Akhir</span>'
+  awal:lbl('awal',I.tag,'Harga Awal'), pot:lbl('pot',I.cut,'Potongan'), diskon:lbl('pot',I.cut,'Diskon'),
+  akhir:lbl('akhir',I.pay,'Harga Akhir'), beli:lbl('awal',I.tag,'Harga Beli'), jual:lbl('akhir',I.pay,'Harga Jual'),
+  untung:lbl('untung',I.up,'Untung'), rugi:lbl('rugi',I.down,'Rugi'), harga:lbl('awal',I.tag,'Harga'),
+  ppn:lbl('pajak',I.receipt,'PPN'), total:lbl('netral',I.pay,'Total Bayar'), persen:lbl('netral',I.pct,'Persen'),
+  selisih:lbl('netral',I.pct,'Selisih'), hasil:lbl('netral',I.pct,'Hasil'), ur:lbl('netral',I.pct,'Untung atau Rugi'),
+  bruto:lbl('netral',I.cart,'Bruto'), neto:lbl('netral',I.cart,'Neto'), tara:lbl('netral',I.cart,'Tara'), hargaKg:lbl('awal',I.tag,'Harga/kg'),
+  modal:lbl('awal',I.tag,'Tabungan Awal'), pinjam:lbl('awal',I.tag,'Pinjaman'), suku:lbl('netral',I.pct,'Suku Bunga'),
+  lama:lbl('netral',I.chart,'Lama'), bunga:lbl('netral',I.up,'Bunga'), tabAkhir:lbl('netral',I.pay,'Tabungan Akhir'), kembali:lbl('netral',I.pay,'Total Pengembalian')
+};
+var MK_TEKS = {
+  MK1:'Menjawab nilai antara (potongan, untung, atau pajak) sebagai jawaban akhir',
+  MK2:'Salah memilih menambah atau mengurangi',
+  MK3:'Membagi dengan harga jual saat menghitung persen',
+  MK5:'Menghitung pajak dari harga sebelum diskon',
+  MK6:'Tertukar antara untung dan rugi',
+  MK7:'Salah jumlah angka nol',
+  MK8:'Lupa menyesuaikan bunga dengan lama bulan',
+  MK9:'Memakai bruto, padahal seharusnya neto'
 };
 
-/* ---------- Konten (dari JSON pada versi final) ---------- */
-var ISTILAH = [
-  {lbl:LBL.awal, judul:'Harga Awal', teks:'Harga barang sebelum mendapat diskon. Di label toko, harga ini biasanya dicoret.', contoh:'Label: <s class="num">Rp80.000</s>'},
-  {lbl:LBL.diskon, judul:'Diskon dan Potongan', teks:'Diskon ditulis dalam persen. Potongan adalah besar diskon dalam rupiah.', contoh:'Diskon 20% dari Rp80.000 = potongan Rp16.000'},
-  {lbl:LBL.akhir, judul:'Harga Akhir', teks:'Harga yang kamu bayar setelah diskon. Harga Akhir = Harga Awal − Potongan.', contoh:'Rp80.000 − Rp16.000 = Rp64.000'}
-];
-var CONTOH = { h:80000, d:20, teks:'Harga sepatu olahraga Rp80.000. Toko memberi diskon 20%. Berapa harga yang dibayar?', langkah:[
-  {t:'Tulis yang diketahui', s:'Harga Awal = Rp80.000, Diskon = 20%. Ditanya: Harga Akhir.'},
-  {t:'Hitung potongan', s:'Potongan = 20% × Rp80.000 = 20/100 × 80.000 = Rp16.000'},
-  {t:'Hitung harga akhir', s:'Harga Akhir = Rp80.000 − Rp16.000 = Rp64.000'},
-  {t:'Cek kewajaran', s:'Rp64.000 lebih kecil dari Rp80.000. Jawabannya masuk akal.'}
-]};
+/* ================= Visual (SVG) ================= */
+function barModel(h, pot, tampil){
+  var W = 300, wA = Math.round(W*(h-pot)/h);
+  return '<svg class="bar" viewBox="0 0 320 96" role="img" aria-label="Model batang: harga awal '+fmt(h)+', potongan '+(tampil?fmt(pot):'belum diketahui')+', harga akhir '+(tampil?fmt(h-pot):'belum diketahui')+'">'+
+    '<text x="10" y="13" class="t-awal">Harga Awal '+fmt(h)+'</text>'+
+    '<rect x="10" y="18" width="300" height="22" rx="5" class="f-awal"/>'+
+    '<rect x="10" y="50" width="'+(wA-2)+'" height="22" rx="5" class="f-akhir"/>'+
+    '<rect x="'+(10+wA)+'" y="50" width="'+(W-wA)+'" height="22" rx="5" class="f-pot"/>'+
+    '<text x="10" y="88" class="t-akhir">Harga Akhir '+(tampil?fmt(h-pot):'?')+'</text>'+
+    '<text x="310" y="88" text-anchor="end" class="t-pot">Potongan '+(tampil?fmt(pot):'?')+'</text></svg>';
+}
+function barBanding(hb, hj){
+  var mx = Math.max(hb,hj), wB = Math.round(300*hb/mx), wJ = Math.round(300*hj/mx), up = hj>=hb, d = Math.abs(hj-hb), xm = 10+Math.min(wB,wJ);
+  return '<svg class="bar" viewBox="0 0 320 104" role="img" aria-label="Harga beli '+fmt(hb)+', harga jual '+fmt(hj)+', '+(up?'untung ':'rugi ')+fmt(d)+'">'+
+    '<text x="10" y="13" class="t-awal">Harga Beli '+fmt(hb)+'</text>'+
+    '<rect x="10" y="18" width="'+wB+'" height="20" rx="5" class="f-awal"/>'+
+    '<text x="10" y="55" class="t-akhir">Harga Jual '+fmt(hj)+'</text>'+
+    '<rect x="10" y="60" width="'+wJ+'" height="20" rx="5" class="f-akhir"/>'+
+    (up ? '<rect x="'+(10+wB)+'" y="60" width="'+(wJ-wB)+'" height="20" class="f-untung"/>' : '<rect x="'+(10+wJ)+'" y="18" width="'+(wB-wJ)+'" height="20" class="f-rugi"/>')+
+    '<line x1="'+xm+'" y1="14" x2="'+xm+'" y2="84" class="ln-dash"/>'+
+    '<text x="310" y="98" text-anchor="end" class="'+(up?'t-untung':'t-rugi')+'">'+(up?'Untung ':'Rugi ')+fmt(d)+'</text></svg>';
+}
+function barTambah(base, add, lb, la, ca, cb){
+  lb = lb || 'Harga'; la = la || 'PPN'; ca = ca || 'pajak'; cb = cb || 'akhir';
+  var wb = Math.min(Math.round(300*base/(base+add)), 292);
+  return '<svg class="bar" viewBox="0 0 320 70" role="img" aria-label="'+lb+' '+fmt(base)+' ditambah '+la+' '+fmt(add)+', total '+fmt(base+add)+'">'+
+    '<text x="10" y="13" class="t-'+cb+'">'+lb+' '+fmt(base)+'</text>'+
+    '<text x="310" y="13" text-anchor="end" class="t-'+ca+'">'+la+' '+fmt(add)+'</text>'+
+    '<rect x="10" y="18" width="'+(wb-2)+'" height="22" rx="5" class="f-'+cb+'"/>'+
+    '<rect x="'+(10+wb)+'" y="18" width="'+(300-wb)+'" height="22" rx="5" class="f-'+ca+'"/>'+
+    '<text x="10" y="60" class="t-total">Total '+fmt(base+add)+'</text></svg>';
+}
+function barBerat(neto, tara){
+  var b = neto+tara, wn = Math.min(Math.round(300*neto/b), 292);
+  return '<svg class="bar" viewBox="0 0 320 70" role="img" aria-label="Neto '+grp(neto)+' kg ditambah tara '+grp(tara)+' kg, bruto '+grp(b)+' kg">'+
+    '<text x="10" y="13" class="t-neto">Neto '+grp(neto)+' kg</text>'+
+    '<text x="310" y="13" text-anchor="end" class="t-tara">Tara '+grp(tara)+' kg</text>'+
+    '<rect x="10" y="18" width="'+(wn-2)+'" height="22" rx="5" class="f-neto"/>'+
+    '<rect x="'+(10+wn)+'" y="18" width="'+(300-wn)+'" height="22" rx="5" class="f-tara"/>'+
+    '<text x="10" y="60" class="t-total">Bruto '+grp(b)+' kg</text></svg>';
+}
+/* Pembuat gambar stimulus literasi (brosur, nota, struk) dalam SVG */
+function stim(label, panels, strip){
+  var n = panels.length, W = (300-10*(n-1))/n, H = strip ? 210 : 172;
+  var GAP = {'b-name':20,'b-big':26,'b-huge':38,'b-huge2':30,'b-small':18,'b-tiny':16};
+  var s = '<svg class="brosur" viewBox="0 0 320 '+H+'" role="img" aria-label="'+esc(label)+'"><rect x="0" y="0" width="320" height="'+H+'" rx="12" class="b-bg"/>';
+  panels.forEach(function(p,i){
+    var x = 10+i*(W+10), cx = x+W/2, y = 30;
+    s += '<rect x="'+x+'" y="10" width="'+W+'" height="150" rx="10" class="b-'+p.w+'"/>';
+    p.baris.forEach(function(b,j){
+      var cls = b[1]||'b-small', tc = ' b-'+p.w+'-t';
+      if(j>0) y += GAP[cls]||18;
+      if(b[2]!==undefined) s += '<text x="'+(x+10)+'" y="'+y+'" class="'+cls+tc+'">'+esc(b[0])+'</text><text x="'+(x+W-10)+'" y="'+y+'" text-anchor="end" class="'+cls+tc+'">'+esc(b[2])+'</text>';
+      else s += '<text x="'+cx+'" y="'+y+'" text-anchor="middle" class="'+cls+tc+'">'+esc(b[0])+'</text>';
+    });
+  });
+  if(strip) s += '<rect x="10" y="168" width="300" height="34" rx="10" class="b-strip"/><text x="160" y="189" text-anchor="middle" class="b-small b-strip-t">'+esc(strip)+'</text>';
+  return s + '</svg>';
+}
+function gridPersen(p){
+  var s = '<svg class="grid100" viewBox="0 0 228 228" role="img" aria-label="'+p+' dari 100 kotak diarsir">';
+  for(var i=0;i<100;i++){ s += '<rect x="'+((i%10)*23)+'" y="'+(Math.floor(i/10)*23)+'" width="21" height="21" rx="3" class="'+(i<Math.round(p)?'g-on':'g-off')+'"/>'; }
+  return s + '</svg><p class="cap">'+p+' dari 100 kotak = '+p+'%</p>';
+}
+
+/* ================= Konteks soal ================= */
+var NAMA = ['Bu Sari','Rani','Dimas','Pak Budi','Ayu','Bagas','Bu Wati','Rizki'];
 var KONTEKS = [
   {barang:'tas sekolah', toko:'Toko Ceria'}, {barang:'sepatu olahraga', toko:'Toko Langkah'},
   {barang:'jaket', toko:'Toko Hangat'}, {barang:'kotak pensil', toko:'Toko Alat Tulis Pena'},
-  {barang:'botol minum', toko:'Koperasi Sekolah'}, {barang:'kemeja batik', toko:'Pasar Baru'}
+  {barang:'botol minum', toko:'Koperasi Sekolah'}, {barang:'kemeja batik', toko:'Pasar Baru'},
+  {barang:'kipas angin', toko:'Toko Elektronik Sejuk'}, {barang:'sepeda anak', toko:'Toko Roda'}
 ];
-var NAMA = ['Bu Sari','Rani','Dimas','Pak Budi','Ayu','Bagas'];
-function buatSoal(level, hindari){
-  var H = level===1 ? [40000,50000,60000,80000,100000,120000] : [75000,85000,135000,160000,180000,240000];
-  var D = level===1 ? [10,20,25,50] : [5,15,30,40];
-  var h, d, n = 0;
-  do { h = pick(H); d = pick(D); n++; } while(((h*d)%100!==0 || (hindari && hindari.indexOf(h)>-1)) && n<30);
-  return { level:level, h:h, d:d, pot:potongan(h,d), akhir:hargaAkhir(h,d), k:pick(KONTEKS), nama:pick(NAMA),
-           uang: Math.ceil(h/50000)*50000 + 50000 };
-}
-var MK_TEKS = { MK1:'Menjawab potongan saat ditanya harga akhir', MK2:'Menambahkan potongan ke harga awal', MK7:'Salah jumlah angka nol' };
+var BUAH = ['mangga','jambu','jeruk','salak','pisang'];
+var YA_TIDAK = [['Ya',1],['Tidak',0]];
 
-var BARANG = [
-  {id:'tas', nama:'Tas sekolah', h:60000, d:25},
-  {id:'botol', nama:'Botol minum', h:40000, d:50},
-  {id:'buku', nama:'Buku gambar', h:20000, d:10},
-  {id:'pensil', nama:'Pensil warna', h:5000, d:0}
-];
-var ANGGARAN = 70000;
-function barang(id){ for(var i=0;i<BARANG.length;i++){ if(BARANG[i].id===id) return BARANG[i]; } return null; }
+/* ================= Data modul (versi final: JSON di app/src/content) =================
+   Setiap modul: istilah → contoh lengkap → contoh rumpang → 4 soal latihan (level 1,1,2,2).
+   Setiap soal (dibuat generator) boleh punya: kal+chips (Pemecah Soal), ditanya, op (Pilih Operasi),
+   f (langkah hitung), salah (deteksi miskonsepsi), hint (3 tingkat), cek (Cek Kewajaran), bahas, visual. */
+var URUTAN = ['M0','M1','M2','M3','M4','M5','M6','M7'];
+var MODUL = {};
 
-var INFO = [
-  ['i1','Toko A: diskon 30%',1], ['i2','Toko B: beli 2 gratis 1',1], ['i3','Harga buku Rp12.000',1],
-  ['i4','Kamu butuh 3 buku',1], ['i5','Toko A buka pukul 08.00',0], ['i6','Toko B punya parkir luas',0]
+/* ---------- M0 Pemanasan ---------- */
+MODUL.M0 = {
+  kode:'M0', judul:'Pemanasan Prasyarat', sub:'Persen, pecahan, dan perkalian bilangan besar',
+  istilah:[
+    {lbl:LBL.persen, judul:'Persen artinya per seratus', teks:'25% artinya 25 dari 100 bagian. Bayangkan 100 kotak, lalu arsir 25 kotak.', vis:gridPersen(25)},
+    {lbl:LBL.persen, judul:'Persen patokan', teks:'Hafalkan tiga patokan ini: 10% = 1/10, 25% = 1/4, dan 50% = 1/2.', contoh:'10% dari Rp50.000 = Rp50.000 ÷ 10 = Rp5.000'},
+    {lbl:LBL.persen, judul:'Pecah persen', teks:'Persen yang sulit bisa dipecah. 15% = 10% + 5%, dan 5% adalah setengah dari 10%.', contoh:'15% dari Rp40.000 = Rp4.000 + Rp2.000 = Rp6.000'}
+  ],
+  contoh:{ teks:'Berapa 15% dari Rp60.000?', visual:function(){ return gridPersen(15); }, langkah:[
+    {t:'Hitung 10%', s:'10% dari Rp60.000 = Rp60.000 ÷ 10 = Rp6.000'},
+    {t:'Hitung 5%', s:'5% = setengah dari 10% = Rp6.000 ÷ 2 = Rp3.000'},
+    {t:'Jumlahkan', s:'15% = Rp6.000 + Rp3.000 = Rp9.000'},
+    {t:'Cek kewajaran', s:'Rp9.000 lebih kecil dari Rp60.000, karena 15% kurang dari 100%.'}
+  ]},
+  rumpang:{ teks:'Berapa 25% dari Rp80.000?', langkah:[{t:'Ubah ke pecahan', s:'25% = 1/4'}], blank:{t:'Hitung', pre:'Rp80.000 ÷ 4 =', label:'25% dari Rp80.000', unit:'rp', jawab:20000},
+    salah:{8000:'Itu 10%. 25% = 1/4, jadi bagi dengan 4.', 40000:'Itu 50%. 25% adalah setengahnya lagi.'}, umum:'Bagi Rp80.000 dengan 4.' },
+  buat:function(level, i){
+    var tipe = ['kali','persen','pecahan','pecah'][i];
+    if(tipe==='kali'){
+      var a = pick([25000,4500,12000,350,7500,1250]), b = pick([10,100]);
+      return { id:'M0k'+a+b, tanya:'Berapa '+grp(a)+' × '+b+'?',
+        f:[{key:'f1', label:'Hasil', tag:LBL.hasil, eq:grp(a)+' × '+b+' =', jawab:a*b, unit:'angka', cekLagi:'Dikali '+b+' berarti menambah '+(b===10?'satu':'dua')+' angka nol di belakang.'}],
+        hint:['Mengalikan dengan '+b+' sama dengan menambah angka nol di belakang.', 'Tambahkan '+(b===10?'satu angka nol':'dua angka nol')+'.', 'Contoh: 45 × '+b+' = '+grp(45*b)+'.'],
+        benar:grp(a)+' × '+b+' = '+grp(a*b)+'.',
+        cek:{q:'Apakah '+grp(a*b)+' memiliki '+(b===10?'satu':'dua')+' angka nol lebih banyak daripada '+grp(a)+'?', opsi:YA_TIDAK, ok:'Betul, itu ciri perkalian dengan '+b+'.', no:'Coba hitung angka nolnya lagi: '+grp(a)+' menjadi '+grp(a*b)+'.'},
+        bahas:[['Kalikan', grp(a)+' × '+b+' = '+grp(a*b)],['Cek', 'Ada '+(b===10?'satu':'dua')+' angka nol tambahan di belakang.']] };
+    }
+    if(tipe==='persen'){
+      var N = pick([40000,60000,80000,120000,200000]), p = pick([10,25,50]), ans = N*p/100, bagi = 100/p;
+      return { id:'M0p'+N+p, tanya:'Berapa '+p+'% dari '+fmt(N)+'?', visual:gridPersen(p),
+        f:[{key:'f1', label:p+'% dari '+fmt(N), tag:LBL.persen, eq:p+'% × '+fmt(N)+' =', jawab:ans, unit:'rp', cekLagi:p+'% = 1/'+bagi+', jadi bagi '+fmt(N)+' dengan '+bagi+'.'}],
+        hint:['Ingat persen patokan: 10% = 1/10, 25% = 1/4, 50% = 1/2.', p+'% = 1/'+bagi+'.', 'Hitung '+fmt(N)+' ÷ '+bagi+'.'],
+        benar:p+'% dari '+fmt(N)+' = '+fmt(ans)+'.',
+        cek:{q:'Apakah '+fmt(ans)+' lebih kecil dari '+fmt(N)+'?', opsi:YA_TIDAK, ok:'Betul. '+p+'% kurang dari 100%, jadi hasilnya lebih kecil.', no:fmt(ans)+' memang lebih kecil dari '+fmt(N)+', karena '+p+'% kurang dari 100%.'},
+        bahas:[['Ubah ke pecahan', p+'% = 1/'+bagi],['Bagi', fmt(N)+' ÷ '+bagi+' = '+fmt(ans)]] };
+    }
+    if(tipe==='pecahan'){
+      var pr = pick([[1,2],[1,4],[3,4],[1,5],[2,5],[1,10],[3,10]]), a2 = pr[0], b2 = pr[1], pc = a2*100/b2, kali = 100/b2;
+      return { id:'M0f'+a2+b2, tanya:'Ubah pecahan '+a2+'/'+b2+' menjadi persen.', visual:gridPersen(pc),
+        f:[{key:'f1', label:a2+'/'+b2+' dalam persen', tag:LBL.persen, eq:a2+'/'+b2+' =', jawab:pc, unit:'persen', cekLagi:'Ubah penyebutnya menjadi 100 dengan mengalikan pembilang dan penyebut dengan angka yang sama.'}],
+        hint:['Persen artinya per seratus. Ubah penyebutnya menjadi 100.', 'Kalikan pembilang dan penyebut dengan '+kali+'.', a2+'/'+b2+' = '+(a2*kali)+'/100.'],
+        benar:a2+'/'+b2+' = '+(a2*kali)+'/100 = '+pc+'%.',
+        cek:{q:'Pecahan '+a2+'/'+b2+' kurang dari 1. Apakah '+pc+'% kurang dari 100%?', opsi:YA_TIDAK, ok:'Betul, pecahan yang kurang dari 1 bernilai kurang dari 100%.', no:pc+'% memang kurang dari 100%.'},
+        bahas:[['Samakan penyebut', a2+'/'+b2+' = '+(a2*kali)+'/100'],['Tulis sebagai persen', (a2*kali)+'/100 = '+pc+'%']] };
+    }
+    var N2 = pick([40000,60000,80000,120000,200000]), p2 = pick([15,5,20,75]), L;
+    if(p2===15) L = [['10%',N2/10,'10% = 1/10'],['5%',N2/20,'5% = setengah dari 10%'],['15%',N2*15/100,'15% = 10% + 5%']];
+    else if(p2===5) L = [['10%',N2/10,'10% = 1/10'],['5%',N2/20,'5% = setengah dari 10%']];
+    else if(p2===20) L = [['10%',N2/10,'10% = 1/10'],['20%',N2/5,'20% = 2 × 10%']];
+    else L = [['50%',N2/2,'50% = 1/2'],['25%',N2/4,'25% = setengah dari 50%'],['75%',N2*3/4,'75% = 50% + 25%']];
+    var ansP = N2*p2/100;
+    return { id:'M0c'+N2+p2, tanya:'Berapa '+p2+'% dari '+fmt(N2)+'? Pakai cara pecah persen.', visual:gridPersen(p2),
+      f:L.map(function(x,j){ return {key:'f'+(j+1), label:x[0]+' dari '+fmt(N2), tag:LBL.persen, eq:x[0]+' dari '+fmt(N2)+' =', jawab:x[1], unit:'rp', cekLagi:'Cek lagi Langkah '+(j+1)+'. '+x[2]+'.'}; }),
+      hint:['Mulai dari persen patokan, lalu pecah atau gabungkan.', L.map(function(x){return x[2];}).join('; ')+'.', L[0][0]+' dari '+fmt(N2)+' = '+fmt(L[0][1])+'.'],
+      benar:p2+'% dari '+fmt(N2)+' = '+fmt(ansP)+'.',
+      cek:{q:'Apakah '+fmt(ansP)+' lebih kecil dari '+fmt(N2)+'?', opsi:YA_TIDAK, ok:'Betul. '+p2+'% kurang dari 100%.', no:fmt(ansP)+' memang lebih kecil dari '+fmt(N2)+'.'},
+      bahas:L.map(function(x){ return [x[0], x[2]+' → '+fmt(x[1])]; }) };
+  }
+};
+
+/* ---------- M1 Untung dan Rugi ---------- */
+MODUL.M1 = {
+  kode:'M1', judul:'Untung dan Rugi', sub:'Harga beli, harga jual, untung, rugi',
+  istilah:[
+    {lbl:LBL.beli, judul:'Harga Beli', teks:'Harga saat pedagang membeli barang, misalnya dari petani, pabrik, atau grosir.', contoh:'Pak Budi membeli mangga dari petani seharga Rp200.000.'},
+    {lbl:LBL.jual, judul:'Harga Jual', teks:'Harga saat pedagang menjual barang kepada pembeli.', contoh:'Semua mangga itu laku Rp240.000.'},
+    {lbl:LBL.ur, judul:'Untung dan Rugi', teks:'Bandingkan harga jual dengan harga beli. Lebih besar berarti untung, lebih kecil berarti rugi.', contoh:'Untung = Harga Jual − Harga Beli. Rugi = Harga Beli − Harga Jual.'}
+  ],
+  contoh:{ teks:'Pak Budi membeli 20 kg mangga seharga Rp200.000. Ia menjual semuanya dengan harga Rp12.000 per kg. Untung atau rugi?',
+    visual:function(t){ return t ? barBanding(200000,240000) : ''; }, langkah:[
+    {t:'Hitung harga jual total', s:'20 × Rp12.000 = Rp240.000'},
+    {t:'Bandingkan', s:'Rp240.000 lebih besar dari Rp200.000, jadi untung.'},
+    {t:'Hitung untung', s:'Untung = Rp240.000 − Rp200.000 = Rp40.000'},
+    {t:'Cek kewajaran', s:'Harga beli + untung = Rp200.000 + Rp40.000 = Rp240.000 (sama dengan harga jual).'}
+  ]},
+  rumpang:{ teks:'Pedagang membeli jambu seharga Rp150.000. Semua jambu laku Rp130.000.', langkah:[{t:'Bandingkan', s:'Rp130.000 lebih kecil dari Rp150.000, jadi rugi.'}],
+    blank:{t:'Hitung rugi', pre:'Rp150.000 − Rp130.000 =', label:'Rugi', unit:'rp', jawab:20000},
+    salah:{280000:'Untung atau rugi dicari dengan pengurangan, bukan penjumlahan.'}, umum:'Kurangi Rp150.000 dengan Rp130.000.' },
+  buat:function(level){
+    var nm = pick(NAMA), buah = pick(BUAH), untung = Math.random()<0.5, hb, hj, q = 0, hjkg = 0, n = 0;
+    if(level===1){ hb = pick([120000,150000,200000,250000,300000]); var sel = pick([20000,25000,30000,50000]); hj = untung ? hb+sel : hb-sel; }
+    else { do { q = pick([10,20,25,40]); hb = pick([140000,200000,240000,300000,400000]); hjkg = pick([5000,6000,8000,9000,10000,12000,14000,15000]); hj = q*hjkg; n++; }
+           while((hj===hb || Math.abs(hj-hb)>0.4*hb || (hj>hb)!==untung) && n<200); untung = hj>hb; }
+    var d = Math.abs(hj-hb), jenis = untung?'untung':'rugi';
+    var kal, chips, dk, f;
+    if(level===1){
+      kal = [nm+' membeli '+buah+' seharga {{hb}}.', 'Semua '+buah+' itu ia jual dengan harga {{hj}}.', 'Apakah '+nm+' untung atau rugi? Berapa besarnya?'];
+      chips = {hb:{teks:fmt(hb),cls:'awal'}, hj:{teks:fmt(hj),cls:'akhir'}};
+      dk = [{k:'hb',lbl:LBL.beli,isi:fmt(hb)},{k:'hj',lbl:LBL.jual,isi:fmt(hj)}];
+      f = [{key:'f1', label:'Selisih', tag:LBL.selisih, eq:'Selisih '+fmt(Math.max(hb,hj))+' dan '+fmt(Math.min(hb,hj))+' =', jawab:d, unit:'rp', cekLagi:'Kurangi harga yang lebih besar dengan harga yang lebih kecil.'}];
+    } else {
+      kal = [nm+' membeli {{q}} '+buah+' seharga {{hb}}.', 'Ia berangkat ke pasar pukul {{x}}.', 'Semua '+buah+' ia jual dengan harga {{hjkg}} per kg.', 'Apakah '+nm+' untung atau rugi? Berapa besarnya?'];
+      chips = {q:{teks:q+' kg',cls:'netral'}, hb:{teks:fmt(hb),cls:'awal'}, hjkg:{teks:fmt(hjkg),cls:'akhir'}, x:{teks:pick(['05.00','05.30','06.00']), pengecoh:'Jam berangkat tidak dipakai untuk menghitung untung atau rugi.'}};
+      dk = [{k:'q',lbl:lbl('netral',I.cart,'Banyak'),isi:q+' kg'},{k:'hb',lbl:LBL.beli,isi:fmt(hb)},{k:'hjkg',lbl:lbl('akhir',I.pay,'Harga Jual/kg'),isi:fmt(hjkg)}];
+      f = [{key:'f1', label:'Harga jual total', tag:LBL.jual, eq:q+' × '+fmt(hjkg)+' =', jawab:hj, unit:'rp', cekLagi:'Harga jual total = banyak buah × harga per kg.'},
+           {key:'f2', label:'Selisih', tag:LBL.selisih, eq:'Selisih harga jual dan '+fmt(hb)+' =', jawab:d, unit:'rp', cekLagi:'Kurangi harga yang lebih besar dengan harga yang lebih kecil.'}];
+    }
+    var last = f[f.length-1].key;
+    return { id:'M1'+hb+'-'+hj, kal:kal, chips:chips, dk:dk, f:f,
+      ditanya:{benar:'ur', lbl:LBL.ur, opsi:[['ur','Untung atau rugi, dan besarnya'],['hb','Harga beli','Harga beli sudah diketahui di soal.'],['hj',level===1?'Harga jual':'Harga per kg','Itu sudah diketahui. Soal menanyakan untung atau rugi.']]},
+      op:{tanya:'Bagaimana cara mengetahui untung atau rugi?', opsi:[
+        ['a','Bandingkan harga jual dengan harga beli',1,'Tepat. Jika harga jual lebih besar, untung. Jika lebih kecil, rugi.'],
+        ['b','Jumlahkan harga jual dan harga beli',0,'Untung atau rugi dicari dari selisih, bukan jumlah.'],
+        ['c',level===1?'Lihat harga beli saja':'Bandingkan banyak buah dengan harga per kg',0,'Yang dibandingkan adalah harga jual dan harga beli.']]},
+      salah:function(v,ok){
+        if(level===2 && !ok.f1 && v.f1===hjkg) return {msg:'Itu harga per kg. Kalikan dengan banyaknya buah.'};
+        if(!ok[last] && v[last]===hb+hj) return {msg:'Untung atau rugi dicari dengan pengurangan, bukan penjumlahan.', mk:'MK2'};
+        return null; },
+      hint: level===1 ? ['Bandingkan dulu harga jual dan harga beli.', 'Cari selisihnya dengan pengurangan.', 'Hitung '+grp(Math.max(hb,hj))+' − '+grp(Math.min(hb,hj))+'.']
+                      : ['Hitung harga jual total dulu, baru bandingkan dengan harga beli.', 'Harga jual total = '+q+' × '+grp(hjkg)+'.', 'Harga jual total = '+fmt(hj)+'. Sekarang cari selisihnya dengan '+fmt(hb)+'.'],
+      benar:'Selisihnya '+fmt(d)+'. Sekarang tentukan: untung atau rugi?',
+      cek:{q:'Jadi, '+nm+' untung atau rugi?', opsi:[['Untung',untung?1:0],['Rugi',untung?0:1]],
+        ok:(untung?'Harga jual lebih besar dari harga beli, jadi untung ':'Harga jual lebih kecil dari harga beli, jadi rugi ')+fmt(d)+'.',
+        no:'Bandingkan lagi: harga jual '+fmt(hj)+' '+(untung?'lebih besar':'lebih kecil')+' dari harga beli '+fmt(hb)+'. Jadi '+jenis+'.', mkNo:'MK6'},
+      visual:barBanding(hb,hj),
+      bahas:(level===2?[['Harga jual total', q+' × '+fmt(hjkg)+' = '+fmt(hj)]]:[]).concat([['Bandingkan', fmt(hj)+(untung?' > ':' < ')+fmt(hb)+', jadi '+jenis+'.'],[cap(jenis), fmt(Math.max(hb,hj))+' − '+fmt(Math.min(hb,hj))+' = '+fmt(d)]]) };
+  }
+};
+
+/* ---------- M2 Persentase Untung dan Rugi ---------- */
+MODUL.M2 = {
+  kode:'M2', judul:'Persentase Untung dan Rugi', sub:'Membandingkan untung/rugi dengan harga beli',
+  istilah:[
+    {lbl:LBL.untung, judul:'Persentase Untung', teks:'Besar untung dibandingkan dengan harga beli, lalu dikali 100%.', contoh:'% Untung = Untung ÷ Harga Beli × 100%'},
+    {lbl:LBL.rugi, judul:'Persentase Rugi', teks:'Besar rugi dibandingkan dengan harga beli, lalu dikali 100%.', contoh:'% Rugi = Rugi ÷ Harga Beli × 100%'},
+    {lbl:LBL.beli, judul:'Selalu dibagi Harga Beli', teks:'Kesalahan yang sering terjadi adalah membagi dengan harga jual. Pembaginya selalu harga beli.', contoh:'Untung Rp50.000 dari harga beli Rp200.000 = 25%'}
+  ],
+  contoh:{ teks:'Andika membeli 50 kg apel seharga Rp500.000 dan menjual semuanya Rp400.000. Berapa persen ruginya?',
+    visual:function(t){ return t ? barBanding(500000,400000) : ''; }, langkah:[
+    {t:'Hitung rugi', s:'Rugi = Rp500.000 − Rp400.000 = Rp100.000'},
+    {t:'Bandingkan dengan harga beli', s:'Rp100.000 ÷ Rp500.000 = 0,2'},
+    {t:'Ubah ke persen', s:'0,2 × 100% = 20%'},
+    {t:'Cek balik', s:'20% × Rp500.000 = Rp100.000 (sama dengan ruginya).'}
+  ]},
+  rumpang:{ teks:'Rani membeli tas seharga Rp200.000 dan menjualnya Rp250.000.', langkah:[{t:'Hitung untung', s:'Untung = Rp250.000 − Rp200.000 = Rp50.000'}],
+    blank:{t:'Persentase untung', pre:'Rp50.000 ÷ Rp200.000 × 100% =', label:'Persentase untung', unit:'persen', jawab:25},
+    salah:{20:'Kamu membagi dengan harga jual. Persen untung dibagi dengan harga beli (Rp200.000).', '0.25':'Jangan lupa dikali 100%.'}, umum:'Bagi Rp50.000 dengan Rp200.000, lalu kalikan 100%.' },
+  buat:function(level){
+    var nm = pick(NAMA), brg = pick(KONTEKS).barang, untung = Math.random()<0.5, hb, p, n = 0;
+    do { hb = level===1 ? pick([100000,200000,400000,500000,50000]) : pick([80000,120000,160000,240000,250000]);
+         p = level===1 ? pick([10,20,25,50]) : pick([5,15,12.5,30,40]); n++; } while(((hb*p)%100!==0) && n<50);
+    var u = hb*p/100, hj = untung ? hb+u : hb-u, jenis = untung?'untung':'rugi', J = cap(jenis);
+    var kal = [nm+' membeli '+brg+' seharga {{hb}}.'];
+    if(level===2) kal.push('Barang itu ia simpan selama {{x}}.');
+    kal.push('Lalu ia menjualnya dengan harga {{hj}}.', 'Berapa persen '+jenis+'nya?');
+    return { id:'M2'+hb+'-'+p+jenis, kal:kal,
+      chips:{hb:{teks:fmt(hb),cls:'awal'}, hj:{teks:fmt(hj),cls:'akhir'}, x: level===2 ? {teks:pick(['3 hari','5 hari','1 minggu']), pengecoh:'Lama penyimpanan tidak dipakai untuk menghitung persentase.'} : null},
+      dk:[{k:'hb',lbl:LBL.beli,isi:fmt(hb)},{k:'hj',lbl:LBL.jual,isi:fmt(hj)}],
+      ditanya:{benar:'p', lbl:lbl(jenis,I.pct,'Persen '+J), opsi:[['p','Persentase '+jenis],['u','Besar '+jenis+' dalam rupiah','Itu langkah antara. Soal menanyakan persentasenya.'],['hj','Harga jual','Harga jual sudah diketahui di soal.']]},
+      op:{tanya:'Rumus persentase '+jenis+' yang tepat?', opsi:[
+        ['a',J+' ÷ Harga Beli × 100%',1,'Tepat. Persentase selalu dibandingkan dengan Harga Beli.'],
+        ['b',J+' ÷ Harga Jual × 100%',0,'Persen '+jenis+' dibandingkan dengan Harga Beli, bukan Harga Jual.','MK3'],
+        ['c','Harga Beli ÷ '+J+' × 100%',0,'Yang dibagi adalah besar '+jenis+'nya. Pembaginya Harga Beli.']]},
+      f:[{key:'f1', label:'Besar '+jenis, tag:LBL[jenis], eq:(untung?fmt(hj)+' − '+fmt(hb):fmt(hb)+' − '+fmt(hj))+' =', jawab:u, unit:'rp', cekLagi:'Hitung dulu selisih harga jual dan harga beli.'},
+         {key:'f2', label:'Persentase '+jenis, tag:LBL.persen, eq:J+' ÷ '+fmt(hb)+' × 100% =', jawab:p, unit:'persen', cekLagi:'Bagi '+jenis+' dengan harga beli, lalu kalikan 100%.'}],
+      salah:function(v,ok){
+        if(!ok.f2 && Math.abs(v.f2 - u/hj*100) < 0.06) return {msg:'Kamu membagi dengan harga jual. Persen '+jenis+' dibagi dengan harga beli.', mk:'MK3'};
+        if(!ok.f2 && Math.abs(v.f2 - p/100) < 0.0001) return {msg:'Hampir! Jangan lupa dikali 100%.'};
+        return null; },
+      hint:['Cari besar '+jenis+' dulu, lalu bandingkan dengan harga beli.', J+' = '+fmt(u)+'.', fmt(u)+' ÷ '+fmt(hb)+' = '+String(p/100).replace('.',',')+'. Kalikan dengan 100%.'],
+      benar:J+' '+fmt(u)+' sama dengan '+pct(p)+' dari harga beli '+fmt(hb)+'.',
+      cek:{q:'Cek balik: apakah '+pct(p)+' × '+fmt(hb)+' = '+fmt(u)+'?', opsi:YA_TIDAK, ok:'Betul. Cek balik ini membuktikan jawabanmu.', no:pct(p)+' × '+fmt(hb)+' memang '+fmt(u)+'. Jadi jawabannya benar.'},
+      visual:barBanding(hb,hj),
+      bahas:[[J, (untung?fmt(hj)+' − '+fmt(hb):fmt(hb)+' − '+fmt(hj))+' = '+fmt(u)],['Persentase', fmt(u)+' ÷ '+fmt(hb)+' × 100% = '+pct(p)],['Cek balik', pct(p)+' × '+fmt(hb)+' = '+fmt(u)]] };
+  }
+};
+
+/* ---------- M3 Harga dari Persentase ---------- */
+MODUL.M3 = {
+  kode:'M3', judul:'Harga dari Persentase', sub:'Menentukan harga jual jika persen untung/rugi diketahui',
+  istilah:[
+    {lbl:LBL.untung, judul:'Jika untung', teks:'Hitung besar untung dari harga beli, lalu tambahkan ke harga beli.', contoh:'Harga Jual = Harga Beli + (% Untung × Harga Beli)'},
+    {lbl:LBL.rugi, judul:'Jika rugi', teks:'Hitung besar rugi dari harga beli, lalu kurangkan dari harga beli.', contoh:'Harga Jual = Harga Beli − (% Rugi × Harga Beli)'},
+    {lbl:LBL.persen, judul:'Cara cepat', teks:'Untung 20% berarti harga jual 120% dari harga beli. Rugi 20% berarti 80% dari harga beli.', contoh:'Untung 20% dari Rp100.000 → 120% × Rp100.000 = Rp120.000'}
+  ],
+  contoh:{ teks:'Harga beli sebuah barang Rp260.000. Barang itu dijual dengan rugi 9%. Berapa harga jualnya?',
+    visual:function(t){ return t ? barBanding(260000,236600) : ''; }, langkah:[
+    {t:'Hitung rugi', s:'Rugi = 9% × Rp260.000 = Rp23.400'},
+    {t:'Pilih operasi', s:'Rugi membuat harga jual lebih kecil, jadi dikurangi.'},
+    {t:'Hitung harga jual', s:'Harga Jual = Rp260.000 − Rp23.400 = Rp236.600'},
+    {t:'Cek kewajaran', s:'Rp236.600 lebih kecil dari Rp260.000, sesuai karena rugi.'}
+  ]},
+  rumpang:{ teks:'Harga beli Rp224.000. Barang dijual dengan untung 15%.', langkah:[{t:'Hitung untung', s:'Untung = 15% × Rp224.000 = Rp33.600'}],
+    blank:{t:'Harga jual', pre:'Rp224.000 + Rp33.600 =', label:'Harga jual', unit:'rp', jawab:257600},
+    salah:{33600:'Itu besar untungnya. Yang ditanya harga jual.', 190400:'Kalau untung, harga jual lebih besar, jadi ditambah.'}, umum:'Tambahkan Rp224.000 dengan Rp33.600.' },
+  buat:function(level){
+    var nm = pick(NAMA), brg = pick(KONTEKS).barang, untung = level===1 ? true : Math.random()<0.5;
+    var hb = level===1 ? pick([100000,150000,200000,80000,250000]) : pick([260000,224000,280000,120000,180000]);
+    var p = level===1 ? pick([10,20,25,50]) : pick([9,15,18,12,25]);
+    var u = hb*p/100, hj = untung ? hb+u : hb-u, jenis = untung?'untung':'rugi', J = cap(jenis);
+    var kal = [nm+' membeli '+brg+' seharga {{hb}}.'];
+    if(level===2) kal.push('Toko pemasoknya berjarak {{x}} dari rumahnya.');
+    kal.push(untung ? 'Ia menjualnya dengan untung {{p}}.' : 'Barang itu kurang laku, jadi ia menjualnya dengan rugi {{p}}.', 'Berapa harga jualnya?');
+    var opsiOp = untung ? [['a','Harga Beli + Untung',1,'Tepat. Untung membuat harga jual lebih besar dari harga beli.'],['b','Harga Beli − Untung',0,'Kalau untung, harga jual lebih besar, jadi ditambah.','MK2'],['c','Untung − Harga Beli',0,'Harga Jual = Harga Beli + Untung.']]
+                        : [['a','Harga Beli − Rugi',1,'Tepat. Rugi membuat harga jual lebih kecil dari harga beli.'],['b','Harga Beli + Rugi',0,'Kalau rugi, harga jual lebih kecil, jadi dikurangi.','MK2'],['c','Rugi − Harga Beli',0,'Harga Jual = Harga Beli − Rugi.']];
+    return { id:'M3'+hb+'-'+p+jenis, kal:kal,
+      chips:{hb:{teks:fmt(hb),cls:'awal'}, p:{teks:p+'%',cls:jenis}, x: level===2 ? {teks:pick(['8 km','12 km','15 km']), pengecoh:'Jarak ke pemasok tidak dipakai untuk menghitung harga jual.'} : null},
+      dk:[{k:'hb',lbl:LBL.beli,isi:fmt(hb)},{k:'p',lbl:LBL[jenis],isi:p+'%'}],
+      ditanya:{benar:'hj', lbl:LBL.jual, opsi:[['hj','Harga jual'],['u','Besar '+jenis+' saja','Itu langkah antara. Soal menanyakan harga jual.'],['hb','Harga beli','Harga beli sudah diketahui di soal.']]},
+      op:{tanya:'Untuk mencari Harga Jual, rumus mana yang tepat?', opsi:opsiOp},
+      f:[{key:'f1', label:'Besar '+jenis, tag:LBL[jenis], eq:p+'% × '+fmt(hb)+' =', jawab:u, unit:'rp', cekLagi:p+'% artinya '+p+' per seratus. Kalikan '+p+'/100 dengan '+grp(hb)+'.'},
+         {key:'f2', label:'Harga jual', tag:LBL.jual, eq:fmt(hb)+(untung?' + ':' − ')+J+' =', jawab:hj, unit:'rp', cekLagi:'Langkah 1 sudah benar. Cek lagi '+(untung?'penjumlahan':'pengurangan')+' di Langkah 2.'}],
+      salah:function(v,ok){
+        if(!ok.f2 && v.f2===u) return {msg:'Itu besar '+jenis+'nya. Yang ditanya harga jual.', mk:'MK1'};
+        if(!ok.f2 && v.f2===(untung?hb-u:hb+u)) return {msg:'Kalau '+jenis+', harga jual '+(untung?'lebih besar':'lebih kecil')+' dari harga beli.', mk:'MK2'};
+        return null; },
+      hint:['Hitung besar '+jenis+' dulu, lalu '+(untung?'tambahkan ke':'kurangkan dari')+' harga beli.', J+' = '+p+'/100 × '+grp(hb)+'.', J+' = '+fmt(u)+'. Sekarang hitung '+grp(hb)+(untung?' + ':' − ')+grp(u)+'.'],
+      benar:J+' '+fmt(u)+', jadi harga jualnya '+fmt(hj)+'.',
+      cek:{q:(untung?'Kalau untung, harga jual harus lebih besar dari harga beli. ':'Kalau rugi, harga jual harus lebih kecil dari harga beli. ')+'Apakah <b>'+fmt(hj)+'</b> '+(untung?'lebih besar':'lebih kecil')+' dari <b>'+fmt(hb)+'</b>?', opsi:YA_TIDAK, ok:'Jawabannya masuk akal.', no:fmt(hj)+' memang '+(untung?'lebih besar':'lebih kecil')+' dari '+fmt(hb)+'. Jadi jawabannya masuk akal.'},
+      visual:barBanding(hb,hj),
+      bahas:[[J, p+'% × '+fmt(hb)+' = '+fmt(u)],['Harga jual', fmt(hb)+(untung?' + ':' − ')+fmt(u)+' = '+fmt(hj)],['Cara cepat', (untung?(100+p):(100-p))+'% × '+fmt(hb)+' = '+fmt(hj)]] };
+  }
+};
+
+/* ---------- M4 Diskon ---------- */
+MODUL.M4 = {
+  kode:'M4', judul:'Diskon', sub:'Harga awal, potongan, harga akhir',
+  istilah:[
+    {lbl:LBL.awal, judul:'Harga Awal', teks:'Harga barang sebelum mendapat diskon. Di label toko, harga ini biasanya dicoret.', contoh:'Label: <s class="num">Rp80.000</s>'},
+    {lbl:LBL.diskon, judul:'Diskon dan Potongan', teks:'Diskon ditulis dalam persen. Potongan adalah besar diskon dalam rupiah.', contoh:'Diskon 20% dari Rp80.000 = potongan Rp16.000'},
+    {lbl:LBL.akhir, judul:'Harga Akhir', teks:'Harga yang kamu bayar setelah diskon. Harga Akhir = Harga Awal − Potongan.', contoh:'Rp80.000 − Rp16.000 = Rp64.000'}
+  ],
+  contoh:{ teks:'Harga sepatu olahraga Rp80.000. Toko memberi diskon 20%. Berapa harga yang dibayar?',
+    visual:function(t){ return barModel(80000,16000,t); }, langkah:[
+    {t:'Tulis yang diketahui', s:'Harga Awal = Rp80.000, Diskon = 20%. Ditanya: Harga Akhir.'},
+    {t:'Hitung potongan', s:'Potongan = 20% × Rp80.000 = 20/100 × 80.000 = Rp16.000'},
+    {t:'Hitung harga akhir', s:'Harga Akhir = Rp80.000 − Rp16.000 = Rp64.000'},
+    {t:'Cek kewajaran', s:'Rp64.000 lebih kecil dari Rp80.000. Jawabannya masuk akal.'}
+  ]},
+  rumpang:{ teks:'Harga sebuah tas Rp120.000. Diskon 25%. Berapa harga yang dibayar?', langkah:[{t:'Diketahui', s:'Harga Awal = Rp120.000, Diskon = 25%'},{t:'Potongan', s:'25% × Rp120.000 = Rp30.000'}],
+    blank:{t:'Harga akhir', pre:'Rp120.000 − Rp30.000 =', label:'Harga akhir', unit:'rp', jawab:90000},
+    salah:{30000:'Itu besar potongannya. Yang ditanya harga yang dibayar.', 150000:'Diskon membuat harga lebih murah, jadi dikurangi, bukan ditambah.'}, umum:'Kurangi Rp120.000 dengan Rp30.000.' },
+  buat:function(level){
+    var h = level===1 ? pick([40000,50000,60000,80000,100000,120000]) : pick([75000,85000,135000,160000,180000,240000]);
+    var d = level===1 ? pick([10,20,25,50]) : pick([5,15,30,40]);
+    var pot = potongan(h,d), ak = h-pot, k = pick(KONTEKS), nm = pick(NAMA), uang = Math.ceil(h/50000)*50000 + 50000;
+    var kal = [nm+' ingin membeli '+k.barang+' di '+k.toko+'.'];
+    if(level===2) kal.push('Ia membawa uang {{x}}.');
+    kal.push('Harga awalnya {{h}}.', 'Toko memberi diskon {{d}}.', 'Berapa harga yang harus dibayar '+nm+'?');
+    return { id:'M4'+h+'-'+d, kal:kal,
+      chips:{h:{teks:fmt(h),cls:'awal'}, d:{teks:d+'%',cls:'pot'}, x: level===2 ? {teks:fmt(uang), pengecoh:'Uang yang dibawa tidak dipakai untuk menghitung harga setelah diskon. Cari harga awal dan diskonnya.'} : null},
+      dk:[{k:'h',lbl:LBL.awal,isi:fmt(h)},{k:'d',lbl:LBL.diskon,isi:d+'%'}],
+      ditanya:{benar:'a', lbl:LBL.akhir, opsi:[['a','Harga Akhir (yang dibayar)'],['p','Potongan (yang dihemat)','Potongan adalah uang yang dihemat. Soal menanyakan uang yang harus dibayar.'],['w','Harga Awal','Harga awal sudah diketahui. Soal menanyakan harga setelah diskon.']]},
+      op:{tanya:'Untuk mencari Harga Akhir, rumus mana yang tepat?', opsi:[
+        ['plus','Harga Awal + Potongan',0,'Setelah diskon harga jadi lebih murah, jadi Harga Awal perlu dikurangi.','MK2'],
+        ['minus','Harga Awal − Potongan',1,'Setelah diskon, harga menjadi lebih murah. Jadi Harga Awal dikurangi Potongan.'],
+        ['rev','Potongan − Harga Awal',0,'Potongan lebih kecil dari Harga Awal. Urutannya Harga Awal − Potongan.']]},
+      f:[{key:'f1', label:'Potongan', tag:LBL.pot, eq:d+'% × '+fmt(h)+' =', jawab:pot, unit:'rp', cekLagi:'Cek lagi Langkah 1. '+d+'% artinya '+d+' per seratus, jadi kalikan '+d+'/100 dengan '+grp(h)+'.'},
+         {key:'f2', label:'Harga akhir', tag:LBL.akhir, eq:fmt(h)+' − Potongan =', jawab:ak, unit:'rp', cekLagi:'Langkah 1 sudah benar. Cek lagi pengurangan di Langkah 2.'}],
+      salah:function(v,ok){
+        if(!ok.f2 && v.f2===pot) return {msg:'Itu besar potongannya. Yang ditanya harga yang dibayar setelah diskon.', mk:'MK1'};
+        if(!ok.f2 && v.f2===h+pot) return {msg:'Diskon membuat harga lebih murah, jadi Harga Awal dikurangi Potongan.', mk:'MK2'};
+        return null; },
+      hint:['Hitung potongannya dulu, lalu kurangi harga awal dengan potongan itu.', 'Potongan = '+d+'/100 × '+grp(h)+'.', 'Potongan = '+fmt(pot)+'. Sekarang hitung '+grp(h)+' − '+grp(pot)+'.'],
+      benar:'Kamu menghitung potongan '+fmt(pot)+', lalu mengurangi harga awal. Hasilnya '+fmt(ak)+'.',
+      cek:{q:'Harga setelah diskon harus lebih kecil dari harga awal. Apakah <b>'+fmt(ak)+'</b> lebih kecil dari <b>'+fmt(h)+'</b>?', opsi:YA_TIDAK, ok:'Jawabannya masuk akal.', no:fmt(ak)+' memang lebih kecil dari '+fmt(h)+'. Jadi jawabannya masuk akal.'},
+      visual:barModel(h,pot,true),
+      bahas:[['Potongan', d+'% × '+fmt(h)+' = '+fmt(pot)],['Harga akhir', fmt(h)+' − '+fmt(pot)+' = '+fmt(ak)],['Cek', fmt(ak)+' < '+fmt(h)+', masuk akal.']] };
+  }
+};
+
+/* ---------- M5 Pajak (PPN) ---------- */
+MODUL.M5 = {
+  kode:'M5', judul:'Pajak (PPN)', sub:'Pajak, PPN, dan total yang dibayar',
+  istilah:[
+    {lbl:LBL.ppn, judul:'Apa itu pajak?', teks:'Pajak adalah uang yang dibayar warga kepada negara. Pajak dipakai untuk membangun sekolah, jalan, dan puskesmas.', contoh:'Saat membeli barang di toko, sebagian uangmu menjadi pajak.'},
+    {lbl:LBL.ppn, judul:'PPN', teks:'Pajak Pertambahan Nilai ditambahkan saat kita membeli barang. Di latihan ini memakai 10% agar mudah dihitung.', contoh:'Tarif PPN sebenarnya mengikuti aturan pemerintah yang berlaku.'},
+    {lbl:LBL.total, judul:'Total bayar', teks:'Total bayar = harga + PPN. Jika ada diskon, hitung diskon dulu. PPN dihitung dari harga setelah diskon.', contoh:'Rp100.000 diskon 20% → Rp80.000, PPN 10% → Rp8.000, total Rp88.000'}
+  ],
+  contoh:{ teks:'Harga sebuah tas Rp100.000. Tas itu didiskon 20%, lalu dikenai PPN 10%. Berapa total yang dibayar?',
+    visual:function(t){ return t ? barTambah(80000,8000) : ''; }, langkah:[
+    {t:'Hitung diskon dulu', s:'Potongan = 20% × Rp100.000 = Rp20.000, jadi harga = Rp80.000'},
+    {t:'Hitung PPN dari harga setelah diskon', s:'PPN = 10% × Rp80.000 = Rp8.000'},
+    {t:'Hitung total', s:'Total = Rp80.000 + Rp8.000 = Rp88.000'},
+    {t:'Cek kewajaran', s:'Rp88.000 lebih besar dari Rp80.000, karena pajak menambah.'}
+  ]},
+  rumpang:{ teks:'Harga sepatu Rp150.000 sebelum pajak. PPN 10%.', langkah:[{t:'Hitung PPN', s:'PPN = 10% × Rp150.000 = Rp15.000'}],
+    blank:{t:'Total bayar', pre:'Rp150.000 + Rp15.000 =', label:'Total bayar', unit:'rp', jawab:165000},
+    salah:{15000:'Itu besar pajaknya saja. Total = harga + PPN.', 135000:'Pajak menambah jumlah yang dibayar, bukan mengurangi.'}, umum:'Tambahkan Rp150.000 dengan Rp15.000.' },
+  buat:function(level){
+    var nm = pick(NAMA), k = pick(KONTEKS);
+    if(level===1){
+      var h = pick([50000,80000,120000,150000,200000,250000]), ppn = h/10, tot = h+ppn;
+      return { id:'M5a'+h,
+        kal:[nm+' membeli '+k.barang+' di '+k.toko+' seharga {{h}} sebelum pajak.', 'Toko menambahkan PPN {{t}}.', 'Berapa total yang harus dibayar?'],
+        chips:{h:{teks:fmt(h),cls:'awal'}, t:{teks:'10%',cls:'pajak'}},
+        dk:[{k:'h',lbl:LBL.harga,isi:fmt(h)},{k:'t',lbl:LBL.ppn,isi:'10%'}],
+        ditanya:{benar:'tot', lbl:LBL.total, opsi:[['tot','Total yang dibayar'],['ppn','Besar pajaknya saja','Pajak hanya sebagian. Soal menanyakan total yang dibayar.'],['h','Harga sebelum pajak','Harga itu sudah diketahui.']]},
+        op:{tanya:'Untuk mencari total bayar, rumus mana yang tepat?', opsi:[
+          ['a','Harga + PPN',1,'Tepat. Pajak menambah jumlah yang dibayar.'],
+          ['b','Harga − PPN',0,'Pajak menambah jumlah yang dibayar, bukan mengurangi.','MK2'],
+          ['c','PPN saja',0,'PPN hanya pajaknya. Yang dibayar adalah harga ditambah PPN.']]},
+        f:[{key:'f1', label:'PPN', tag:LBL.ppn, eq:'10% × '+fmt(h)+' =', jawab:ppn, unit:'rp', cekLagi:'10% = 1/10, jadi bagi '+fmt(h)+' dengan 10.'},
+           {key:'f2', label:'Total bayar', tag:LBL.total, eq:fmt(h)+' + PPN =', jawab:tot, unit:'rp', cekLagi:'Langkah 1 sudah benar. Cek lagi penjumlahan di Langkah 2.'}],
+        salah:function(v,ok){
+          if(!ok.f2 && v.f2===ppn) return {msg:'Itu besar pajaknya saja. Total = harga + PPN.', mk:'MK1'};
+          if(!ok.f2 && v.f2===h-ppn) return {msg:'Pajak menambah jumlah yang dibayar, bukan mengurangi.', mk:'MK2'};
+          return null; },
+        hint:['Hitung PPN dulu, lalu tambahkan ke harga.', 'PPN = 10% × '+grp(h)+' = '+grp(h)+' ÷ 10.', 'PPN = '+fmt(ppn)+'. Sekarang hitung '+grp(h)+' + '+grp(ppn)+'.'],
+        benar:'PPN '+fmt(ppn)+', jadi total yang dibayar '+fmt(tot)+'.',
+        cek:{q:'Dengan pajak, total harus lebih besar dari harga sebelum pajak. Apakah <b>'+fmt(tot)+'</b> lebih besar dari <b>'+fmt(h)+'</b>?', opsi:YA_TIDAK, ok:'Jawabannya masuk akal.', no:fmt(tot)+' memang lebih besar dari '+fmt(h)+'.'},
+        visual:barTambah(h,ppn),
+        bahas:[['PPN', '10% × '+fmt(h)+' = '+fmt(ppn)],['Total', fmt(h)+' + '+fmt(ppn)+' = '+fmt(tot)]] };
+    }
+    var h2 = pick([100000,150000,200000,240000,300000]), d = pick([10,20,25]), pot = potongan(h2,d), hd = h2-pot, ppn2 = hd/10, tot2 = hd+ppn2;
+    return { id:'M5b'+h2+'-'+d,
+      kal:[nm+' membeli '+k.barang+' seharga {{h}}.', 'Barang itu mendapat diskon {{d}}.', 'Setelah diskon, toko menambahkan PPN {{t}}.', 'Berapa total yang harus dibayar?'],
+      chips:{h:{teks:fmt(h2),cls:'awal'}, d:{teks:d+'%',cls:'pot'}, t:{teks:'10%',cls:'pajak'}},
+      dk:[{k:'h',lbl:LBL.awal,isi:fmt(h2)},{k:'d',lbl:LBL.diskon,isi:d+'%'},{k:'t',lbl:LBL.ppn,isi:'10%'}],
+      ditanya:{benar:'tot', lbl:LBL.total, opsi:[['tot','Total yang dibayar'],['ppn','Besar pajaknya saja','Pajak hanya sebagian. Soal menanyakan total yang dibayar.'],['hd','Harga setelah diskon saja','Itu langkah antara. Masih ada pajak yang ditambahkan.']]},
+      op:{tanya:'Untuk mencari total bayar, rumus mana yang tepat?', opsi:[
+        ['a','Harga setelah diskon + PPN',1,'Tepat. Diskon dulu, lalu PPN dihitung dari harga setelah diskon.'],
+        ['b','Harga awal + PPN',0,'PPN dihitung dari harga setelah diskon, bukan harga awal.','MK5'],
+        ['c','Harga setelah diskon − PPN',0,'Pajak menambah jumlah yang dibayar.','MK2']]},
+      f:[{key:'f1', label:'Harga setelah diskon', tag:LBL.akhir, eq:fmt(h2)+' − '+d+'% =', jawab:hd, unit:'rp', cekLagi:'Hitung potongan '+d+'% dari '+fmt(h2)+', lalu kurangi harga awal.'},
+         {key:'f2', label:'PPN', tag:LBL.ppn, eq:'10% × harga setelah diskon =', jawab:ppn2, unit:'rp', cekLagi:'PPN = harga setelah diskon ÷ 10.'},
+         {key:'f3', label:'Total bayar', tag:LBL.total, eq:'Harga setelah diskon + PPN =', jawab:tot2, unit:'rp', cekLagi:'Tambahkan harga setelah diskon dengan PPN.'}],
+      salah:function(v,ok){
+        if(!ok.f1 && v.f1===pot) return {msg:'Itu besar potongannya. Langkah 1 menanyakan harga setelah diskon.', mk:'MK1'};
+        if(!ok.f2 && v.f2===h2/10) return {msg:'PPN dihitung dari harga setelah diskon, bukan harga awal.', mk:'MK5'};
+        if(!ok.f3 && v.f3===ppn2) return {msg:'Itu besar pajaknya saja. Total = harga setelah diskon + PPN.', mk:'MK1'};
+        return null; },
+      hint:['Urutannya: diskon dulu, lalu pajak dari harga setelah diskon.', 'Harga setelah diskon = '+grp(h2)+' − ('+d+'/100 × '+grp(h2)+').', 'Harga setelah diskon = '+fmt(hd)+'. PPN = '+grp(hd)+' ÷ 10.'],
+      benar:'Harga setelah diskon '+fmt(hd)+', PPN '+fmt(ppn2)+', total '+fmt(tot2)+'.',
+      cek:{q:'Apakah total <b>'+fmt(tot2)+'</b> lebih besar dari harga setelah diskon <b>'+fmt(hd)+'</b>?', opsi:YA_TIDAK, ok:'Betul, pajak menambah jumlah yang dibayar.', no:fmt(tot2)+' memang lebih besar dari '+fmt(hd)+', karena ada pajak.'},
+      visual:barTambah(hd,ppn2),
+      bahas:[['Diskon', fmt(h2)+' − '+fmt(pot)+' = '+fmt(hd)],['PPN', '10% × '+fmt(hd)+' = '+fmt(ppn2)],['Total', fmt(hd)+' + '+fmt(ppn2)+' = '+fmt(tot2)]] };
+  }
+};
+
+/* ---------- M6 Bruto, Neto, Tara ---------- */
+MODUL.M6 = {
+  kode:'M6', judul:'Bruto, Neto, Tara', sub:'Berat kotor, berat bersih, dan berat kemasan',
+  istilah:[
+    {lbl:LBL.bruto, judul:'Bruto', teks:'Berat kotor, yaitu berat barang beserta kemasannya.', contoh:'Sekarung beras beserta karungnya: 50 kg.'},
+    {lbl:LBL.neto, judul:'Neto', teks:'Berat bersih, yaitu berat barangnya saja tanpa kemasan. Harga per kg dihitung dari neto.', contoh:'Beras di dalam karung: 49 kg.'},
+    {lbl:LBL.tara, judul:'Tara', teks:'Berat kemasan. Bruto = Neto + Tara, jadi Neto = Bruto − Tara.', contoh:'Tara 2% dari bruto 50 kg = 1 kg.'}
+  ],
+  contoh:{ teks:'Sekarung beras memiliki bruto 50 kg dan tara 2%. Harga beras Rp12.000 per kg neto. Berapa harga sekarung beras?',
+    visual:function(t){ return t ? barBerat(49,1) : ''; }, langkah:[
+    {t:'Hitung tara', s:'Tara = 2% × 50 kg = 1 kg'},
+    {t:'Hitung neto', s:'Neto = 50 kg − 1 kg = 49 kg'},
+    {t:'Hitung harga', s:'Harga = 49 × Rp12.000 = Rp588.000'},
+    {t:'Cek kewajaran', s:'Neto 49 kg lebih kecil dari bruto 50 kg. Masuk akal.'}
+  ]},
+  rumpang:{ teks:'Sekarung gula memiliki bruto 25 kg dan tara 1 kg.', langkah:[{t:'Rumus', s:'Neto = Bruto − Tara'}],
+    blank:{t:'Hitung neto', pre:'25 kg − 1 kg =', label:'Neto', unit:'kg', jawab:24},
+    salah:{26:'Neto lebih ringan dari bruto, jadi dikurangi.'}, umum:'Kurangi 25 dengan 1.' },
+  buat:function(level, i){
+    var nm = pick(NAMA), brg = pick(['beras','gula','tepung','pupuk','kacang tanah']), wadah = pick(['karung','kardus','peti']);
+    if(level===1){
+      var b = pick([25,40,50,60,100]), t = pick([1,2,3,5]), n = b-t;
+      if(i===1){
+        return { id:'M6b'+b+t,
+          kal:[nm+' menimbang '+brg+' di dalam '+wadah+'.', 'Neto '+brg+' itu {{n}}.', 'Berat '+wadah+' kosongnya (tara) {{t}}.', 'Berapa bruto '+wadah+' tersebut?'],
+          chips:{n:{teks:n+' kg',cls:'netral'}, t:{teks:t+' kg',cls:'netral'}},
+          dk:[{k:'n',lbl:LBL.neto,isi:n+' kg'},{k:'t',lbl:LBL.tara,isi:t+' kg'}],
+          ditanya:{benar:'b', lbl:LBL.bruto, opsi:[['b','Bruto (berat beserta '+wadah+')'],['n','Neto','Neto sudah diketahui di soal.'],['t','Tara','Tara sudah diketahui di soal.']]},
+          op:{tanya:'Rumus mana yang tepat?', opsi:[['a','Bruto = Neto + Tara',1,'Tepat. Bruto adalah barang beserta kemasannya.'],['b','Bruto = Neto − Tara',0,'Bruto lebih berat dari neto, jadi ditambah.','MK2'],['c','Bruto = Tara − Neto',0,'Bruto = Neto + Tara.']]},
+          f:[{key:'f1', label:'Bruto', tag:LBL.bruto, eq:n+' kg + '+t+' kg =', jawab:b, unit:'kg', cekLagi:'Tambahkan neto dengan tara.'}],
+          salah:function(v,ok){ if(!ok.f1 && v.f1===n-t) return {msg:'Bruto lebih berat dari neto, jadi ditambah.', mk:'MK2'}; return null; },
+          hint:['Bruto adalah berat barang beserta kemasannya.', 'Bruto = Neto + Tara.', 'Hitung '+n+' + '+t+'.'],
+          benar:'Bruto = '+n+' + '+t+' = '+b+' kg.',
+          cek:{q:'Apakah bruto <b>'+b+' kg</b> lebih berat dari neto <b>'+n+' kg</b>?', opsi:YA_TIDAK, ok:'Betul, karena bruto termasuk kemasan.', no:b+' kg memang lebih berat dari '+n+' kg.'},
+          visual:barBerat(n,t), bahas:[['Bruto', n+' kg + '+t+' kg = '+b+' kg']] };
+      }
+      return { id:'M6n'+b+t,
+        kal:[nm+' membeli satu '+wadah+' '+brg+'.', 'Bruto '+wadah+' itu {{b}}.', 'Tara '+wadah+'nya {{t}}.', 'Berapa neto '+brg+' tersebut?'],
+        chips:{b:{teks:b+' kg',cls:'netral'}, t:{teks:t+' kg',cls:'netral'}},
+        dk:[{k:'b',lbl:LBL.bruto,isi:b+' kg'},{k:'t',lbl:LBL.tara,isi:t+' kg'}],
+        ditanya:{benar:'n', lbl:LBL.neto, opsi:[['n','Neto (berat '+brg+' saja)'],['b','Bruto','Bruto sudah diketahui di soal.'],['t','Tara','Tara sudah diketahui di soal.']]},
+        op:{tanya:'Rumus mana yang tepat?', opsi:[['a','Neto = Bruto − Tara',1,'Tepat. Neto adalah bruto tanpa kemasan.'],['b','Neto = Bruto + Tara',0,'Neto lebih ringan dari bruto, jadi dikurangi.','MK2'],['c','Neto = Tara − Bruto',0,'Urutannya Bruto − Tara.']]},
+        f:[{key:'f1', label:'Neto', tag:LBL.neto, eq:b+' kg − '+t+' kg =', jawab:n, unit:'kg', cekLagi:'Kurangi bruto dengan tara.'}],
+        salah:function(v,ok){ if(!ok.f1 && v.f1===b+t) return {msg:'Neto lebih ringan dari bruto, jadi dikurangi.', mk:'MK2'}; return null; },
+        hint:['Neto adalah berat barangnya saja.', 'Neto = Bruto − Tara.', 'Hitung '+b+' − '+t+'.'],
+        benar:'Neto = '+b+' − '+t+' = '+n+' kg.',
+        cek:{q:'Apakah neto <b>'+n+' kg</b> lebih ringan dari bruto <b>'+b+' kg</b>?', opsi:YA_TIDAK, ok:'Betul, karena kemasannya tidak dihitung.', no:n+' kg memang lebih ringan dari '+b+' kg.'},
+        visual:barBerat(n,t), bahas:[['Neto', b+' kg − '+t+' kg = '+n+' kg']] };
+    }
+    var b2, p, x = 0;
+    do { b2 = pick([50,100,200,250,500]); p = pick([2,4,5,10]); x++; } while((b2*p)%100!==0 && x<50);
+    var t2 = b2*p/100, n2 = b2-t2, hk = pick([8000,10000,12000,15000]), hrg = n2*hk;
+    var kal = [nm+' membeli satu '+wadah+' '+brg+' dengan bruto {{b}}.', 'Taranya {{p}} dari bruto.'];
+    if(i===3) kal.push('Gudangnya berjarak {{x}} dari rumah.');
+    kal.push('Harga '+brg+' {{hk}} per kg neto.', 'Berapa harga yang harus dibayar?');
+    return { id:'M6h'+b2+p+hk, kal:kal,
+      chips:{b:{teks:b2+' kg',cls:'netral'}, p:{teks:p+'%',cls:'netral'}, hk:{teks:fmt(hk),cls:'awal'}, x: i===3 ? {teks:pick(['3 km','5 km']), pengecoh:'Jarak gudang tidak dipakai untuk menghitung harga.'} : null},
+      dk:[{k:'b',lbl:LBL.bruto,isi:b2+' kg'},{k:'p',lbl:LBL.tara,isi:p+'%'},{k:'hk',lbl:LBL.hargaKg,isi:fmt(hk)}],
+      ditanya:{benar:'h', lbl:LBL.total, opsi:[['h','Harga yang dibayar'],['n','Neto saja','Itu langkah antara. Soal menanyakan harga.'],['t','Tara saja','Itu langkah antara. Soal menanyakan harga.']]},
+      op:{tanya:'Harga dihitung dari berat yang mana?', opsi:[['a','Neto × harga per kg',1,'Tepat. Yang dibeli adalah isinya, jadi pakai neto.'],['b','Bruto × harga per kg',0,'Kemasan tidak ikut dijual per kg. Pakai neto.','MK9'],['c','Tara × harga per kg',0,'Tara adalah kemasan. Pakai neto.']]},
+      f:[{key:'f1', label:'Tara', tag:LBL.tara, eq:p+'% × '+b2+' kg =', jawab:t2, unit:'kg', cekLagi:p+'% dari '+b2+' kg = '+p+'/100 × '+b2+'.'},
+         {key:'f2', label:'Neto', tag:LBL.neto, eq:b2+' kg − tara =', jawab:n2, unit:'kg', cekLagi:'Neto = bruto − tara.'},
+         {key:'f3', label:'Harga', tag:LBL.total, eq:'Neto × '+fmt(hk)+' =', jawab:hrg, unit:'rp', cekLagi:'Kalikan neto dengan harga per kg.'}],
+      salah:function(v,ok){
+        if(!ok.f2 && v.f2===b2+t2) return {msg:'Neto lebih ringan dari bruto, jadi dikurangi.', mk:'MK2'};
+        if(!ok.f3 && v.f3===b2*hk) return {msg:'Kamu memakai bruto. Harga dihitung dari neto.', mk:'MK9'};
+        return null; },
+      hint:['Hitung tara dulu, lalu neto, lalu harga.', 'Tara = '+p+'/100 × '+b2+' = '+t2+' kg.', 'Neto = '+n2+' kg. Harga = '+n2+' × '+grp(hk)+'.'],
+      benar:'Neto '+n2+' kg, jadi harganya '+fmt(hrg)+'.',
+      cek:{q:'Apakah <b>'+fmt(hrg)+'</b> lebih kecil dari harga jika memakai bruto, yaitu '+b2+' × '+fmt(hk)+' = <b>'+fmt(b2*hk)+'</b>?', opsi:YA_TIDAK, ok:'Betul, karena kemasan tidak ikut dibayar.', no:fmt(hrg)+' memang lebih kecil, karena kemasan tidak ikut dibayar.'},
+      visual:barBerat(n2,t2),
+      bahas:[['Tara', p+'% × '+b2+' kg = '+t2+' kg'],['Neto', b2+' kg − '+t2+' kg = '+n2+' kg'],['Harga', n2+' × '+fmt(hk)+' = '+fmt(hrg)]] };
+  }
+};
+
+/* ---------- M7 Bunga Tunggal ---------- */
+MODUL.M7 = {
+  kode:'M7', judul:'Bunga Tunggal', sub:'Bunga tabungan dan pinjaman',
+  istilah:[
+    {lbl:LBL.modal, judul:'Tabungan awal', teks:'Uang yang pertama kali disimpan di bank atau koperasi. Pada pinjaman, ini adalah uang yang dipinjam.', contoh:'Rani menabung Rp1.000.000.'},
+    {lbl:LBL.suku, judul:'Suku bunga per tahun', teks:'Persen tambahan uang dalam satu tahun. Bunga tunggal selalu dihitung dari tabungan awal.', contoh:'Bunga 6% per tahun dari Rp1.000.000 = Rp60.000 per tahun.'},
+    {lbl:LBL.bunga, judul:'Bunga beberapa bulan', teks:'Jika kurang dari setahun, bunga setahun dikali banyak bulan ÷ 12. Tabungan akhir = tabungan awal + bunga.', contoh:'4 bulan → 4/12 × Rp60.000 = Rp20.000'}
+  ],
+  contoh:{ teks:'Rani menabung Rp1.000.000 dengan bunga 6% per tahun. Berapa tabungannya setelah 4 bulan?',
+    visual:function(t){ return t ? barTambah(1000000,20000,'Tabungan','Bunga','bunga','awal') : ''; }, langkah:[
+    {t:'Bunga setahun', s:'6% × Rp1.000.000 = Rp60.000'},
+    {t:'Bunga 4 bulan', s:'4/12 × Rp60.000 = Rp20.000'},
+    {t:'Tabungan akhir', s:'Rp1.000.000 + Rp20.000 = Rp1.020.000'},
+    {t:'Cek kewajaran', s:'Bunga 4 bulan lebih kecil dari bunga setahun. Masuk akal.'}
+  ]},
+  rumpang:{ teks:'Dimas menabung Rp2.000.000 dengan bunga 5% per tahun selama 1 tahun.', langkah:[{t:'Bunga setahun', s:'5% × Rp2.000.000 = Rp100.000'}],
+    blank:{t:'Tabungan akhir', pre:'Rp2.000.000 + Rp100.000 =', label:'Tabungan akhir', unit:'rp', jawab:2100000},
+    salah:{100000:'Itu bunganya saja. Tabungan akhir = tabungan awal + bunga.', 1900000:'Bunga menambah tabungan, bukan mengurangi.'}, umum:'Tambahkan Rp2.000.000 dengan Rp100.000.' },
+  buat:function(level, i){
+    var nm = pick(NAMA), tujuan = pick(['membeli sepeda','membeli sepatu baru','membeli laptop','membayar biaya study tour']);
+    if(level===1){
+      var M0 = pick([500000,1000000,1500000,2000000]), p = pick([5,6,8,10]), bt = M0*p/100, tot = M0+bt;
+      return { id:'M7a'+M0+p,
+        kal:[nm+' menabung {{m}} di bank untuk '+tujuan+'.', 'Bank memberi bunga tunggal {{p}} per tahun.', 'Berapa tabungan '+nm+' setelah 1 tahun?'],
+        chips:{m:{teks:fmt(M0),cls:'awal'}, p:{teks:p+'%',cls:'netral'}},
+        dk:[{k:'m',lbl:LBL.modal,isi:fmt(M0)},{k:'p',lbl:LBL.suku,isi:p+'% per tahun'}],
+        ditanya:{benar:'akhir', lbl:LBL.tabAkhir, opsi:[['akhir','Tabungan akhir'],['bunga','Bunganya saja','Itu langkah antara. Soal menanyakan tabungan akhir.'],['m','Tabungan awal','Tabungan awal sudah diketahui di soal.']]},
+        op:{tanya:'Untuk mencari tabungan akhir, rumus mana yang tepat?', opsi:[['a','Tabungan awal + bunga',1,'Tepat. Bunga menambah tabungan.'],['b','Tabungan awal − bunga',0,'Bunga menambah tabungan, bukan mengurangi.','MK2'],['c','Bunga saja',0,'Bunga hanya tambahannya. Tabungan akhir = awal + bunga.']]},
+        f:[{key:'f1', label:'Bunga setahun', tag:LBL.bunga, eq:p+'% × '+fmt(M0)+' =', jawab:bt, unit:'rp', cekLagi:p+'% = '+p+'/100. Kalikan dengan '+grp(M0)+'.'},
+           {key:'f2', label:'Tabungan akhir', tag:LBL.tabAkhir, eq:fmt(M0)+' + bunga =', jawab:tot, unit:'rp', cekLagi:'Langkah 1 sudah benar. Tambahkan tabungan awal dengan bunga.'}],
+        salah:function(v,ok){
+          if(!ok.f2 && v.f2===bt) return {msg:'Itu bunganya saja. Tabungan akhir = tabungan awal + bunga.', mk:'MK1'};
+          if(!ok.f2 && v.f2===M0-bt) return {msg:'Bunga menambah tabungan, bukan mengurangi.', mk:'MK2'};
+          return null; },
+        hint:['Hitung bunga setahun dulu, lalu tambahkan ke tabungan awal.', 'Bunga = '+p+'/100 × '+grp(M0)+'.', 'Bunga = '+fmt(bt)+'. Hitung '+grp(M0)+' + '+grp(bt)+'.'],
+        benar:'Bunga setahun '+fmt(bt)+', jadi tabungan akhir '+fmt(tot)+'.',
+        cek:{q:'Apakah tabungan akhir <b>'+fmt(tot)+'</b> lebih besar dari tabungan awal <b>'+fmt(M0)+'</b>?', opsi:YA_TIDAK, ok:'Betul, bunga menambah tabungan.', no:fmt(tot)+' memang lebih besar dari '+fmt(M0)+'.'},
+        visual:barTambah(M0,bt,'Tabungan','Bunga','bunga','awal'),
+        bahas:[['Bunga setahun', p+'% × '+fmt(M0)+' = '+fmt(bt)],['Tabungan akhir', fmt(M0)+' + '+fmt(bt)+' = '+fmt(tot)]] };
+    }
+    var Mb = pick([600000,1200000,2400000,3600000]), pb = pick([5,6,8,10]), bln = pick([3,4,6,8,9]);
+    var bt2 = Mb*pb/100, bb = bt2*bln/12, tot2 = Mb+bb, pinjam = i===3;
+    var kal2 = pinjam ? [nm+' meminjam {{m}} di koperasi untuk '+tujuan+'.', 'Koperasi menetapkan bunga tunggal {{p}} per tahun.', 'Pinjaman dilunasi setelah {{n}}.', 'Berapa total yang harus dikembalikan?']
+                      : [nm+' menabung {{m}} di bank untuk '+tujuan+'.', 'Nomor rekeningnya berakhiran {{x}}.', 'Bank memberi bunga tunggal {{p}} per tahun.', 'Berapa tabungannya setelah {{n}}?'];
+    var lblA = pinjam ? LBL.kembali : LBL.tabAkhir, nmA = pinjam ? 'Total pengembalian' : 'Tabungan akhir';
+    return { id:'M7b'+Mb+pb+bln+(pinjam?'p':'t'), kal:kal2,
+      chips:{m:{teks:fmt(Mb),cls:'awal'}, p:{teks:pb+'%',cls:'netral'}, n:{teks:bln+' bulan',cls:'netral'}, x: pinjam ? null : {teks:pick(['27','45','81']), pengecoh:'Nomor rekening tidak dipakai untuk menghitung bunga.'}},
+      dk:[{k:'m',lbl:pinjam?LBL.pinjam:LBL.modal,isi:fmt(Mb)},{k:'p',lbl:LBL.suku,isi:pb+'% per tahun'},{k:'n',lbl:LBL.lama,isi:bln+' bulan'}],
+      ditanya:{benar:'akhir', lbl:lblA, opsi:[['akhir',nmA],['bunga','Bunganya saja','Itu langkah antara. Bunga masih harus ditambahkan.'],['m',pinjam?'Besar pinjaman':'Tabungan awal','Itu sudah diketahui di soal.']]},
+      op:{tanya:'Bunga untuk '+bln+' bulan dihitung dengan cara apa?', opsi:[['a',bln+'/12 × bunga setahun',1,'Tepat. Bunga setahun dibagi 12, lalu dikali banyak bulan.'],['b','Bunga setahun saja',0,'Waktunya hanya '+bln+' bulan, bukan setahun.','MK8'],['c',bln+' × bunga setahun',0,'Itu sama dengan '+bln+' tahun. Bagi dulu dengan 12.','MK8']]},
+      f:[{key:'f1', label:'Bunga setahun', tag:LBL.bunga, eq:pb+'% × '+fmt(Mb)+' =', jawab:bt2, unit:'rp', cekLagi:pb+'% = '+pb+'/100. Kalikan dengan '+grp(Mb)+'.'},
+         {key:'f2', label:'Bunga '+bln+' bulan', tag:LBL.bunga, eq:bln+'/12 × bunga setahun =', jawab:bb, unit:'rp', cekLagi:'Bagi bunga setahun dengan 12, lalu kalikan '+bln+'.'},
+         {key:'f3', label:nmA, tag:lblA, eq:fmt(Mb)+' + bunga '+bln+' bulan =', jawab:tot2, unit:'rp', cekLagi:'Tambahkan '+(pinjam?'pinjaman':'tabungan awal')+' dengan bunga '+bln+' bulan.'}],
+      salah:function(v,ok){
+        if(!ok.f2 && v.f2===bt2*bln) return {msg:'Itu bunga '+bln+' tahun. Bagi dulu dengan 12.', mk:'MK8'};
+        if(!ok.f3 && v.f3===Mb+bt2) return {msg:'Kamu memakai bunga setahun. Pakai bunga '+bln+' bulan.', mk:'MK8'};
+        if(!ok.f3 && v.f3===bb) return {msg:'Itu bunganya saja. Tambahkan dengan '+(pinjam?'pinjaman':'tabungan awal')+'.', mk:'MK1'};
+        return null; },
+      hint:['Hitung bunga setahun, lalu ambil '+bln+'/12 bagiannya.', 'Bunga setahun = '+pb+'/100 × '+grp(Mb)+' = '+fmt(bt2)+'.', 'Bunga '+bln+' bulan = '+grp(bt2)+' ÷ 12 × '+bln+'.'],
+      benar:'Bunga '+bln+' bulan '+fmt(bb)+', jadi '+nmA.toLowerCase()+' '+fmt(tot2)+'.',
+      cek:{q:'Bunga '+bln+' bulan harus lebih kecil dari bunga setahun. Apakah <b>'+fmt(bb)+'</b> lebih kecil dari <b>'+fmt(bt2)+'</b>?', opsi:YA_TIDAK, ok:'Betul, karena waktunya kurang dari setahun.', no:fmt(bb)+' memang lebih kecil dari '+fmt(bt2)+'.'},
+      visual:barTambah(Mb,bb,pinjam?'Pinjaman':'Tabungan','Bunga','bunga','awal'),
+      bahas:[['Bunga setahun', pb+'% × '+fmt(Mb)+' = '+fmt(bt2)],['Bunga '+bln+' bulan', bln+'/12 × '+fmt(bt2)+' = '+fmt(bb)],[nmA, fmt(Mb)+' + '+fmt(bb)+' = '+fmt(tot2)]] };
+  }
+};
+
+/* ================= Pasar Pintar: misi belanja & berjualan ================= */
+var MISI = [
+  {id:'B1', jenis:'belanja', level:1, judul:'Belanja Alat Sekolah', ringkas:'Uang Rp70.000, tas + 1 barang lain', anggaran:70000, wajib:'tas', min:2, pajak:0,
+   misi:'Beli tas sekolah dan minimal 1 barang lain. Uangmu harus cukup.',
+   barang:[{id:'tas',nama:'Tas sekolah',h:60000,d:25},{id:'botol',nama:'Botol minum',h:40000,d:50},{id:'buku',nama:'Buku gambar',h:20000,d:10},{id:'pensil',nama:'Pensil warna',h:5000,d:0}]},
+  {id:'B2', jenis:'belanja', level:2, judul:'Perlengkapan Olahraga', ringkas:'Uang Rp100.000, sepatu + 2 barang lain', anggaran:100000, wajib:'sepatu', min:3, pajak:0,
+   misi:'Beli sepatu olahraga dan 2 barang lain. Uangmu harus cukup.',
+   barang:[{id:'sepatu',nama:'Sepatu olahraga',h:80000,d:25},{id:'kaos',nama:'Kaos kaki',h:15000,d:20},{id:'topi',nama:'Topi',h:30000,d:10},{id:'botol',nama:'Botol minum',h:40000,d:50},{id:'handuk',nama:'Handuk kecil',h:25000,d:0}]},
+  {id:'B3', jenis:'belanja', level:3, judul:'Belanja Pakaian', ringkas:'Uang Rp150.000, ada diskon dan PPN 10%', anggaran:150000, wajib:'jaket', min:2, pajak:10,
+   misi:'Beli jaket dan minimal 1 barang lain. Setelah diskon, ada PPN 10%. Uangmu harus cukup.',
+   barang:[{id:'jaket',nama:'Jaket',h:100000,d:20},{id:'celana',nama:'Celana panjang',h:60000,d:25},{id:'kaos',nama:'Kaos',h:40000,d:10},{id:'ikat',nama:'Ikat pinggang',h:20000,d:0}]},
+  {id:'J1', jenis:'jual', level:1, judul:'Warung Buah', ringkas:'Hitung modal, penjualan, dan untung',
+   cerita:['Kamu membeli 20 kg mangga dari petani seharga Rp10.000 per kg.','Kamu menjual mangga itu Rp13.000 per kg.','Semua mangga habis terjual.'],
+   data:[['Beli','20 kg × Rp10.000'],['Jual','Rp13.000 per kg'],['Terjual','20 kg']],
+   f:[{key:'j1',label:'Modal',eq:'20 × Rp10.000 =',jawab:200000,cekLagi:'Modal = banyak mangga × harga beli per kg.'},
+      {key:'j2',label:'Hasil penjualan',eq:'20 × Rp13.000 =',jawab:260000,cekLagi:'Hasil penjualan = banyak mangga × harga jual per kg.'},
+      {key:'j3',label:'Selisih penjualan dan modal',eq:'Rp260.000 dan Rp200.000, selisihnya =',jawab:60000,cekLagi:'Kurangi yang lebih besar dengan yang lebih kecil.',salah:{460000:['Untung dicari dengan pengurangan, bukan penjumlahan.','MK2']}}],
+   hint:['Hitung modal dan hasil penjualan dulu.','Modal = 20 × 10.000. Penjualan = 20 × 13.000.','Untung atau rugi = selisih penjualan dan modal.'],
+   putus:{tanya:'Jadi, warungmu untung atau rugi?', opsi:[['Untung',1,'Tepat. Penjualan lebih besar dari modal.'],['Rugi',0,'Hasil penjualan Rp260.000 lebih besar dari modal Rp200.000, jadi untung.','MK6']]},
+   lapor:[['Modal','Rp200.000'],['Hasil penjualan','Rp260.000'],['Untung','Rp60.000 (30% dari modal)']],
+   selesai:'Warungmu untung Rp60.000, atau 30% dari modal.'},
+  {id:'J2', jenis:'jual', level:2, judul:'Donat di Bazar', ringkas:'Tentukan harga jual yang bersaing',
+   cerita:['Kamu membuat 50 donat dengan modal Rp100.000.','Kamu ingin untung Rp50.000 jika semua donat laku.','Kantin sekolah menjual donat serupa Rp3.000 per buah.'],
+   data:[['Modal','Rp100.000 (50 donat)'],['Target untung','Rp50.000'],['Harga di kantin','Rp3.000 per donat']],
+   f:[{key:'j1',label:'Penjualan yang dibutuhkan',eq:'Rp100.000 + Rp50.000 =',jawab:150000,cekLagi:'Penjualan = modal + untung yang diinginkan.'},
+      {key:'j2',label:'Harga jual per donat',eq:'Rp150.000 ÷ 50 =',jawab:3000,cekLagi:'Bagi penjualan yang dibutuhkan dengan banyak donat.',salah:{2000:'Itu modal per donat. Kamu belum menambahkan untung.'}}],
+   hint:['Penjualan yang dibutuhkan = modal + target untung.','Penjualan yang dibutuhkan = Rp150.000.','Harga per donat = 150.000 ÷ 50.'],
+   putus:{tanya:'Harga mana yang kamu tulis di papan harga?', opsi:[['Rp2.500',0,'Dengan Rp2.500, penjualanmu hanya Rp125.000. Untungnya kurang dari Rp50.000.'],['Rp3.000',1,'Tepat. Target untung tercapai dan harganya sama dengan kantin.'],['Rp4.000',0,'Untungmu tercapai, tetapi lebih mahal dari kantin (Rp3.000). Pembeli bisa memilih kantin.']]},
+   lapor:[['Modal','Rp100.000'],['Harga jual','Rp3.000 per donat'],['Penjualan (50 donat)','Rp150.000'],['Untung','Rp50.000 (50% dari modal)']],
+   selesai:'Harga Rp3.000 mencapai target untung dan tetap bersaing dengan kantin.'},
+  {id:'J3', jenis:'jual', level:3, judul:'Jeruk dan Target 20%', ringkas:'Target untung 20% walau ada yang busuk',
+   cerita:['Kamu membeli 50 kg jeruk seharga Rp8.000 per kg.','Saat sampai di toko, 10 kg jeruk ternyata busuk.','Kamu tetap ingin untung 20% dari modal.'],
+   data:[['Beli','50 kg × Rp8.000'],['Busuk','10 kg'],['Target','untung 20% dari modal']],
+   f:[{key:'j1',label:'Modal',eq:'50 × Rp8.000 =',jawab:400000,cekLagi:'Modal = 50 × harga beli per kg.'},
+      {key:'j2',label:'Untung yang diinginkan',eq:'20% × modal =',jawab:80000,cekLagi:'20% × Rp400.000.'},
+      {key:'j3',label:'Penjualan yang dibutuhkan',eq:'Modal + untung =',jawab:480000,cekLagi:'Tambahkan modal dengan untung yang diinginkan.'},
+      {key:'j4',label:'Jeruk yang bisa dijual',eq:'50 kg − 10 kg =',jawab:40,unit:'kg',cekLagi:'Jeruk busuk tidak bisa dijual.'},
+      {key:'j5',label:'Harga jual per kg',eq:'Penjualan yang dibutuhkan ÷ jeruk yang bisa dijual =',jawab:12000,cekLagi:'Bagi Rp480.000 dengan 40.',salah:{9600:'Kamu membagi dengan 50 kg. Jeruk busuk tidak bisa dijual, jadi bagi dengan 40 kg.'}}],
+   hint:['Hitung modal dan untung yang diinginkan dulu.','Penjualan yang dibutuhkan = Rp400.000 + Rp80.000.','Yang bisa dijual hanya 40 kg. Harga = 480.000 ÷ 40.'],
+   putus:{tanya:'Temanmu menyarankan harga Rp9.600 per kg (20% di atas harga beli). Apa yang terjadi jika kamu memakai harga itu?', opsi:[['Tetap untung 20%',0,'Karena 10 kg busuk, penjualan hanya 40 × Rp9.600 = Rp384.000. Itu kurang dari modal Rp400.000.'],['Malah rugi Rp16.000',1,'Tepat. 40 × Rp9.600 = Rp384.000, kurang Rp16.000 dari modal.']]},
+   lapor:[['Modal','Rp400.000'],['Jeruk terjual','40 kg'],['Harga jual','Rp12.000 per kg'],['Penjualan','Rp480.000'],['Untung','Rp80.000 (20% dari modal)']],
+   selesai:'Barang yang rusak harus diperhitungkan. Harga Rp12.000 per kg tetap memberi untung 20%.'}
 ];
+function misiById(id){ for(var i=0;i<MISI.length;i++){ if(MISI[i].id===id) return MISI[i]; } return null; }
+function barangMisi(Mi, id){ for(var i=0;i<Mi.barang.length;i++){ if(Mi.barang[i].id===id) return Mi.barang[i]; } return null; }
+function hargaB(b){ return hargaAkhir(b.h, b.d); }
 var BROSUR = '<svg class="brosur" viewBox="0 0 320 210" role="img" aria-label="Brosur. Toko A: diskon 30% semua buku tulis, buka pukul 08.00. Toko B: beli 2 gratis 1 buku tulis, parkir luas. Buku tulis Rp12.000 per buah, harga sama di kedua toko.">'+
   '<rect x="0" y="0" width="320" height="210" rx="12" class="b-bg"/>'+
   '<rect x="10" y="10" width="145" height="140" rx="10" class="b-a"/>'+
@@ -370,34 +984,169 @@ var BROSUR = '<svg class="brosur" viewBox="0 0 320 210" role="img" aria-label="B
   '<text x="160" y="192" text-anchor="middle" class="b-tiny b-mut">Harga sama di kedua toko</text>'+
   '</svg>';
 
-/* ---------- State ---------- */
-function newLit(){ return {step:1, info:{}, ok:{}, uA:null, uB:null, hint:0, pilih:null, alasan:null, fb:null, pikir:false, counted:false}; }
-function newPasar(){ return {step:'pilih', keranjang:[], fb:null, over:false, counted:false}; }
+/* ================= Tantangan Literasi (satu per modul) =================
+   Format: info [id, teks, relevan(1/0), pesan khusus], ubah [{tanya, opsi:[id, teks, benar, pesan, kodeMK]}],
+   hitung [{key, label, jawab, unit, salah:{nilai: pesan | [pesan, kodeMK]}, umum}], putus, pikir */
+var LIT = [
+  {id:'L1', modul:'M1', judul:'Dagangan Paling Untung', sub:'Untung dari jualan di bazar',
+   stim:stim('Catatan jualan Rani di bazar sekolah. Es teh: modal Rp60.000, terjual 40 gelas Rp2.500 per gelas. Pisang goreng: modal Rp80.000, terjual 50 buah Rp2.000 per buah. Bazar mulai pukul 09.00. Stan nomor 12.',
+     [{w:'c', baris:[['CATATAN JUALAN RANI','b-name'],['Es teh: modal','b-small','Rp60.000'],['Es teh: terjual 40 gelas','b-small','Rp2.500/gelas'],['Pisang goreng: modal','b-small','Rp80.000'],['Pisang goreng: terjual 50','b-small','Rp2.000/buah'],['Bazar mulai pukul 09.00','b-tiny'],['Stan nomor 12','b-tiny']]}],
+     'Semua es teh dan pisang goreng habis terjual'),
+   tanya:'<b>Dagangan mana yang memberi untung lebih besar?</b>',
+   mini:['Es teh: modal Rp60.000, 40 × Rp2.500','Pisang: modal Rp80.000, 50 × Rp2.000'],
+   info:[['i1','Modal es teh Rp60.000',1],['i2','Es teh terjual 40 gelas @Rp2.500',1],['i3','Modal pisang goreng Rp80.000',1],['i4','Pisang goreng terjual 50 @Rp2.000',1],['i5','Bazar mulai pukul 09.00',0],['i6','Stan nomor 12',0]],
+   ubah:[{tanya:'Cara menghitung untung es teh?', opsi:[['a1','40 × Rp2.500, lalu dikurangi Rp60.000',1],['a2','40 × Rp2.500 saja',0,'Es teh: itu hasil penjualan. Untung = penjualan − modal.'],['a3','Rp60.000 − Rp2.500',0,'Es teh: hitung dulu hasil penjualan 40 gelas.']]},
+         {tanya:'Cara menghitung untung pisang goreng?', opsi:[['b1','50 × Rp2.000 saja',0,'Pisang goreng: itu hasil penjualan. Kurangi dengan modal.'],['b2','50 × Rp2.000, lalu dikurangi Rp80.000',1],['b3','Rp80.000 + Rp2.000',0,'Pisang goreng: hitung dulu hasil penjualan 50 buah, lalu kurangi modal.']]}],
+   hitung:[{key:'h1',label:'Untung es teh',jawab:40000,unit:'rp',salah:{100000:'Rp100.000 itu hasil penjualan es teh. Kurangi dengan modal Rp60.000.'},umum:'Penjualan es teh = 40 × Rp2.500, lalu kurangi modal.'},
+           {key:'h2',label:'Untung pisang goreng',jawab:20000,unit:'rp',salah:{100000:'Rp100.000 itu hasil penjualan pisang goreng. Kurangi dengan modal Rp80.000.'},umum:'Penjualan pisang = 50 × Rp2.000, lalu kurangi modal.'}],
+   hint:['Untung = hasil penjualan − modal.','Es teh: 40 × 2.500 = 100.000. Pisang: 50 × 2.000 = 100.000.','Penjualan keduanya sama, tetapi modalnya berbeda.'],
+   putus:{banding:[['Es teh','Rp40.000'],['Pisang goreng','Rp20.000']], tanya:'Dagangan yang lebih menguntungkan', pilihan:[['A','Es teh'],['B','Pisang goreng']], benar:'A', salahPilih:'Bandingkan untungnya: es teh Rp40.000, pisang goreng Rp20.000.',
+     alasan:[['r1','Untungnya lebih besar',1],['r2','Penjualannya sama, jadi untungnya sama',0,'Penjualannya memang sama Rp100.000, tetapi modalnya berbeda.'],['r3','Harganya lebih mahal, jadi pasti lebih untung',0,'Harga mahal belum tentu untung besar. Lihat selisih penjualan dan modal.']],
+     ok:'Es teh lebih menguntungkan: untungnya Rp40.000, dua kali untung pisang goreng.'},
+   pikir:{q:'Kalau pisang goreng dijual <b>Rp2.500</b> per buah, dagangan mana yang lebih untung?', a:'Pisang goreng: 50 × Rp2.500 = Rp125.000, untung Rp125.000 − Rp80.000 = <b>Rp45.000</b>.<br>Es teh tetap untung <b>Rp40.000</b>.<br><b>Pisang goreng jadi lebih untung.</b> Harga jual sangat memengaruhi untung.'}},
+
+  {id:'L2', modul:'M2', judul:'Persen atau Rupiah?', sub:'Membandingkan persentase untung',
+   stim:stim('Nota Pak Budi: sepeda dibeli Rp1.000.000, dijual Rp1.100.000, toko di Jalan Melati. Nota Bu Wati: tas dibeli Rp200.000, dijual Rp260.000, buka setiap hari.',
+     [{w:'a', baris:[['NOTA PAK BUDI','b-name'],['Sepeda','b-big'],['Beli Rp1.000.000','b-small'],['Jual Rp1.100.000','b-small'],['Toko di Jl. Melati','b-tiny']]},
+      {w:'b', baris:[['NOTA BU WATI','b-name'],['Tas','b-big'],['Beli Rp200.000','b-small'],['Jual Rp260.000','b-small'],['Buka setiap hari','b-tiny']]}],
+     'Siapa yang persentase untungnya lebih besar?'),
+   tanya:'<b>Siapa yang mendapat persentase untung lebih besar?</b>',
+   mini:['Sepeda: beli Rp1.000.000, jual Rp1.100.000','Tas: beli Rp200.000, jual Rp260.000'],
+   info:[['i1','Sepeda dibeli Rp1.000.000',1],['i2','Sepeda dijual Rp1.100.000',1],['i3','Tas dibeli Rp200.000',1],['i4','Tas dijual Rp260.000',1],['i5','Toko di Jl. Melati',0],['i6','Buka setiap hari',0]],
+   ubah:[{tanya:'Cara menghitung persen untung sepeda?', opsi:[['a1','Rp100.000 ÷ Rp1.000.000 × 100%',1],['a2','Rp100.000 ÷ Rp1.100.000 × 100%',0,'Sepeda: persen untung dibandingkan dengan harga beli, bukan harga jual.','MK3'],['a3','Rp1.000.000 ÷ Rp100.000 × 100%',0,'Sepeda: yang dibagi adalah untungnya, pembaginya harga beli.']]},
+         {tanya:'Cara menghitung persen untung tas?', opsi:[['b1','Rp60.000 ÷ Rp260.000 × 100%',0,'Tas: pembaginya harga beli, bukan harga jual.','MK3'],['b2','Rp60.000 ÷ Rp200.000 × 100%',1],['b3','Rp260.000 − Rp200.000',0,'Tas: itu untung dalam rupiah. Bandingkan dengan harga beli.']]}],
+   hitung:[{key:'h1',label:'Persen untung sepeda',jawab:10,unit:'persen',salah:{'9.09':['Kamu membagi dengan harga jual. Pakai harga beli.','MK3'],'0.1':'Jangan lupa dikali 100%.'},umum:'Rp100.000 ÷ Rp1.000.000 × 100%.'},
+           {key:'h2',label:'Persen untung tas',jawab:30,unit:'persen',salah:{'23.08':['Kamu membagi dengan harga jual. Pakai harga beli.','MK3'],'0.3':'Jangan lupa dikali 100%.'},umum:'Rp60.000 ÷ Rp200.000 × 100%.'}],
+   hint:['Hitung untung rupiah dulu, lalu bandingkan dengan harga beli.','Sepeda untung Rp100.000. Tas untung Rp60.000.','Sepeda: 100.000 ÷ 1.000.000 = 0,1. Tas: 60.000 ÷ 200.000 = 0,3.'],
+   putus:{banding:[['Pak Budi (sepeda)','10%'],['Bu Wati (tas)','30%']], tanya:'Persentase untung lebih besar', pilihan:[['A','Pak Budi'],['B','Bu Wati']], benar:'B', salahPilih:'Bandingkan persennya: sepeda 10%, tas 30%.',
+     alasan:[['r1','Untung rupiahnya lebih besar',0,'Untung rupiah Pak Budi memang lebih besar (Rp100.000), tetapi persennya hanya 10%.'],['r2','Untungnya dibandingkan harga beli lebih besar',1],['r3','Barangnya lebih murah, jadi pasti lebih untung',0,'Harga murah belum tentu persennya besar. Bandingkan untung dengan harga beli.']],
+     ok:'Bu Wati untung 30%, Pak Budi hanya 10%. Persen menunjukkan untung dibandingkan modal.'},
+   pikir:{q:'Kamu punya modal <b>Rp1.000.000</b>. Lebih untung membeli 1 sepeda atau 5 tas?', a:'1 sepeda: untung <b>Rp100.000</b>.<br>5 tas: modal 5 × Rp200.000 = Rp1.000.000, dijual 5 × Rp260.000 = Rp1.300.000, untung <b>Rp300.000</b>.<br>Dengan modal yang sama, <b>persen untung yang lebih besar memberi untung lebih banyak.</b>'}},
+
+  {id:'L3', modul:'M3', judul:'Harga Pulpen Koperasi', sub:'Menentukan harga jual yang bersaing',
+   stim:stim('Koperasi sekolah: pulpen 1 lusin Rp36.000, ingin untung 20%, buka saat istirahat. Toko sebelah: pulpen Rp3.800 per buah, tinta warna biru. 1 lusin sama dengan 12 buah.',
+     [{w:'a', baris:[['KOPERASI SEKOLAH','b-name'],['Pulpen','b-big'],['1 lusin Rp36.000','b-small'],['Ingin untung 20%','b-small'],['Buka saat istirahat','b-tiny']]},
+      {w:'b', baris:[['TOKO SEBELAH','b-name'],['Pulpen','b-big'],['Rp3.800','b-huge2'],['per buah','b-small'],['Tinta warna biru','b-tiny']]}],
+     '1 lusin = 12 buah'),
+   tanya:'<b>Berapa harga jual satu pulpen di koperasi?</b> Apakah lebih murah dari toko sebelah?',
+   mini:['1 lusin Rp36.000','1 lusin = 12 buah','Untung 20%','Toko sebelah Rp3.800'],
+   info:[['i1','1 lusin pulpen Rp36.000',1],['i2','1 lusin = 12 buah',1],['i3','Koperasi ingin untung 20%',1],['i4','Toko sebelah Rp3.800 per buah',1],['i5','Koperasi buka saat istirahat',0],['i6','Tinta warna biru',0]],
+   ubah:[{tanya:'Cara mencari harga beli satu pulpen?', opsi:[['a1','Rp36.000 ÷ 12',1],['a2','Rp36.000 ÷ 10',0,'1 lusin berisi 12 buah, bukan 10.'],['a3','Rp36.000 × 12',0,'Harga satu buah lebih murah dari harga satu lusin, jadi dibagi.']]},
+         {tanya:'Cara mencari harga jual dengan untung 20%?', opsi:[['b1','Harga beli + 20% × harga beli',1],['b2','Harga beli − 20% × harga beli',0,'Untung membuat harga jual lebih besar, jadi ditambah.','MK2'],['b3','Harga beli + Rp20',0,'20% bukan Rp20. Hitung 20% dari harga beli.']]}],
+   hitung:[{key:'h1',label:'Harga beli satu pulpen',jawab:3000,unit:'rp',salah:{3600:'Itu jika 1 lusin berisi 10. 1 lusin = 12 buah.'},umum:'Bagi Rp36.000 dengan 12.'},
+           {key:'h2',label:'Harga jual satu pulpen',jawab:3600,unit:'rp',salah:{600:['Itu besar untungnya. Tambahkan ke harga beli.','MK1'],2400:['Kalau untung, harga jual lebih besar. Jadi ditambah.','MK2']},umum:'Untung = 20% × Rp3.000, lalu tambahkan ke Rp3.000.'}],
+   hint:['Cari harga satu pulpen dulu.','Harga beli 1 pulpen = 36.000 ÷ 12 = 3.000.','Untung = 20% × 3.000 = 600.'],
+   putus:{banding:[['Koperasi','Rp3.600'],['Toko sebelah','Rp3.800']], tanya:'Apakah harga koperasi lebih murah?', pilihan:[['A','Ya, lebih murah'],['B','Tidak, lebih mahal']], benar:'A', salahPilih:'Bandingkan: Rp3.600 dan Rp3.800.',
+     alasan:[['r1','Untung 20% pasti membuat harga lebih mahal',0,'Untung 20% dihitung dari harga beli Rp3.000, jadi harganya Rp3.600.'],['r2','Rp3.600 lebih kecil dari Rp3.800',1],['r3','Koperasi selalu lebih murah',0,'Tidak selalu. Kita tahu karena sudah membandingkan angkanya.']],
+     ok:'Harga koperasi Rp3.600, lebih murah Rp200 dari toko sebelah, dan koperasi tetap untung 20%.'},
+   pikir:{q:'Berapa persen untung paling besar agar harga koperasi <b>tidak lebih mahal</b> dari toko sebelah?', a:'Selisih Rp3.800 − Rp3.000 = Rp800.<br>Rp800 ÷ Rp3.000 × 100% ≈ <b>26,7%</b>.<br>Jadi untungnya paling besar sekitar <b>26,7%</b> agar harga tetap bersaing.'}},
+
+  {id:'L4', modul:'M4', judul:'Mana Lebih Hemat?', sub:'Diskon 30% atau beli 2 gratis 1', stim:BROSUR,
+   tanya:'<b>Kamu butuh 3 buku tulis.</b> Toko mana yang lebih hemat?',
+   mini:['A: diskon 30%','B: beli 2 gratis 1','Rp12.000/buku','Butuh 3 buku'],
+   info:[['i1','Toko A: diskon 30%',1],['i2','Toko B: beli 2 gratis 1',1],['i3','Harga buku Rp12.000',1],['i4','Kamu butuh 3 buku',1],['i5','Toko A buka pukul 08.00',0],['i6','Toko B punya parkir luas',0]],
+   ubah:[{tanya:'Cara menghitung di Toko A?', opsi:[['a1','3 × Rp12.000, lalu dikurangi 30%',1],['a2','3 × Rp12.000, lalu ditambah 30%',0,'Toko A: diskon mengurangi harga, bukan menambah.','MK2'],['a3','Rp12.000 dikurangi 30% saja',0,'Toko A: kamu butuh 3 buku, jadi hitung harga 3 buku dulu.']]},
+         {tanya:'Cara menghitung di Toko B?', opsi:[['b1','Bayar 3 buku',0,'Toko B: dengan promo beli 2 gratis 1, satu buku gratis.'],['b2','Bayar 2 buku, dapat 3 buku',1],['b3','Bayar 1 buku',0,'Toko B: yang gratis hanya 1 buku. Kamu tetap membayar 2 buku.']]}],
+   hitung:[{key:'h1',label:'Total bayar di Toko A',jawab:25200,unit:'rp',salah:{10800:['Rp10.800 itu potongan di Toko A. Kurangi Rp36.000 dengan potongan itu.','MK1'],36000:'Rp36.000 itu harga sebelum diskon. Kurangi dulu 30%.'},umum:'Cek lagi total Toko A.'},
+           {key:'h2',label:'Total bayar di Toko B',jawab:24000,unit:'rp',salah:{36000:'Di Toko B satu buku gratis, jadi kamu hanya membayar 2 buku.',12000:'Di Toko B kamu tetap membayar 2 buku.'},umum:'Cek lagi total Toko B.'}],
+   hint:['Toko A: hitung 3 × Rp12.000 dulu, lalu kurangi 30% dari hasilnya.','Toko A: 3 × 12.000 = 36.000. Potongan 30% × 36.000 = 10.800.','Toko B: kamu hanya membayar 2 × Rp12.000.'],
+   putus:{banding:[['Toko A','Rp25.200'],['Toko B','Rp24.000']], tanya:'Aku memilih', pilihan:[['A','Toko A'],['B','Toko B']], benar:'B', salahPilih:'Bandingkan total bayarnya: Toko A Rp25.200, Toko B Rp24.000.',
+     alasan:[['r1','Total yang dibayar di toko itu lebih kecil',1],['r2','Angka 30% besar, jadi pasti lebih hemat',0,'Persen diskon yang besar belum tentu lebih hemat. Bandingkan total yang dibayar.'],['r3','Ada barang gratis, jadi pasti lebih murah',0,'Ada barang gratis belum tentu lebih murah. Bandingkan total yang dibayar.']],
+     ok:'Toko B lebih hemat Rp1.200 karena total yang dibayar lebih kecil.'},
+   pikir:{q:'Kalau kamu hanya butuh <b>2 buku</b>, toko mana yang lebih hemat?', a:'Toko A: 2 × Rp12.000 = Rp24.000, dikurangi 30% menjadi <b>Rp16.800</b>.<br>Toko B: tetap membayar 2 buku, yaitu <b>Rp24.000</b> (dapat 3, padahal butuh 2).<br><b>Toko A lebih hemat.</b> Promo terbaik bergantung pada kebutuhanmu.'}},
+
+  {id:'L5', modul:'M5', judul:'Detektif Struk', sub:'Memeriksa diskon dan PPN di struk',
+   stim:stim('Struk Toko Maju (fiktif). Kasir 03, pukul 10.15. Subtotal Rp200.000. Diskon member 10%: minus Rp20.000. PPN 10%: Rp20.000. Total Rp200.000.',
+     [{w:'c', baris:[['STRUK TOKO MAJU (FIKTIF)','b-name'],['Kasir 03 · pukul 10.15','b-tiny'],['Subtotal','b-small','Rp200.000'],['Diskon member 10%','b-small','−Rp20.000'],['PPN 10%','b-small','Rp20.000'],['TOTAL','b-big','Rp200.000']]}],
+     'Apakah struk ini sudah benar?'),
+   tanya:'<b>Periksa struk ini.</b> Apakah total yang ditagih sudah benar?',
+   mini:['Subtotal Rp200.000','Diskon 10%','PPN 10%','Total di struk Rp200.000'],
+   info:[['i1','Subtotal Rp200.000',1],['i2','Diskon member 10%',1],['i3','PPN 10%',1],['i4','Total di struk Rp200.000',1],['i5','Kasir nomor 03',0],['i6','Pukul 10.15',0]],
+   ubah:[{tanya:'Urutan menghitung yang benar?', opsi:[['a1','Diskon dulu, lalu PPN dari harga setelah diskon',1],['a2','PPN dari subtotal, lalu diskon',0,'PPN dihitung dari harga setelah diskon.','MK5'],['a3','Diskon dan PPN saling menghapus',0,'Diskon dan PPN dihitung dari harga yang berbeda, jadi tidak saling menghapus.']]},
+         {tanya:'PPN 10% seharusnya dihitung dari?', opsi:[['b1','Rp200.000',0,'Rp200.000 adalah harga sebelum diskon.','MK5'],['b2','Rp180.000',1],['b3','Rp20.000',0,'Rp20.000 adalah besar diskonnya.']]}],
+   hitung:[{key:'h1',label:'PPN yang benar',jawab:18000,unit:'rp',salah:{20000:['Itu PPN dari harga sebelum diskon.','MK5']},umum:'PPN = 10% × Rp180.000.'},
+           {key:'h2',label:'Total yang benar',jawab:198000,unit:'rp',salah:{200000:'Itu total di struk. Hitung ulang dengan PPN yang benar.',162000:['PPN menambah harga, bukan mengurangi.','MK2']},umum:'Total = Rp180.000 + PPN.'}],
+   hint:['Hitung harga setelah diskon dulu: Rp200.000 − Rp20.000.','Harga setelah diskon Rp180.000. PPN = 10% × 180.000.','PPN = Rp18.000. Total = 180.000 + 18.000.'],
+   putus:{banding:[['Total di struk','Rp200.000'],['Total seharusnya','Rp198.000']], tanya:'Apakah struk ini benar?', pilihan:[['A','Benar'],['B','Salah']], benar:'B', salahPilih:'Bandingkan: total di struk Rp200.000, total seharusnya Rp198.000.',
+     alasan:[['r1','PPN dihitung dari harga sebelum diskon',1],['r2','Diskon member seharusnya 20%',0,'Diskonnya sudah benar 10%. Yang salah adalah dasar perhitungan PPN.'],['r3','Seharusnya tidak ada PPN',0,'PPN memang ditambahkan. Yang salah adalah cara menghitungnya.']],
+     ok:'Struk salah: PPN dihitung dari Rp200.000. Seharusnya Rp18.000, jadi kamu ditagih lebih Rp2.000.'},
+   pikir:{q:'Jika kamu sudah membayar Rp200.000, berapa uang yang seharusnya dikembalikan kasir?', a:'Rp200.000 − Rp198.000 = <b>Rp2.000</b>. Memeriksa struk melindungi uangmu.'}},
+
+  {id:'L6', modul:'M6', judul:'Beras Mana Lebih Murah?', sub:'Membandingkan harga per kg neto',
+   stim:stim('Beras putih A: neto 5 kg, harga Rp65.000, bruto 5,1 kg, kemasan plastik. Beras putih B: neto 10 kg, harga Rp125.000, bruto 10,2 kg, kemasan karung.',
+     [{w:'a', baris:[['BERAS PUTIH A','b-name'],['Neto 5 kg','b-big'],['Rp65.000','b-huge2'],['Bruto 5,1 kg','b-small'],['Kemasan plastik','b-tiny']]},
+      {w:'b', baris:[['BERAS PUTIH B','b-name'],['Neto 10 kg','b-big'],['Rp125.000','b-huge2'],['Bruto 10,2 kg','b-small'],['Kemasan karung','b-tiny']]}],
+     'Mana yang lebih murah per kg?'),
+   tanya:'<b>Beras mana yang lebih murah per kilogram?</b>',
+   mini:['A: neto 5 kg, Rp65.000','B: neto 10 kg, Rp125.000'],
+   info:[['i1','Neto beras A 5 kg',1],['i2','Harga beras A Rp65.000',1],['i3','Neto beras B 10 kg',1],['i4','Harga beras B Rp125.000',1],['i5','Bruto beras A 5,1 kg',0,'Bruto termasuk kemasan. Harga per kg dibandingkan memakai neto.'],['i6','Kemasan karung',0]],
+   ubah:[{tanya:'Harga per kg beras A dihitung dengan?', opsi:[['a1','Rp65.000 ÷ 5',1],['a2','Rp65.000 ÷ 5,1',0,'Beras A: 5,1 kg adalah bruto (termasuk kemasan). Pakai neto.','MK9'],['a3','Rp65.000 × 5',0,'Beras A: harga per kg lebih kecil dari harga sekemasan, jadi dibagi.']]},
+         {tanya:'Harga per kg beras B dihitung dengan?', opsi:[['b1','Rp125.000 ÷ 10,2',0,'Beras B: 10,2 kg adalah bruto. Pakai neto.','MK9'],['b2','Rp125.000 ÷ 10',1],['b3','Rp125.000 − 10',0,'Beras B: harga per kg didapat dengan membagi, bukan mengurangi.']]}],
+   hitung:[{key:'h1',label:'Harga per kg beras A',jawab:13000,unit:'rp',salah:{325000:'Harga per kg didapat dengan membagi, bukan mengalikan.'},umum:'Bagi Rp65.000 dengan 5.'},
+           {key:'h2',label:'Harga per kg beras B',jawab:12500,unit:'rp',umum:'Bagi Rp125.000 dengan 10.'}],
+   hint:['Bandingkan harga untuk berat yang sama, yaitu 1 kg.','Gunakan neto, bukan bruto.','A: 65.000 ÷ 5. B: 125.000 ÷ 10.'],
+   putus:{banding:[['Beras A','Rp13.000/kg'],['Beras B','Rp12.500/kg']], tanya:'Lebih murah per kg', pilihan:[['A','Beras A'],['B','Beras B']], benar:'B', salahPilih:'Bandingkan harga per kg: A Rp13.000, B Rp12.500.',
+     alasan:[['r1','Harga per kg-nya lebih kecil',1],['r2','Harga sekemasannya lebih murah',0,'Harga sekemasan A memang lebih murah, tetapi isinya juga lebih sedikit.'],['r3','Kemasannya lebih berat',0,'Berat kemasan (tara) tidak menentukan murah atau mahal. Bandingkan harga per kg neto.']],
+     ok:'Beras B lebih murah Rp500 per kg.'},
+   pikir:{q:'Keluargamu hanya butuh 5 kg dan uangmu hanya Rp70.000. Beras mana yang kamu beli?', a:'Beras B Rp125.000 melebihi uangmu. Jadi kamu membeli <b>beras A</b>.<br>Yang lebih murah per kg belum tentu cocok dengan kebutuhan dan uangmu.'}},
+
+  {id:'L7', modul:'M7', judul:'Menabung di Mana?', sub:'Bunga tabungan dan biaya admin',
+   stim:stim('Bank A: bunga 6% per tahun, tanpa biaya admin, kantor dekat sekolah. Koperasi B: bunga 8% per tahun, biaya admin Rp5.000 per bulan, buka hari Sabtu. Rani menabung Rp1.200.000 selama 6 bulan.',
+     [{w:'a', baris:[['BANK A','b-name'],['Bunga 6%','b-huge2'],['per tahun','b-small'],['Tanpa biaya admin','b-small'],['Kantor dekat sekolah','b-tiny']]},
+      {w:'b', baris:[['KOPERASI B','b-name'],['Bunga 8%','b-huge2'],['per tahun','b-small'],['Admin Rp5.000/bulan','b-small'],['Buka hari Sabtu','b-tiny']]}],
+     'Rani menabung Rp1.200.000 selama 6 bulan'),
+   tanya:'<b>Rani menabung Rp1.200.000 selama 6 bulan.</b> Di mana tambahan uangnya lebih besar?',
+   mini:['A: 6%/tahun, tanpa admin','B: 8%/tahun, admin Rp5.000/bulan','Rp1.200.000','6 bulan'],
+   info:[['i1','Bank A: bunga 6% per tahun',1],['i2','Koperasi B: bunga 8% per tahun',1],['i3','Koperasi B: admin Rp5.000 per bulan',1],['i4','Tabungan Rp1.200.000 selama 6 bulan',1],['i5','Kantor dekat sekolah',0],['i6','Buka hari Sabtu',0]],
+   ubah:[{tanya:'Bunga 6 bulan di Bank A dihitung dengan?', opsi:[['a1','6/12 × 6% × Rp1.200.000',1],['a2','6% × Rp1.200.000',0,'Bank A: itu bunga setahun. Rani hanya menabung 6 bulan.','MK8'],['a3','6 × 6% × Rp1.200.000',0,'Bank A: itu sama dengan 6 tahun. Bagi dulu dengan 12.','MK8']]},
+         {tanya:'Tambahan uang bersih di Koperasi B?', opsi:[['b1','Bunga 6 bulan saja',0,'Koperasi B: biaya admin mengurangi tambahan uangmu.'],['b2','Bunga 6 bulan − (6 × Rp5.000)',1],['b3','Bunga 6 bulan + biaya admin',0,'Koperasi B: biaya admin adalah uang yang dipotong, jadi dikurangi.','MK2']]}],
+   hitung:[{key:'h1',label:'Bunga 6 bulan di Bank A',jawab:36000,unit:'rp',salah:{72000:['Itu bunga setahun. Kalikan 6/12.','MK8']},umum:'6% × Rp1.200.000 = Rp72.000, lalu kalikan 6/12.'},
+           {key:'h2',label:'Tambahan bersih di Koperasi B',jawab:18000,unit:'rp',salah:{48000:'Itu bunganya saja. Kurangi biaya admin 6 × Rp5.000.',96000:['Itu bunga setahun. Kalikan 6/12 dulu.','MK8'],78000:['Biaya admin mengurangi, bukan menambah.','MK2']},umum:'Bunga 8% × Rp1.200.000 × 6/12 = Rp48.000, lalu kurangi admin Rp30.000.'}],
+   hint:['Hitung bunga setahun, lalu ambil 6/12 bagiannya.','Bank A setahun Rp72.000. Koperasi B setahun Rp96.000.','Admin Koperasi B 6 bulan = 6 × Rp5.000 = Rp30.000.'],
+   putus:{banding:[['Bank A','+Rp36.000'],['Koperasi B','+Rp18.000']], tanya:'Rani sebaiknya menabung di', pilihan:[['A','Bank A'],['B','Koperasi B']], benar:'A', salahPilih:'Bandingkan tambahan bersihnya: Bank A Rp36.000, Koperasi B Rp18.000.',
+     alasan:[['r1','Persen bunganya lebih besar',0,'Bunga Koperasi B memang 8%, tetapi biaya admin memotong tambahannya.'],['r2','Tambahan uang bersihnya lebih besar',1],['r3','Bank selalu lebih menguntungkan',0,'Tidak selalu. Kita tahu dari menghitung tambahan bersihnya.']],
+     ok:'Bank A memberi tambahan bersih Rp36.000, dua kali Koperasi B.'},
+   pikir:{q:'Bagaimana jika Rani menabung <b>2 tahun</b>?', a:'Bank A: 2 × Rp72.000 = <b>Rp144.000</b>.<br>Koperasi B: 2 × Rp96.000 − 24 × Rp5.000 = Rp192.000 − Rp120.000 = <b>Rp72.000</b>.<br>Bank A tetap lebih menguntungkan. Biaya kecil setiap bulan bisa menjadi besar.'}}
+];
+function litById(id){ for(var i=0;i<LIT.length;i++){ if(LIT[i].id===id) return LIT[i]; } return null; }
+
+/* ================= State ================= */
+function newLit(id){ return {id:id||null, step:1, info:{}, ok:{}, u:{}, hint:0, pilih:null, alasan:null, fb:null, pikir:false}; }
+function newPasar(id){ var Mi = id ? misiById(id) : null; return {id:id||null, step:(Mi && Mi.jenis==='jual')?'hitung':'pilih', keranjang:[], fb:null, over:false, hint:0, putus:null, putusOk:false}; }
 var S = {
   route:'beranda', nama:store.get('nama', null), stats:store.get('stats', defStats()),
-  m:null, mOpen:false, lit:newLit(), pasar:newPasar(),
-  vals:{}, fs:{}, active:null, keyAction:null, labels:{}, scrollTo:false, zoom:false, confirmReset:false
+  mods:{}, cur:null, mOpen:false, lit:newLit(), litOpen:false, pasar:newPasar(), pasarOpen:false,
+  vals:{}, fs:{}, units:{}, active:null, keyAction:null, labels:{}, scrollTo:false, zoom:false, confirmReset:false
 };
 if(!S.stats || typeof S.stats!=='object') S.stats = defStats();
+if(!S.stats.modul) S.stats.modul = {};
+if(!S.stats.mk) S.stats.mk = {};
+if(!S.stats.paas) S.stats.paas = [];
+if(!S.stats.litDone) S.stats.litDone = {};
+if(!S.stats.pasarDone) S.stats.pasarDone = {};
 function saveStats(){ store.set('stats', S.stats); }
-function mk(code){ S.stats.mk[code] = (S.stats.mk[code]||0) + 1; }
-function num(k){ return S.vals[k] ? parseInt(S.vals[k],10) : NaN; }
+function mk(code){ if(code){ S.stats.mk[code] = (S.stats.mk[code]||0) + 1; } }
+function val(k, unit){ var v = S.vals[k]; if(!v) return NaN; return unit==='persen' ? parseFloat(v.replace(',','.')) : parseInt(v,10); }
+function num(k){ return val(k, S.units[k]||'rp'); }
 function clearFields(){ S.vals={}; S.fs={}; S.active=null; }
+function M(){ return S.mods[S.cur]; }
+function D(){ return MODUL[S.cur]; }
+function sama(v, j, unit){ return unit==='persen' ? Math.abs(v-j) < 0.01 : v===j; }
 
 var ROUTES = ['beranda','belajar','literasi','pasar','rapor'];
 function readHash(){ var h = location.hash.replace('#',''); S.route = ROUTES.indexOf(h)>-1 ? h : 'beranda'; S.active=null; S.zoom=false; }
 function go(r){ if(location.hash==='#'+r){ readHash(); render(); } else { location.hash = r; } }
 window.addEventListener('hashchange', function(){ readHash(); render(); window.scrollTo(0,0); });
 
-/* ---------- Komponen ---------- */
+/* ================= Komponen ================= */
 function header(title, sub, backAct, extra){
   return '<header class="top"><div class="top-in">'+
     (backAct ? '<button class="icon-btn" data-act="'+backAct+'" aria-label="Kembali">'+I.back+'</button>' : '')+
     '<div class="top-t"><h1>'+title+'</h1>'+(sub?'<p>'+sub+'</p>':'')+'</div>'+(extra||'')+'</div></header>';
 }
-function btn(label, act, opt){
-  opt = opt||{};
-  return '<button class="btn '+(opt.cls||'primary')+'" data-act="'+act+'"'+(opt.arg!==undefined?' data-arg="'+opt.arg+'"':'')+(opt.dis?' disabled':'')+'>'+label+'</button>';
+function btn(label, act, o){
+  o = o||{};
+  return '<button class="btn '+(o.cls||'primary')+'" data-act="'+act+'"'+(o.arg!==undefined?' data-arg="'+o.arg+'"':'')+(o.dis?' disabled':'')+'>'+label+'</button>';
 }
 function actionbar(inner){ return '<div class="actionbar"><div class="in">'+inner+'</div></div>'; }
 function nav(){
@@ -406,11 +1155,14 @@ function nav(){
     return '<button data-act="go" data-arg="'+x[0]+'"'+(S.route===x[0]?' aria-current="page"':'')+'>'+x[2]+x[1]+'</button>';
   }).join('')+'</div></nav>';
 }
-function field(key, label){
-  S.labels[key] = label;
+function field(key, label, unit){
+  unit = unit||'rp';
+  S.labels[key] = label; S.units[key] = unit;
   var v = S.vals[key];
   var cls = 'field' + (S.active===key?' on':'') + (S.fs[key]?' '+S.fs[key]:'');
-  return '<button class="'+cls+'" data-act="focus" data-arg="'+key+'" aria-label="Isi '+esc(label)+'"><span class="rp">Rp</span><span>'+(v?grp(v):'<span class="ph">ketuk untuk isi</span>')+'</span></button>';
+  var isi = v ? (unit==='persen' ? esc(v) : grp(v)) : '<span class="ph">ketuk untuk isi</span>';
+  return '<button class="'+cls+'" data-act="focus" data-arg="'+key+'" aria-label="Isi '+esc(label)+'">'+
+    (unit==='rp'?'<span class="rp">Rp</span>':'')+'<span>'+isi+'</span>'+(unit==='persen'?'<span class="rp">%</span>':(unit==='kg'?'<span class="rp">kg</span>':''))+'</button>';
 }
 function fbBox(fb){
   if(!fb) return '';
@@ -419,30 +1171,12 @@ function fbBox(fb){
 function opt(label, act, arg, pressed, state){
   return '<button class="opt'+(state?' '+state:'')+'" data-act="'+act+'" data-arg="'+arg+'" aria-pressed="'+(pressed?'true':'false')+'"><span class="mark"></span><span>'+label+'</span></button>';
 }
-function barModel(h, pot, tampil){
-  var W = 300, wA = Math.round(W*(h-pot)/h);
-  return '<svg class="bar" viewBox="0 0 320 96" role="img" aria-label="Model batang: harga awal '+fmt(h)+', potongan '+(tampil?fmt(pot):'belum diketahui')+', harga akhir '+(tampil?fmt(h-pot):'belum diketahui')+'">'+
-    '<text x="10" y="13" class="t-awal">Harga Awal '+fmt(h)+'</text>'+
-    '<rect x="10" y="18" width="300" height="22" rx="5" class="f-awal"/>'+
-    '<rect x="10" y="50" width="'+(wA-2)+'" height="22" rx="5" class="f-akhir"/>'+
-    '<rect x="'+(10+wA)+'" y="50" width="'+(W-wA)+'" height="22" rx="5" class="f-pot"/>'+
-    '<text x="10" y="88" class="t-akhir">Harga Akhir '+(tampil?fmt(h-pot):'?')+'</text>'+
-    '<text x="310" y="88" text-anchor="end" class="t-pot">Potongan '+(tampil?fmt(pot):'?')+'</text></svg>';
+function stepsList(L){
+  return '<ol class="steps">'+L.map(function(l,i){ return '<li><span class="n">'+(i+1)+'</span><div><span class="t">'+l[0]+'</span><span class="num">'+l[1]+'</span></div></li>'; }).join('')+'</ol>';
 }
 function wrap(inner){ return '<main class="wrap">'+inner+'</main>'; }
 
-/* ---------- Layar: Onboarding ---------- */
-function rOnboard(){
-  return header('Pasar Pintar','Belajar Aritmetika Sosial')+wrap(
-    '<section class="card"><h2>Halo! Siapa nama panggilanmu?</h2>'+
-    '<p class="muted">Nama ini hanya tersimpan di HP ini.</p>'+
-    '<label class="eyebrow" for="nama">Nama panggilan</label>'+
-    '<input id="nama" class="input" maxlength="20" autocomplete="off" autocapitalize="words" enterkeyhint="done" placeholder="Contoh: Rani"></section>'+
-    '<p class="note">Ini prototipe. Isinya baru modul Diskon, satu Tantangan Literasi, dan satu misi Pasar Pintar.</p>'
-  )+actionbar(btn('Lewati','lewatiNama',{cls:'secondary'})+btn('Mulai','mulaiNama'));
-}
-
-/* ---------- Pasang aplikasi (PWA, F-54) ---------- */
+/* ================= Layar: Onboarding & Beranda ================= */
 var pasang = { prompt:null, installed:false, ios:/iphone|ipad|ipod/i.test(navigator.userAgent) };
 try{ pasang.installed = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone===true; }catch(e){}
 function pasangUI(){
@@ -451,81 +1185,95 @@ function pasangUI(){
   if(pasang.ios) return '<p class="note"><b>Pasang di iPhone:</b> buka di Safari, ketuk tombol Bagikan, lalu pilih <b>Tambahkan ke Layar Utama</b>.</p>';
   return '<p class="note"><b>Pasang di HP:</b> buka menu ⋮ di Chrome, lalu pilih <b>Instal aplikasi</b> atau <b>Tambahkan ke layar utama</b>.</p>';
 }
-
-/* ---------- Layar: Beranda ---------- */
+function rOnboard(){
+  return header('Pasar Pintar','Belajar Aritmetika Sosial')+wrap(
+    '<section class="card"><h2>Halo! Siapa nama panggilanmu?</h2>'+
+    '<p class="muted">Nama ini hanya tersimpan di HP ini.</p>'+
+    '<label class="eyebrow" for="nama">Nama panggilan</label>'+
+    '<input id="nama" class="input" maxlength="20" autocomplete="off" autocapitalize="words" enterkeyhint="done" placeholder="Contoh: Rani"></section>'+
+    '<p class="note">Isi aplikasi: 8 modul Aritmetika Sosial (M0–M7), 7 Tantangan Literasi, dan 6 misi Pasar Pintar.</p>'
+  )+actionbar(btn('Lewati','lewatiNama',{cls:'secondary'})+btn('Mulai','mulaiNama'));
+}
+function modulBerikut(){
+  for(var i=0;i<URUTAN.length;i++){ if(!S.stats.modul[URUTAN[i]]) return URUTAN[i]; }
+  return null;
+}
 function rBeranda(){
-  var lanjut = S.m && S.m.tahap!=='ringkasan';
-  return header('Halo, '+esc(S.nama)+'!','Mau belajar apa hari ini?')+wrap(
-    '<section class="home-hero"><span class="eyebrow" style="color:inherit;opacity:.85">M4 · Diskon</span>'+
-    '<h2>'+(lanjut?'Lanjutkan belajar diskon':'Belajar menghitung diskon')+'</h2>'+
-    '<p>Kenali harga awal, potongan, dan harga akhir, lalu coba 4 soal.</p>'+
-    btn(lanjut?'Lanjutkan':'Mulai belajar','bukaModul')+'</section>'+
+  var k, judul, teks, label;
+  if(S.cur && M() && M().tahap!=='ringkasan'){ k=S.cur; judul='Lanjutkan '+k+' '+MODUL[k].judul; teks=MODUL[k].sub+'.'; label='Lanjutkan'; }
+  else { k = modulBerikut(); if(k){ judul=k+' '+MODUL[k].judul; teks=MODUL[k].sub+'.'; label='Mulai belajar'; } }
+  var selesai = URUTAN.filter(function(x){ return S.stats.modul[x]; }).length;
+  var hero = k ? '<section class="home-hero"><span class="eyebrow" style="color:inherit;opacity:.85">Modul '+(URUTAN.indexOf(k)+1)+' dari '+URUTAN.length+'</span><h2>'+judul+'</h2><p>'+teks+'</p>'+btn(label,'bukaModul',{arg:k})+'</section>'
+               : '<section class="home-hero"><span class="eyebrow" style="color:inherit;opacity:.85">Semua modul selesai</span><h2>Hebat! Kamu sudah menyelesaikan '+URUTAN.length+' modul.</h2><p>Ulangi modul mana pun atau coba Tantangan Literasi dan Pasar Pintar.</p>'+btn('Lihat modul','go',{arg:'belajar'})+'</section>';
+  return header('Halo, '+esc(S.nama)+'!', selesai+' dari '+URUTAN.length+' modul selesai')+wrap(
+    hero+
     '<div class="grid2">'+
-      '<button class="tile" data-act="go" data-arg="literasi">'+I.search+'<strong>Tantangan Literasi</strong><span>Toko mana yang lebih hemat?</span></button>'+
-      '<button class="tile" data-act="go" data-arg="pasar">'+I.cart+'<strong>Pasar Pintar</strong><span>Belanja dengan uang Rp70.000</span></button>'+
+      '<button class="tile" data-act="go" data-arg="literasi">'+I.search+'<strong>Tantangan Literasi</strong><span>'+Object.keys(S.stats.litDone).length+' dari '+LIT.length+' tantangan selesai</span></button>'+
+      '<button class="tile" data-act="go" data-arg="pasar">'+I.cart+'<strong>Pasar Pintar</strong><span>'+Object.keys(S.stats.pasarDone).length+' dari '+MISI.length+' misi belanja dan berjualan</span></button>'+
       '<button class="tile wide" data-act="go" data-arg="rapor">'+I.chart+'<div><strong>Rapor Saya</strong><br><span>'+S.stats.benar+' dari '+S.stats.dijawab+' soal benar</span></div></button>'+
     '</div>'+
-    pasangUI()+'<p class="note">Prototipe v0.1. Progres hanya tersimpan di HP ini.</p>'
+    pasangUI()+'<p class="note">Prototipe v0.3. Progres hanya tersimpan di HP ini.</p>'
   )+nav();
 }
 
-/* ---------- Layar: Belajar ---------- */
+/* ================= Layar: Belajar (mesin modul) ================= */
 function rBelajar(){
-  if(S.m && S.mOpen) return rModul();
-  var mods = [['M0','Pemanasan prasyarat',0],['M1','Untung dan rugi',0],['M2','Persentase untung dan rugi',0],['M3','Harga dari persentase',0],['M4','Diskon',1],['M5','Pajak (PPN)',0]];
-  return header('Belajar','Pilih modul')+wrap(
-    mods.map(function(x){
-      if(x[2]) return '<button class="mod" data-act="bukaModul"><span class="code">'+x[0]+'</span><span class="tx"><strong>'+x[1]+'</strong><span>'+(S.m?'Lanjutkan':'Istilah, contoh, 4 soal latihan')+'</span></span>'+I.back.replace('M15 5l-7 7 7 7','M9 5l7 7-7 7')+'</button>';
-      return '<div class="mod off" aria-disabled="true"><span class="code">'+x[0]+'</span><span class="tx"><strong>'+x[1]+'</strong><span>Segera hadir</span></span></div>';
-    }).join('')+
-    '<button class="btn ghost" data-act="langsungLatihan">Sudah paham? Langsung ke latihan M4</button>'
+  if(S.cur && M() && S.mOpen) return rModul();
+  return header('Belajar','Pilih modul. Urutan yang disarankan dari atas.')+wrap(
+    '<div class="modlist">'+URUTAN.map(function(k){
+      var d = MODUL[k], r = S.stats.modul[k], st = S.mods[k];
+      var info = r ? 'Selesai · '+r.benar+'/'+r.total+' benar' : (st && st.tahap!=='ringkasan' ? 'Sedang dipelajari' : d.sub);
+      return '<button class="mod'+(r?' done':'')+'" data-act="bukaModul" data-arg="'+k+'"><span class="code">'+k+'</span><span class="tx"><strong>'+d.judul+'</strong><span>'+info+'</span></span>'+I.next+'</button>';
+    }).join('')+'</div>'+
+    '<p class="note">M0 berisi pemanasan persen dan pecahan. Mulai dari M0 jika kamu masih ragu menghitung persen.</p>'
   )+nav();
 }
-function mulaiModul(){ S.m = {tahap:'istilah', i:0, c:1, fb:null}; clearFields(); }
+function mulaiModul(k){ S.cur = k; S.mods[k] = {tahap:'istilah', i:0, c:1, fb:null}; clearFields(); }
 function mulaiLatihan(){
-  var a = buatSoal(1), b = buatSoal(1,[a.h]), c = buatSoal(2), d = buatSoal(2,[c.h]);
-  S.m = {tahap:'latihan', soal:[a,b,c,d], i:0, benar:0, paas:null};
+  var d = D(), lv = [1,1,2,2], out = [], ids = {};
+  for(var i=0;i<4;i++){ var s, n=0; do { s = d.buat(lv[i], i); n++; } while(ids[s.id] && n<25); ids[s.id]=1; s.level = lv[i]; out.push(s); }
+  S.mods[S.cur] = {tahap:'latihan', soal:out, i:0, benar:0, paas:null};
   resetSoal();
 }
+function wajibChips(s){ return s.chips ? Object.keys(s.chips).filter(function(k){ return s.chips[k] && !s.chips[k].pengecoh; }) : []; }
 function resetSoal(){
-  var m = S.m;
-  m.step='pahami'; m.tapped={}; m.ditanya=null; m.op=null; m.tries=0; m.hint=0; m.fb=null; m.ok=null; m.cek=null; m.bahas=0;
+  var m = M(), s = m.soal[m.i];
+  m.step = s.chips ? 'pahami' : (s.op ? 'operasi' : 'hitung');
+  m.tapped={}; m.ditanya=null; m.op=null; m.tries=0; m.hint=0; m.fb=null; m.ok=null; m.cek=null; m.bahas=0;
   clearFields();
+  if(m.step==='hitung'){ S.active = s.f[0].key; }
 }
 
 function rModul(){
-  var m = S.m;
+  var m = M(), d = D(), tag = d.kode+' '+d.judul;
   if(m.tahap==='istilah'){
-    var it = ISTILAH[m.i];
-    return header('Kenali istilah','M4 Diskon · '+(m.i+1)+' dari '+ISTILAH.length,'tutupModul')+wrap(
-      '<section class="card">'+it.lbl+'<h2>'+it.judul+'</h2><p>'+it.teks+'</p><p class="muted num">'+it.contoh+'</p></section>'+
-      '<div class="dots">'+ISTILAH.map(function(_,i){return '<i class="'+(i===m.i?'on':'')+'"></i>';}).join('')+'</div>'
-    )+actionbar((m.i>0?btn('Kembali','istPrev',{cls:'secondary'}):'')+btn(m.i<ISTILAH.length-1?'Lanjut':'Lihat contoh','istNext'));
+    var it = d.istilah[m.i];
+    return header('Kenali istilah', tag+' · '+(m.i+1)+' dari '+d.istilah.length,'tutupModul')+wrap(
+      '<section class="card">'+it.lbl+'<h2>'+it.judul+'</h2><p>'+it.teks+'</p>'+(it.vis||'')+(it.contoh?'<p class="muted num">'+it.contoh+'</p>':'')+'</section>'+
+      '<div class="dots">'+d.istilah.map(function(_,i){return '<i class="'+(i===m.i?'on':'')+'"></i>';}).join('')+'</div>'+
+      btn('Sudah paham? Langsung ke latihan','keLatihan',{cls:'ghost'})
+    )+actionbar((m.i>0?btn('Kembali','istPrev',{cls:'secondary'}):'')+btn(m.i<d.istilah.length-1?'Lanjut':'Lihat contoh','istNext'));
   }
   if(m.tahap==='contoh'){
-    var semua = m.c>=CONTOH.langkah.length;
-    return header('Contoh lengkap','M4 Diskon · langkah '+m.c+' dari '+CONTOH.langkah.length,'tutupModul')+wrap(
-      '<section class="card"><p class="soal-t">'+CONTOH.teks+'</p>'+barModel(CONTOH.h, potongan(CONTOH.h,CONTOH.d), m.c>=3)+'</section>'+
-      '<section class="card"><ol class="steps">'+CONTOH.langkah.slice(0,m.c).map(function(l,i){
-        return '<li><span class="n">'+(i+1)+'</span><div><span class="t">'+l.t+'</span><span class="num">'+l.s+'</span></div></li>';
-      }).join('')+'</ol></section>'
+    var C = d.contoh, semua = m.c>=C.langkah.length;
+    return header('Contoh lengkap', tag+' · langkah '+m.c+' dari '+C.langkah.length,'tutupModul')+wrap(
+      '<section class="card"><p class="tanya">'+C.teks+'</p>'+C.visual(m.c>=C.langkah.length-1)+'</section>'+
+      '<section class="card">'+stepsList(C.langkah.slice(0,m.c).map(function(l){ return [l.t,l.s]; }))+'</section>'
     )+actionbar(btn(semua?'Coba contoh rumpang':'Langkah berikutnya','contohNext'));
   }
   if(m.tahap==='rumpang'){
-    S.keyAction = 'rumpangPeriksa';
-    var done = m.fb && m.fb.ok;
+    var R = d.rumpang, B = R.blank, done = m.fb && m.fb.ok;
+    S.keyAction = done ? null : 'rumpangPeriksa';
+    var n = R.langkah.length;
     return header('Contoh rumpang','Lengkapi langkah terakhir','tutupModul')+wrap(
-      '<section class="card"><p>Harga sebuah tas Rp120.000. Diskon 25%. Berapa harga yang dibayar?</p></section>'+
-      '<section class="card"><ol class="steps">'+
-        '<li><span class="n">1</span><div><span class="t">Diketahui</span><span class="num">Harga Awal = Rp120.000, Diskon = 25%</span></div></li>'+
-        '<li><span class="n">2</span><div><span class="t">Potongan</span><span class="num">25% × Rp120.000 = Rp30.000</span></div></li>'+
-        '<li><span class="n">3</span><div style="display:grid;gap:8px"><span class="t">Harga akhir</span><div class="eq"><span>Rp120.000 − Rp30.000 =</span>'+field('rump','Harga akhir')+'</div></div></li>'+
-      '</ol></section>'+fbBox(m.fb)
+      '<section class="card"><p class="tanya">'+R.teks+'</p></section>'+
+      '<section class="card"><ol class="steps">'+R.langkah.map(function(l,i){ return '<li><span class="n">'+(i+1)+'</span><div><span class="t">'+l.t+'</span><span class="num">'+l.s+'</span></div></li>'; }).join('')+
+        '<li><span class="n">'+(n+1)+'</span><div style="display:grid;gap:8px"><span class="t">'+B.t+'</span><div class="eq"><span>'+B.pre+'</span>'+field('rump',B.label,B.unit)+'</div></div></li></ol></section>'+fbBox(m.fb)
     )+actionbar(done ? btn('Mulai latihan','keLatihan') : btn('Periksa','rumpangPeriksa',{dis:!S.vals.rump}));
   }
-  if(m.tahap==='latihan') return rLatihan();
+  if(m.tahap==='latihan') return rLatihan(d, m);
   if(m.tahap==='paas'){
-    var b=''; for(var n=1;n<=9;n++){ b += '<button data-act="paas" data-arg="'+n+'" aria-pressed="'+(m.paas===n)+'">'+n+'</button>'; }
+    var b=''; for(var x=1;x<=9;x++){ b += '<button data-act="paas" data-arg="'+x+'" aria-pressed="'+(m.paas===x)+'">'+x+'</button>'; }
     return header('Skala usaha','Satu pertanyaan singkat','tutupModul')+wrap(
       '<section class="card"><h2>Seberapa besar usahamu mengerjakan soal tadi?</h2>'+
       '<div class="paas" role="group" aria-label="Skala 1 sampai 9">'+b+'</div>'+
@@ -534,178 +1282,226 @@ function rModul(){
     )+actionbar(btn('Kirim','paasKirim',{dis:!m.paas}));
   }
   if(m.tahap==='ringkasan'){
-    var pesan = m.paas>=7 ? 'Soal terasa berat? Coba lihat contoh lengkap sekali lagi, lalu ulangi latihan.' : 'Bagus! Sekarang coba pakai diskon untuk memilih promo di Tantangan Literasi.';
-    return header('Latihan selesai','M4 Diskon','tutupModul')+wrap(
+    var idx = URUTAN.indexOf(d.kode), next = URUTAN[idx+1];
+    var pesan = m.paas>=7 ? 'Soal terasa berat? Lihat contoh lengkap sekali lagi, lalu ulangi latihan.' : (m.benar>=3 ? 'Bagus! Kamu siap lanjut ke modul berikutnya.' : 'Coba ulangi latihan. Gunakan petunjuk jika perlu.');
+    var lt = LIT.filter(function(x){ return x.modul===d.kode; })[0];
+    var ekstra = lt ? btn('Tantangan Literasi: '+lt.judul,'bukaLit',{arg:lt.id,cls:'secondary'}) : '';
+    return header('Latihan selesai', tag,'tutupModul')+wrap(
       '<section class="card"><span class="eyebrow">Hasilmu</span><h2 class="num">'+m.benar+' dari '+m.soal.length+' soal benar</h2><p>'+pesan+'</p></section>'+
-      btn('Ulangi latihan','ulangLatihan',{cls:'secondary'})+btn('Lihat contoh lagi','ulangContoh',{cls:'secondary'})
-    )+actionbar(btn('Tantangan Literasi','go',{arg:'literasi'}));
+      ekstra+btn('Ulangi latihan','keLatihan',{cls:'secondary'})+btn('Lihat contoh lagi','ulangContoh',{cls:'secondary'})
+    )+actionbar(next ? btn('Lanjut ke '+next+' '+MODUL[next].judul,'keModul',{arg:next}) : btn('Ke Beranda','go',{arg:'beranda'}));
   }
   return '';
 }
 
-function rLatihan(){
-  var m = S.m, s = m.soal[m.i];
-  var sub = 'M4 Diskon · Level '+s.level;
-  var title = 'Soal '+(m.i+1)+' dari '+m.soal.length;
+function rLatihan(d, m){
+  var s = m.soal[m.i];
+  var title = 'Soal '+(m.i+1)+' dari '+m.soal.length, sub = d.kode+' '+d.judul+' · Level '+s.level;
   if(m.step==='pahami'){
-    var chip = function(k, teks, cls){
-      var st = m.tapped[k]; var c = st==='no' ? 'no' : (st ? cls : '');
-      return '<button class="chip '+c+'" data-act="tap" data-arg="'+k+'" aria-pressed="'+(!!st)+'">'+teks+'</button>';
-    };
-    var kal = [s.nama+' ingin membeli '+s.k.barang+' di '+s.k.toko+'.'];
-    if(s.level===2) kal.push('Ia membawa uang '+chip('x',fmt(s.uang),'')+'.');
-    kal.push('Harga awalnya '+chip('h',fmt(s.h),'h')+'.');
-    kal.push('Toko memberi diskon '+chip('d',s.d+'%','d')+'.');
-    kal.push('Berapa harga yang harus dibayar '+s.nama+'?');
-    var siap = m.tapped.h && m.tapped.d;
+    var kal = s.kal.map(function(t){ return '<p>'+t.replace(/\{\{(\w+)\}\}/g, function(_,k){
+      var c = s.chips[k]; if(!c) return ''; var st = m.tapped[k];
+      var cls = st==='no' ? 'no' : (st ? 'c-'+(c.cls||'netral') : '');
+      return '<button class="chip '+cls+'" data-act="tap" data-arg="'+k+'" aria-pressed="'+(!!st)+'">'+c.teks+'</button>'; })+'</p>'; }).join('');
+    var siap = wajibChips(s).every(function(k){ return m.tapped[k]===true; });
+    var benarDt = s.ditanya ? m.ditanya===s.ditanya.benar : siap;
     var dt = '';
-    if(siap){
-      dt = '<section class="card"><h2>Apa yang ditanya?</h2><div class="opts">'+
-        opt('Harga Akhir (yang dibayar)','ditanya','akhir',m.ditanya==='akhir',m.ditanya==='akhir'?'ok':'')+
-        opt('Potongan (yang dihemat)','ditanya','pot',m.ditanya==='pot',m.ditanya==='pot'?'no':'')+
-        opt('Harga Awal','ditanya','awal',m.ditanya==='awal',m.ditanya==='awal'?'no':'')+'</div></section>';
+    if(siap && s.ditanya){
+      dt = '<section class="card"><h2>Apa yang ditanya?</h2><div class="opts">'+s.ditanya.opsi.map(function(o){
+        var on = m.ditanya===o[0]; return opt(o[1],'ditanya',o[0],on,on?(o[0]===s.ditanya.benar?'ok':'no'):''); }).join('')+'</div></section>';
     }
     return header(title,sub,'tutupModul')+wrap(
-      '<section class="card soal"><span class="eyebrow">Ketuk angka yang penting</span>'+kal.map(function(k){return '<p>'+k+'</p>';}).join('')+'</section>'+
+      '<section class="card soal"><span class="eyebrow">Ketuk angka yang penting</span>'+kal+'</section>'+
       '<section class="card"><span class="eyebrow">Diketahui</span><div class="dk">'+
-        '<div class="dk-row">'+LBL.awal+'<span class="dk-val">'+(m.tapped.h?fmt(s.h):'—')+'</span></div>'+
-        '<div class="dk-row">'+LBL.diskon+'<span class="dk-val">'+(m.tapped.d?s.d+'%':'—')+'</span></div>'+
-        '<div class="dk-row"><span class="eyebrow">Ditanya</span><span class="dk-val">'+(m.ditanya==='akhir'?LBL.akhir:'—')+'</span></div>'+
+        s.dk.map(function(r){ return '<div class="dk-row">'+r.lbl+'<span class="dk-val">'+(m.tapped[r.k]===true?r.isi:'—')+'</span></div>'; }).join('')+
+        (s.ditanya ? '<div class="dk-row"><span class="eyebrow">Ditanya</span><span class="dk-val">'+(m.ditanya===s.ditanya.benar?s.ditanya.lbl:'—')+'</span></div>' : '')+
       '</div></section>'+dt+fbBox(m.fb)
-    )+actionbar(btn('Lanjut','lanjutOperasi',{dis:m.ditanya!=='akhir'}));
+    )+actionbar(btn('Lanjut','lanjutPahami',{dis:!(siap && benarDt)}));
   }
-  var mini = '<div class="dk-mini"><span>'+LBL.awal+' <b>'+fmt(s.h)+'</b></span><span>'+LBL.diskon+' <b>'+s.d+'%</b></span><span>Ditanya: '+LBL.akhir+'</span></div>';
+  var mini = s.dk ? '<div class="dk-mini">'+s.dk.map(function(r){ return '<span>'+r.lbl+' <b>'+r.isi+'</b></span>'; }).join('')+(s.ditanya?'<span>Ditanya: '+s.ditanya.lbl+'</span>':'')+'</div>'
+                  : '<section class="card"><p class="tanya">'+s.tanya+'</p>'+(s.visual && m.step!=='hasil' ? s.visual : '')+'</section>';
   if(m.step==='operasi'){
+    var o0 = null; s.op.opsi.forEach(function(o){ if(o[0]===m.op) o0 = o; });
     return header(title,sub,'tutupModul')+wrap(mini+
-      '<section class="card"><h2>Untuk mencari Harga Akhir, rumus mana yang tepat?</h2><div class="opts">'+
-        opt('Harga Awal + Potongan','operasi','plus',m.op==='plus',m.op==='plus'?'no':'')+
-        opt('Harga Awal − Potongan','operasi','minus',m.op==='minus',m.op==='minus'?'ok':'')+
-        opt('Potongan − Harga Awal','operasi','rev',m.op==='rev',m.op==='rev'?'no':'')+'</div></section>'+fbBox(m.fb)
-    )+actionbar(btn('Lanjut','lanjutHitung',{dis:m.op!=='minus'}));
+      '<section class="card"><h2>'+s.op.tanya+'</h2><div class="opts">'+s.op.opsi.map(function(o){
+        var on = m.op===o[0]; return opt(o[1],'operasi',o[0],on,on?(o[2]?'ok':'no'):''); }).join('')+'</div></section>'+fbBox(m.fb)
+    )+actionbar(btn('Lanjut','lanjutHitung',{dis:!(o0 && o0[2])}));
   }
   if(m.step==='hitung'){
     S.keyAction = 'periksa';
-    var hints = ['Hitung potongannya dulu, lalu kurangi harga awal dengan potongan itu.',
-      'Potongan = '+s.d+'/100 × '+grp(s.h)+'.',
-      'Potongan = '+fmt(s.pot)+'. Sekarang hitung '+grp(s.h)+' − '+grp(s.pot)+'.'];
+    var semuaIsi = s.f.every(function(f){ return !!S.vals[f.key]; });
     return header(title,sub,'tutupModul','<button class="pill-btn" data-act="hint"'+(m.hint>=3?' disabled':'')+'>Petunjuk'+(m.hint?' '+m.hint+'/3':'')+'</button>')+wrap(mini+
-      (m.hint?'<div class="hintbox">'+hints.slice(0,m.hint).map(function(h){return '<p>'+h+'</p>';}).join('')+'</div>':'')+
-      '<section class="card"><span class="eyebrow">Langkah 1 · '+LBL.pot+'</span><div class="eq"><span>'+s.d+'% × '+fmt(s.h)+' =</span>'+field('pot','Potongan')+'</div></section>'+
-      '<section class="card"><span class="eyebrow">Langkah 2 · '+LBL.akhir+'</span><div class="eq"><span>'+fmt(s.h)+' − Potongan =</span>'+field('akhir','Harga akhir')+'</div></section>'+
+      (m.hint?'<div class="hintbox">'+s.hint.slice(0,m.hint).map(function(h){return '<p>'+h+'</p>';}).join('')+'</div>':'')+
+      s.f.map(function(f,i){ return '<section class="card"><span class="eyebrow">Langkah '+(i+1)+(f.tag?' · '+f.tag:'')+'</span><div class="eq"><span>'+f.eq+'</span>'+field(f.key,f.label,f.unit)+'</div></section>'; }).join('')+
       fbBox(m.fb)+(m.tries===1?'<p class="note">Kamu punya 1 kesempatan lagi untuk soal ini.</p>':'')
-    )+actionbar(btn('Periksa','periksa',{dis:!(S.vals.pot && S.vals.akhir)}));
+    )+actionbar(btn('Periksa','periksa',{dis:!semuaIsi}));
   }
   // hasil
-  var cekQ = '<section class="card"><span class="eyebrow">Cek kewajaran</span><p>Harga setelah diskon harus lebih kecil dari harga awal. Apakah <b class="num">'+fmt(s.akhir)+'</b> lebih kecil dari <b class="num">'+fmt(s.h)+'</b>?</p>'+
-    (m.cek ? fbBox(m.cek==='ya' ? {ok:true,title:'Betul',msg:'Jawabannya masuk akal.'} : {ok:false,title:'Coba bandingkan lagi',msg:fmt(s.akhir)+' memang lebih kecil dari '+fmt(s.h)+'. Jadi jawabannya masuk akal.'})
-      : '<div class="row">'+btn('Ya','cek',{arg:'ya',cls:'secondary'})+btn('Tidak','cek',{arg:'tidak',cls:'secondary'})+'</div>')+'</section>';
+  var C = s.cek, cekHtml = '<section class="card"><span class="eyebrow">Cek kewajaran</span><p>'+C.q+'</p>';
+  if(m.cek===null){ cekHtml += '<div class="row">'+C.opsi.map(function(o,i){ return btn(o[0],'cek',{arg:i,cls:'secondary'}); }).join('')+'</div>'; }
+  else { var benarCek = !!C.opsi[m.cek][1]; cekHtml += fbBox(benarCek ? {ok:true,title:'Betul',msg:C.ok} : {ok:false,title:'Coba bandingkan lagi',msg:C.no}); }
+  cekHtml += '</section>';
   var bahas = '';
-  if(m.cek){
-    var L = [['Potongan', s.d+'% × '+fmt(s.h)+' = '+fmt(s.pot)],['Harga akhir', fmt(s.h)+' − '+fmt(s.pot)+' = '+fmt(s.akhir)],['Cek', fmt(s.akhir)+' < '+fmt(s.h)+', masuk akal.']];
-    bahas = '<section class="card"><span class="eyebrow">Pembahasan</span>'+barModel(s.h,s.pot,true)+'<ol class="steps">'+L.slice(0,m.bahas).map(function(l,i){
-      return '<li><span class="n">'+(i+1)+'</span><div><span class="t">'+l[0]+'</span><span class="num">'+l[1]+'</span></div></li>'; }).join('')+'</ol>'+
-      (m.bahas<L.length ? btn('Langkah berikutnya','bahasNext',{cls:'ghost'}) : '')+'</section>';
+  if(m.cek!==null){
+    bahas = '<section class="card"><span class="eyebrow">Pembahasan</span>'+(s.visual||'')+stepsList(s.bahas.slice(0,m.bahas))+
+      (m.bahas<s.bahas.length ? btn('Langkah berikutnya','bahasNext',{cls:'ghost'}) : '')+'</section>';
   }
   var last = m.i===m.soal.length-1;
-  return header(title,sub,'tutupModul')+wrap(fbBox(m.fb)+cekQ+bahas)+actionbar(btn(last?'Selesai':'Soal berikutnya','soalNext',{dis:!m.cek}));
+  return header(title,sub,'tutupModul')+wrap((s.dk?'':'<section class="card"><p class="tanya">'+s.tanya+'</p></section>')+fbBox(m.fb)+cekHtml+bahas)+
+    actionbar(btn(last?'Selesai':'Soal berikutnya','soalNext',{dis:m.cek===null}));
 }
 
-/* ---------- Layar: Tantangan Literasi ---------- */
+/* ================= Layar: Tantangan Literasi ================= */
+function hintbox(list){ return '<div class="hintbox">'+list.map(function(h){ return '<p>'+h+'</p>'; }).join('')+'</div>'; }
+function pesanSalah(h, v, u){
+  var m = null, tol = u==='persen' ? 0.06 : 0.0001;
+  Object.keys(h.salah||{}).forEach(function(k){ if(Math.abs(parseFloat(k)-v) < tol) m = h.salah[k]; });
+  if(!m && u!=='persen' && (v===h.jawab*10 || v*10===h.jawab)) m = ['Hampir benar! Cek lagi banyaknya angka nol pada '+h.label.toLowerCase()+'.','MK7'];
+  if(!m) m = h.umum || h.cekLagi || ('Cek lagi '+h.label.toLowerCase()+'.');
+  if(Array.isArray(m)){ mk(m[1]); return m[0]; }
+  return m;
+}
+function fmtUnit(v, unit){ return unit==='persen' ? pct(v) : (unit==='kg' ? grp(v)+' kg' : fmt(v)); }
+
 function rLiterasi(){
-  var L = S.lit;
+  var L = S.lit, T = litById(L.id);
+  if(!S.litOpen || !T){
+    return header('Tantangan Literasi','Pakai matematika untuk memutuskan')+wrap(
+      '<p class="note">Setiap tantangan memakai siklus yang sama: <b>Pahami → Ubah → Hitung → Cek &amp; Putuskan</b>. Kerjakan setelah menyelesaikan modulnya.</p>'+
+      '<div class="modlist">'+LIT.map(function(t){
+        var done = S.stats.litDone[t.id];
+        return '<button class="mod'+(done?' done':'')+'" data-act="bukaLit" data-arg="'+t.id+'"><span class="code">'+t.modul+'</span><span class="tx"><strong>'+t.judul+'</strong><span>'+(done?'Selesai · ':'')+t.sub+'</span></span>'+I.next+'</button>';
+      }).join('')+'</div>'
+    )+nav();
+  }
   var nama = ['Pahami','Ubah','Hitung','Cek &amp; Putuskan'];
   var siklus = '<ol class="siklus" aria-label="Siklus literasi">'+nama.map(function(t,i){
     var c = (i+1===L.step)?'now':((i+1<L.step)?'past':'');
     return '<li class="'+c+'"'+(c==='now'?' aria-current="step"':'')+'><span>'+(i+1)+'</span>'+t+'</li>'; }).join('')+'</ol>';
-  var stim = '<section class="card"><button class="stim-btn" data-act="zoom" aria-label="Perbesar brosur">'+BROSUR+'</button>'+
-    '<p class="small muted">Ketuk brosur untuk memperbesar.</p><p><b>Kamu butuh 3 buku tulis.</b> Toko mana yang lebih hemat?</p></section>';
-  var mini = '<section class="card"><div class="stim-mini"><span>A: diskon 30%</span><span>B: beli 2 gratis 1</span><span class="num">Rp12.000/buku</span><span>Butuh 3 buku</span></div>'+
-    '<button class="btn ghost" data-act="zoom">Lihat brosur</button></section>';
+  var stimCard = '<section class="card"><button class="stim-btn" data-act="zoom" aria-label="Perbesar gambar">'+T.stim+'</button>'+
+    '<p class="small muted">Ketuk gambar untuk memperbesar.</p><p>'+T.tanya+'</p></section>';
+  var mini = '<section class="card"><div class="stim-mini">'+T.mini.map(function(m){ return '<span class="num">'+m+'</span>'; }).join('')+'</div>'+
+    '<button class="btn ghost" data-act="zoom">Lihat gambar</button></section>';
   var body = '', act = '';
   if(L.step===1){
-    body = stim+'<section class="card"><h2>Info mana yang kamu pakai untuk menghitung?</h2><p class="small muted">Pilih semua yang penting.</p><div class="chips">'+
-      INFO.map(function(x){
+    body = stimCard+'<section class="card"><h2>Info mana yang kamu pakai untuk menghitung?</h2><p class="small muted">Pilih semua yang penting.</p><div class="chips">'+
+      T.info.map(function(x){
         var on = !!L.info[x[0]], bad = L.fb && !L.fb.ok && on && !x[2];
         return '<button class="tog'+(bad?' no':'')+'" data-act="info" data-arg="'+x[0]+'" aria-pressed="'+on+'">'+x[1]+'</button>'; }).join('')+'</div></section>'+fbBox(L.fb);
-    act = L.ok[1] ? btn('Lanjut','litLanjut') : btn('Periksa','litCek1',{dis:!Object.keys(L.info).some(function(k){return L.info[k];})});
+    act = L.ok[1] ? btn('Lanjut','litLanjut') : btn('Periksa','litCek1',{dis:!Object.keys(L.info).some(function(k){ return L.info[k]; })});
   } else if(L.step===2){
-    body = mini+'<section class="card"><h2>Cara menghitung di Toko A?</h2><div class="opts">'+
-      opt('3 × Rp12.000, lalu dikurangi 30%','ubah','A:a1',L.uA==='a1')+
-      opt('3 × Rp12.000, lalu ditambah 30%','ubah','A:a2',L.uA==='a2')+
-      opt('Rp12.000 dikurangi 30% saja','ubah','A:a3',L.uA==='a3')+'</div></section>'+
-      '<section class="card"><h2>Cara menghitung di Toko B?</h2><div class="opts">'+
-      opt('Bayar 3 buku','ubah','B:b1',L.uB==='b1')+
-      opt('Bayar 2 buku, dapat 3 buku','ubah','B:b2',L.uB==='b2')+
-      opt('Bayar 1 buku','ubah','B:b3',L.uB==='b3')+'</div></section>'+fbBox(L.fb);
-    act = L.ok[2] ? btn('Lanjut','litLanjut') : btn('Periksa','litCek2',{dis:!(L.uA&&L.uB)});
+    body = mini+T.ubah.map(function(u,qi){
+      return '<section class="card"><h2>'+u.tanya+'</h2><div class="opts">'+u.opsi.map(function(o){ return opt(o[1],'ubah',qi+':'+o[0],L.u[qi]===o[0]); }).join('')+'</div></section>';
+    }).join('')+fbBox(L.fb);
+    var lengkap = T.ubah.every(function(_,qi){ return !!L.u[qi]; });
+    act = L.ok[2] ? btn('Lanjut','litLanjut') : btn('Periksa','litCek2',{dis:!lengkap});
   } else if(L.step===3){
-    S.keyAction = 'litCek3';
-    var hints = ['Toko A: hitung 3 × Rp12.000 dulu, lalu kurangi 30% dari hasilnya.','Toko A: 3 × 12.000 = 36.000. Potongan 30% × 36.000 = 10.800.','Toko B: kamu hanya membayar 2 × Rp12.000.'];
-    body = mini+(L.hint?'<div class="hintbox">'+hints.slice(0,L.hint).map(function(h){return '<p>'+h+'</p>';}).join('')+'</div>':'')+
-      '<section class="card"><span class="eyebrow">Total bayar di Toko A</span>'+field('totA','Total Toko A')+'</section>'+
-      '<section class="card"><span class="eyebrow">Total bayar di Toko B</span>'+field('totB','Total Toko B')+'</section>'+fbBox(L.fb);
-    act = L.ok[3] ? btn('Lanjut','litLanjut') : btn('Periksa','litCek3',{dis:!(S.vals.totA&&S.vals.totB)});
+    S.keyAction = L.ok[3] ? null : 'litCek3';
+    body = mini+(L.hint?hintbox(T.hint.slice(0,L.hint)):'')+T.hitung.map(function(h){
+      return '<section class="card"><span class="eyebrow">'+h.label+'</span>'+field(h.key,h.label,h.unit||'rp')+'</section>'; }).join('')+fbBox(L.fb);
+    var isi = T.hitung.every(function(h){ return !!S.vals[h.key]; });
+    act = L.ok[3] ? btn('Lanjut','litLanjut') : btn('Periksa','litCek3',{dis:!isi});
   } else {
-    var selesai = L.ok[4];
-    body = '<section class="card"><span class="eyebrow">Hasil hitunganmu</span><div class="banding"><div class="b ba"><span>Toko A</span><strong>Rp25.200</strong></div><div class="b bb"><span>Toko B</span><strong>Rp24.000</strong></div></div></section>'+
-      '<section class="card"><h2>Aku memilih</h2><div class="row">'+
-        opt('Toko A','pilihToko','A',L.pilih==='A')+opt('Toko B','pilihToko','B',L.pilih==='B')+'</div></section>'+
-      '<section class="card"><h2>Alasanku</h2><div class="opts">'+
-        opt('Total yang dibayar di toko itu lebih kecil','alasan','r1',L.alasan==='r1')+
-        opt('Angka 30% besar, jadi pasti lebih hemat','alasan','r2',L.alasan==='r2')+
-        opt('Ada barang gratis, jadi pasti lebih murah','alasan','r3',L.alasan==='r3')+'</div></section>'+fbBox(L.fb)+
-      (selesai ? '<section class="card"><span class="eyebrow">Pikirkan lagi</span><p>Kalau kamu hanya butuh <b>2 buku</b>, toko mana yang lebih hemat?</p>'+
-        (L.pikir ? '<p class="num">Toko A: 2 × Rp12.000 = Rp24.000, dikurangi 30% menjadi <b>Rp16.800</b>.<br>Toko B: tetap membayar 2 buku, yaitu <b>Rp24.000</b> (dapat 3, padahal butuh 2).</p><p><b>Toko A lebih hemat.</b> Promo terbaik bergantung pada kebutuhanmu.</p>'
-          : btn('Lihat jawaban','litPikir',{cls:'secondary'}))+'</section>' : '');
-    act = selesai ? btn('Ulangi','litUlang',{cls:'secondary'})+btn('Ke Pasar Pintar','go',{arg:'pasar'}) : btn('Periksa','litCek4',{dis:!(L.pilih&&L.alasan)});
+    var P = T.putus, selesai = L.ok[4];
+    body = '<section class="card"><span class="eyebrow">Hasil hitunganmu</span><div class="banding">'+P.banding.map(function(b,i){
+        return '<div class="b '+(i?'bb':'ba')+'"><span>'+b[0]+'</span><strong>'+b[1]+'</strong></div>'; }).join('')+'</div></section>'+
+      '<section class="card"><h2>'+P.tanya+'</h2><div class="row">'+P.pilihan.map(function(p){ return opt(p[1],'litPilih',p[0],L.pilih===p[0]); }).join('')+'</div></section>'+
+      '<section class="card"><h2>Alasanku</h2><div class="opts">'+P.alasan.map(function(a){ return opt(a[1],'alasan',a[0],L.alasan===a[0]); }).join('')+'</div></section>'+fbBox(L.fb)+
+      (selesai ? '<section class="card"><span class="eyebrow">Pikirkan lagi</span><p>'+T.pikir.q+'</p>'+
+        (L.pikir ? '<p class="num">'+T.pikir.a+'</p>' : btn('Lihat jawaban','litPikir',{cls:'secondary'}))+'</section>' : '');
+    act = selesai ? btn('Ulangi','litUlang',{cls:'secondary'})+btn('Tantangan lain','tutupLit') : btn('Periksa','litCek4',{dis:!(L.pilih&&L.alasan)});
   }
-  var ov = S.zoom ? '<div class="overlay" role="dialog" aria-label="Brosur diperbesar"><div class="ov-in">'+BROSUR+btn('Tutup','zoom',{cls:'secondary'})+'</div></div>' : '';
-  return header('Tantangan Literasi','Mana lebih hemat?','go" data-arg="beranda',(L.step===3?'<button class="pill-btn" data-act="litHint"'+(L.hint>=3?' disabled':'')+'>Petunjuk</button>':''))+
+  var ov = S.zoom ? '<div class="overlay" role="dialog" aria-label="Gambar diperbesar"><div class="ov-in">'+T.stim+btn('Tutup','zoom',{cls:'secondary'})+'</div></div>' : '';
+  return header(T.judul, T.modul+' · '+T.sub, 'tutupLit', (L.step===3 && !L.ok[3] ? '<button class="pill-btn" data-act="litHint"'+(L.hint>=3?' disabled':'')+'>Petunjuk</button>' : ''))+
     wrap(siklus+body)+actionbar(act)+ov;
 }
 
-/* ---------- Layar: Pasar Pintar ---------- */
+/* ================= Layar: Pasar Pintar ================= */
 function rPasar(){
-  var P = S.pasar;
-  var hargaB = function(b){ return hargaAkhir(b.h,b.d); };
+  var P = S.pasar, Mi = misiById(P.id);
+  if(!S.pasarOpen || !Mi){
+    var kel = function(jenis, judul, ket){
+      return '<h2 class="sec-t">'+judul+'</h2><p class="small muted">'+ket+'</p><div class="modlist">'+MISI.filter(function(x){ return x.jenis===jenis; }).map(function(x){
+        var done = S.stats.pasarDone[x.id];
+        return '<button class="mod'+(done?' done':'')+'" data-act="bukaMisi" data-arg="'+x.id+'"><span class="code">L'+x.level+'</span><span class="tx"><strong>'+x.judul+'</strong><span>'+(done?'Selesai · ':'')+x.ringkas+'</span></span>'+I.next+'</button>';
+      }).join('')+'</div>';
+    };
+    return header('Pasar Pintar','Misi belanja dan berjualan')+wrap(
+      kel('belanja','Misi belanja','Pilih barang sesuai uangmu, lalu hitung di kasir.')+
+      kel('jual','Misi berjualan','Hitung modal, harga jual, dan untung daganganmu.')
+    )+nav();
+  }
+  return Mi.jenis==='belanja' ? rBelanja(Mi, P) : rJual(Mi, P);
+}
+
+function rBelanja(Mi, P){
+  var sub = 'Misi belanja · Level '+Mi.level;
   if(P.step==='pilih'){
-    var adaTas = P.keranjang.indexOf('tas')>-1;
-    return header('Pasar Pintar','Misi belanja · Level 1','go" data-arg="beranda')+wrap(
-      '<section class="card"><div class="uang"><span class="eyebrow">Uangmu</span><strong>'+fmt(ANGGARAN)+'</strong></div>'+
-      '<p><b>Misi:</b> beli tas sekolah dan minimal 1 barang lain. Uangmu harus cukup.</p></section>'+
-      '<div class="items">'+BARANG.map(function(b){
+    var adaWajib = P.keranjang.indexOf(Mi.wajib)>-1;
+    return header(Mi.judul, sub, 'tutupMisi')+wrap(
+      '<section class="card"><div class="uang"><span class="eyebrow">Uangmu</span><strong>'+fmt(Mi.anggaran)+'</strong></div><p><b>Misi:</b> '+Mi.misi+'</p></section>'+
+      '<div class="items">'+Mi.barang.map(function(b){
         var on = P.keranjang.indexOf(b.id)>-1;
         return '<button class="item" data-act="barang" data-arg="'+b.id+'" aria-pressed="'+on+'"><span class="nm">'+b.nama+'</span>'+
           (b.d?'<span class="tag-d">Diskon '+b.d+'%</span><s>'+fmt(b.h)+'</s>':'<span class="harga">'+fmt(b.h)+'</span>')+
           '<span class="pick">'+(on?'✓ Di keranjang':'Ketuk untuk pilih')+'</span></button>';
       }).join('')+'</div>'+
-      '<p class="note">Harga yang dicoret adalah Harga Awal. Kamu akan menghitung harga bayarnya di kasir.</p>'+fbBox(P.fb)
-    )+actionbar(btn('Ke kasir ('+P.keranjang.length+' barang)','keKasir',{dis:!(adaTas && P.keranjang.length>=2)}));
+      '<p class="note">Harga yang dicoret adalah Harga Awal. Kamu akan menghitung harga bayarnya di kasir.'+(Mi.pajak?' Di kasir, PPN '+Mi.pajak+'% ditambahkan setelah diskon.':'')+'</p>'+fbBox(P.fb)
+    )+actionbar(btn('Ke kasir ('+P.keranjang.length+' barang)','keKasir',{dis:!(adaWajib && P.keranjang.length>=Mi.min)}));
   }
   if(P.step==='kasir'){
     S.keyAction = 'kasirPeriksa';
-    return header('Kasir','Hitung belanjaanmu','pasarBack')+wrap(
+    return header('Kasir', Mi.judul, 'pasarBack')+wrap(
       '<section class="card">'+P.keranjang.map(function(id){
-        var b = barang(id);
-        return '<div class="kasir-row"><strong>'+b.nama+'</strong><span class="small muted num">'+(b.d? fmt(b.h)+', diskon '+b.d+'%. Harga bayar:' : fmt(b.h)+', tanpa diskon. Harga bayar:')+'</span>'+field('f_'+id,'Harga bayar '+b.nama)+'</div>';
+        var b = barangMisi(Mi, id);
+        return '<div class="kasir-row"><strong>'+b.nama+'</strong><span class="small muted num">'+(b.d? fmt(b.h)+', diskon '+b.d+'%. Harga bayar:' : fmt(b.h)+', tanpa diskon. Harga bayar:')+'</span>'+field('f_'+id,'Harga bayar '+b.nama,'rp')+'</div>';
       }).join('')+'</section>'+
-      '<section class="card"><span class="eyebrow">Total belanja</span>'+field('total','Total belanja')+
-      '<span class="eyebrow">Kembalian dari '+fmt(ANGGARAN)+'</span>'+field('kembali','Kembalian')+'</section>'+fbBox(P.fb)+
+      '<section class="card">'+
+        (Mi.pajak ? '<span class="eyebrow">Subtotal (sebelum pajak)</span>'+field('sub','Subtotal','rp')+'<span class="eyebrow">PPN '+Mi.pajak+'% dari subtotal</span>'+field('ppn','PPN','rp') : '')+
+        '<span class="eyebrow">Total bayar</span>'+field('total','Total bayar','rp')+
+        '<span class="eyebrow">Kembalian dari '+fmt(Mi.anggaran)+'</span>'+field('kembali','Kembalian','rp')+'</section>'+fbBox(P.fb)+
       (P.over ? btn('Ganti barang','pasarBack',{cls:'secondary'}) : '')
     )+actionbar(btn('Periksa','kasirPeriksa'));
   }
-  var tot = P.keranjang.reduce(function(a,id){ return a + hargaB(barang(id)); },0);
-  return header('Misi selesai','Pasar Pintar','go" data-arg="beranda')+wrap(
+  var subt = P.keranjang.reduce(function(a,id){ return a + hargaB(barangMisi(Mi,id)); },0), ppn = subt*Mi.pajak/100, tot = subt+ppn;
+  return header('Misi selesai', Mi.judul, 'tutupMisi')+wrap(
     fbBox({ok:true,title:'Hebat!',msg:'Belanjaanmu pas dengan uangmu. Semua hitunganmu benar.'})+
     '<section class="card"><span class="eyebrow">Struk belanja</span><div class="struk">'+
-      P.keranjang.map(function(id){ var b=barang(id); return '<div class="ln"><span>'+b.nama+(b.d?' (−'+b.d+'%)':'')+'</span><span>'+fmt(hargaB(b))+'</span></div>'; }).join('')+
+      P.keranjang.map(function(id){ var b = barangMisi(Mi,id); return '<div class="ln"><span>'+b.nama+(b.d?' (−'+b.d+'%)':'')+'</span><span>'+fmt(hargaB(b))+'</span></div>'; }).join('')+
+      (Mi.pajak ? '<div class="ln tot"><span>Subtotal</span><span>'+fmt(subt)+'</span></div><div class="ln"><span>PPN '+Mi.pajak+'%</span><span>'+fmt(ppn)+'</span></div>' : '')+
       '<div class="ln tot"><span>Total</span><span>'+fmt(tot)+'</span></div>'+
-      '<div class="ln"><span>Tunai</span><span>'+fmt(ANGGARAN)+'</span></div>'+
-      '<div class="ln"><span>Kembali</span><span>'+fmt(ANGGARAN-tot)+'</span></div></div></section>'
-  )+actionbar(btn('Main lagi','pasarUlang',{cls:'secondary'})+btn('Beranda','go',{arg:'beranda'}));
+      '<div class="ln"><span>Tunai</span><span>'+fmt(Mi.anggaran)+'</span></div>'+
+      '<div class="ln"><span>Kembali</span><span>'+fmt(Mi.anggaran-tot)+'</span></div></div></section>'
+  )+actionbar(btn('Main lagi','pasarUlang',{cls:'secondary'})+btn('Misi lain','tutupMisi'));
 }
 
-/* ---------- Layar: Rapor ---------- */
+function rJual(Mi, P){
+  var sub = 'Misi berjualan · Level '+Mi.level;
+  var cerita = '<section class="card cerita"><span class="eyebrow">Ceritanya</span>'+Mi.cerita.map(function(c){ return '<p>'+c+'</p>'; }).join('')+
+    '<div class="lapor">'+Mi.data.map(function(d){ return '<div class="ln"><span class="muted">'+d[0]+'</span><b>'+d[1]+'</b></div>'; }).join('')+'</div></section>';
+  if(P.step==='hitung'){
+    S.keyAction = 'jualPeriksa';
+    var isi = Mi.f.every(function(f){ return !!S.vals[f.key]; });
+    return header(Mi.judul, sub, 'tutupMisi', '<button class="pill-btn" data-act="jualHint"'+(P.hint>=3?' disabled':'')+'>Petunjuk</button>')+wrap(
+      cerita+(P.hint?hintbox(Mi.hint.slice(0,P.hint)):'')+
+      Mi.f.map(function(f,i){ return '<section class="card"><span class="eyebrow">Langkah '+(i+1)+' · '+f.label+'</span><div class="eq"><span>'+f.eq+'</span>'+field(f.key,f.label,f.unit||'rp')+'</div></section>'; }).join('')+
+      fbBox(P.fb)
+    )+actionbar(btn('Periksa','jualPeriksa',{dis:!isi}));
+  }
+  if(P.step==='putus'){
+    return header(Mi.judul, sub, 'tutupMisi')+wrap(
+      '<section class="card"><span class="eyebrow">Hasil hitunganmu</span><div class="lapor">'+Mi.f.map(function(f){ return '<div class="ln"><span class="muted">'+f.label+'</span><b>'+fmtUnit(f.jawab, f.unit||'rp')+'</b></div>'; }).join('')+'</div></section>'+
+      '<section class="card"><h2>'+Mi.putus.tanya+'</h2><div class="opts">'+Mi.putus.opsi.map(function(o,i){
+        var on = P.putus===i; return opt(o[0],'jualPutus',i,on,on?(o[1]?'ok':'no'):''); }).join('')+'</div></section>'+fbBox(P.fb)
+    )+actionbar(btn('Lanjut','jualSelesai',{dis:!P.putusOk}));
+  }
+  return header('Misi selesai', Mi.judul, 'tutupMisi')+wrap(
+    fbBox({ok:true,title:'Hebat!',msg:Mi.selesai})+
+    '<section class="card"><span class="eyebrow">Laporan dagang</span><div class="struk">'+Mi.lapor.map(function(l,i){
+      return '<div class="ln'+(i===Mi.lapor.length-1?' tot':'')+'"><span>'+l[0]+'</span><span>'+l[1]+'</span></div>'; }).join('')+'</div></section>'
+  )+actionbar(btn('Main lagi','pasarUlang',{cls:'secondary'})+btn('Misi lain','tutupMisi'));
+}
+
+/* ================= Layar: Rapor ================= */
 function rRapor(){
   var st = S.stats;
   var akur = st.dijawab ? Math.round(st.benar/st.dijawab*100) : 0;
@@ -716,9 +1512,12 @@ function rRapor(){
       '<div class="stat"><b>'+st.benar+'/'+st.dijawab+'</b><span>Soal latihan benar</span></div>'+
       '<div class="stat"><b>'+akur+'%</b><span>Akurasi</span></div>'+
       '<div class="stat"><b>'+rp+'</b><span>Rata-rata usaha (1–9)</span></div>'+
-      '<div class="stat"><b>'+st.literasi+'</b><span>Tantangan literasi selesai</span></div>'+
-      '<div class="stat"><b>'+st.pasar+'</b><span>Misi pasar selesai</span></div>'+
+      '<div class="stat"><b>'+Object.keys(st.litDone).length+'/'+LIT.length+'</b><span>Tantangan literasi selesai</span></div>'+
+      '<div class="stat"><b>'+Object.keys(st.pasarDone).length+'/'+MISI.length+'</b><span>Misi pasar selesai</span></div>'+
+      '<div class="stat"><b>'+URUTAN.filter(function(k){return st.modul[k];}).length+'/'+URUTAN.length+'</b><span>Modul selesai</span></div>'+
     '</div>'+
+    '<section class="card"><span class="eyebrow">Hasil terbaik per modul</span>'+URUTAN.map(function(k){
+      var r = st.modul[k]; return '<div class="rapor-mod"><span><b>'+k+'</b> '+MODUL[k].judul+'</span><span class="num muted">'+(r? r.benar+'/'+r.total : 'belum')+'</span></div>'; }).join('')+'</section>'+
     '<section class="card"><span class="eyebrow">Perlu diperhatikan</span>'+
       (mkList.length ? '<ul style="margin:0;padding-left:20px">'+mkList.map(function(k){return '<li>'+MK_TEKS[k]+' ('+st.mk[k]+'×)</li>';}).join('')+'</ul>' : '<p class="muted">Belum ada kesalahan yang berulang.</p>')+'</section>'+
     (S.confirmReset ? '<section class="card"><p><b>Hapus semua progres di HP ini?</b> Tindakan ini tidak bisa dibatalkan.</p><div class="row">'+btn('Batal','resetBatal',{cls:'secondary'})+btn('Hapus','resetYa')+'</div></section>'
@@ -726,7 +1525,7 @@ function rRapor(){
   )+nav();
 }
 
-/* ---------- Aksi ---------- */
+/* ================= Aksi ================= */
 var ACT = {
   go:function(a){ go(a); },
   mulaiNama:function(){ var el=document.getElementById('nama'); var v=(el?el.value:'').trim().slice(0,20); S.nama=v||'Kawan'; store.set('nama',S.nama); },
@@ -734,138 +1533,145 @@ var ACT = {
   focus:function(a){ S.active=a; S.scrollTo=true; },
   key:function(a){
     if(!S.active) return;
-    var v = S.vals[S.active]||'';
+    var unit = S.units[S.active]||'rp', v = S.vals[S.active]||'';
     if(a==='del') v = v.slice(0,-1);
-    else if(!(v==='' && (a==='0'||a==='000'))) v = (v+a).slice(0,9);
+    else if(a===','){ if(unit!=='persen' || v.indexOf(',')>-1) return; v = (v===''?'0':v)+','; }
+    else {
+      if(unit!=='persen' && v==='' && (a==='0'||a==='000')) return;
+      if(unit==='persen' && v.indexOf(',')>-1 && v.split(',')[1].length>=2) return;
+      v = (v+a).slice(0,9);
+    }
     S.vals[S.active] = v; S.fs[S.active] = ''; buzz(8);
   },
   kpClose:function(){ S.active=null; },
   kpGo:function(){ var f=S.keyAction; S.active=null; if(f && ACT[f]) ACT[f](); },
 
-  bukaModul:function(){ if(!S.m || S.m.tahap==='ringkasan') mulaiModul(); S.mOpen=true; if(S.route!=='belajar') go('belajar'); },
-  langsungLatihan:function(){ mulaiLatihan(); S.mOpen=true; },
-  tutupModul:function(){ S.mOpen=false; S.active=null; },
-  istNext:function(){ if(S.m.i<ISTILAH.length-1) S.m.i++; else { S.m.tahap='contoh'; S.m.c=1; } },
-  istPrev:function(){ if(S.m.i>0) S.m.i--; },
-  contohNext:function(){ if(S.m.c<CONTOH.langkah.length) S.m.c++; else { S.m.tahap='rumpang'; S.m.fb=null; clearFields(); S.active='rump'; } },
-  rumpangPeriksa:function(){
-    var v=num('rump');
-    if(v===90000){ S.fs.rump='ok'; S.m.fb={ok:true,msg:'Rp120.000 − Rp30.000 = Rp90.000. Kamu siap mencoba latihan.'}; buzz(15); return; }
-    S.fs.rump='no';
-    var msg = v===30000 ? 'Itu besar potongannya. Yang ditanya harga yang dibayar.' : (v===150000 ? 'Diskon membuat harga lebih murah, jadi dikurangi, bukan ditambah.' : 'Kurangi Rp120.000 dengan Rp30.000.');
-    S.m.fb={ok:false,msg:msg}; buzz(30);
+  bukaModul:function(k){
+    k = k || S.cur || 'M0';
+    if(!S.mods[k] || S.mods[k].tahap==='ringkasan') mulaiModul(k); else S.cur = k;
+    S.mOpen = true; if(S.route!=='belajar') go('belajar'); window.scrollTo(0,0);
   },
-  keLatihan:function(){ mulaiLatihan(); },
-  ulangLatihan:function(){ mulaiLatihan(); },
-  ulangContoh:function(){ S.m={tahap:'contoh', i:0, c:1, fb:null}; clearFields(); },
+  keModul:function(k){ mulaiModul(k); S.mOpen=true; window.scrollTo(0,0); },
+  tutupModul:function(){ S.mOpen=false; S.active=null; },
+  istNext:function(){ var m=M(); if(m.i<D().istilah.length-1) m.i++; else { m.tahap='contoh'; m.c=1; } },
+  istPrev:function(){ var m=M(); if(m.i>0) m.i--; },
+  contohNext:function(){ var m=M(); if(m.c<D().contoh.langkah.length) m.c++; else { m.tahap='rumpang'; m.fb=null; clearFields(); S.active='rump'; } window.scrollTo(0,0); },
+  rumpangPeriksa:function(){
+    var m=M(), R=D().rumpang, v=num('rump');
+    if(sama(v, R.blank.jawab, R.blank.unit)){ S.fs.rump='ok'; m.fb={ok:true,msg:'Langkah terakhir benar. Kamu siap mencoba latihan.'}; buzz(15); return; }
+    S.fs.rump='no';
+    var msg = R.umum;
+    Object.keys(R.salah||{}).forEach(function(k){ if(Math.abs(parseFloat(k)-v)<0.0001) msg = R.salah[k]; });
+    m.fb={ok:false,msg:msg}; buzz(30);
+  },
+  keLatihan:function(){ mulaiLatihan(); window.scrollTo(0,0); },
+  ulangContoh:function(){ S.mods[S.cur]={tahap:'contoh', i:0, c:1, fb:null}; clearFields(); },
 
-  tap:function(a){
-    var m=S.m;
-    if(a==='x'){ m.tapped.x='no'; m.fb={ok:false,title:'Info ini tidak dipakai',msg:'Uang yang dibawa tidak dipakai untuk menghitung harga setelah diskon. Cari harga awal dan diskonnya.'}; return; }
-    m.tapped[a]=true; m.fb=null;
+  tap:function(k){
+    var m=M(), c=m.soal[m.i].chips[k]; if(!c) return;
+    if(c.pengecoh){ m.tapped[k]='no'; m.fb={ok:false,title:'Info ini tidak dipakai',msg:c.pengecoh}; return; }
+    m.tapped[k]=true; m.fb=null;
   },
   ditanya:function(a){
-    var m=S.m; m.ditanya=a;
-    m.fb = a==='akhir' ? null : {ok:false,msg: a==='pot' ? 'Potongan adalah uang yang dihemat. Soal menanyakan uang yang harus dibayar.' : 'Harga awal sudah diketahui. Soal menanyakan harga setelah diskon.'};
+    var m=M(), dt=m.soal[m.i].ditanya; m.ditanya=a;
+    if(a===dt.benar){ m.fb=null; return; }
+    dt.opsi.forEach(function(o){ if(o[0]===a) m.fb={ok:false,msg:o[2]}; });
   },
-  lanjutOperasi:function(){ S.m.step='operasi'; S.m.fb=null; },
+  lanjutPahami:function(){ var m=M(), s=m.soal[m.i]; m.fb=null; if(s.op) m.step='operasi'; else { m.step='hitung'; S.active=s.f[0].key; S.scrollTo=true; } },
   operasi:function(a){
-    var m=S.m; m.op=a;
-    m.fb = a==='minus' ? {ok:true,msg:'Setelah diskon, harga menjadi lebih murah. Jadi Harga Awal dikurangi Potongan.'}
-      : {ok:false,msg: a==='plus' ? 'Setelah diskon harga jadi lebih murah, jadi Harga Awal perlu dikurangi.' : 'Potongan lebih kecil dari Harga Awal. Urutannya Harga Awal − Potongan.'};
+    var m=M(), s=m.soal[m.i]; m.op=a;
+    s.op.opsi.forEach(function(o){ if(o[0]===a){ m.fb={ok:!!o[2],msg:o[3]}; if(!o[2]) mk(o[4]); } });
   },
-  lanjutHitung:function(){ S.m.step='hitung'; S.m.fb=null; S.active='pot'; S.scrollTo=true; },
-  hint:function(){ if(S.m.hint<3) S.m.hint++; },
+  lanjutHitung:function(){ var m=M(); m.step='hitung'; m.fb=null; S.active=m.soal[m.i].f[0].key; S.scrollTo=true; },
+  hint:function(){ var m=M(); if(m.hint<3) m.hint++; },
   periksa:function(){
-    var m=S.m, s=m.soal[m.i], p=num('pot'), a=num('akhir');
-    var pOk = p===s.pot, aOk = a===s.akhir;
-    S.fs = {pot:pOk?'ok':'no', akhir:aOk?'ok':'no'};
-    if(pOk && aOk){
+    var m=M(), s=m.soal[m.i], v={}, ok={}, semua=true, salahPertama=null;
+    s.f.forEach(function(f){ var x=val(f.key,f.unit); v[f.key]=x; ok[f.key]=sama(x,f.jawab,f.unit); S.fs[f.key]=ok[f.key]?'ok':'no'; if(!ok[f.key]){ semua=false; if(!salahPertama) salahPertama=f; } });
+    if(semua){
       m.ok=true; m.benar++; S.stats.benar++; S.stats.dijawab++; saveStats();
-      m.step='hasil'; m.fb={ok:true,msg:'Kamu menghitung potongan '+fmt(s.pot)+', lalu mengurangi harga awal. Hasilnya '+fmt(s.akhir)+'.'};
-      buzz(15); return;
+      m.step='hasil'; m.fb={ok:true,msg:s.benar}; buzz(15); window.scrollTo(0,0); return;
     }
     m.tries++;
-    var msg;
-    if(a===s.pot){ msg='Itu besar potongannya. Yang ditanya harga yang dibayar setelah diskon.'; mk('MK1'); }
-    else if(a===s.h+s.pot){ msg='Diskon membuat harga lebih murah, jadi Harga Awal dikurangi Potongan.'; mk('MK2'); }
-    else if((!pOk && (p===s.pot*10 || p*10===s.pot)) || (!aOk && (a===s.akhir*10 || a*10===s.akhir))){ msg='Hampir benar! Cek lagi banyaknya angka nol.'; mk('MK7'); }
-    else if(!pOk){ msg='Cek lagi Langkah 1. '+s.d+'% artinya '+s.d+' per seratus, jadi kalikan '+s.d+'/100 dengan '+grp(s.h)+'.'; }
-    else { msg='Langkah 1 sudah benar. Cek lagi pengurangan di Langkah 2.'; }
-    if(m.tries>=2){ m.ok=false; S.stats.dijawab++; saveStats(); m.step='hasil'; m.fb={ok:false,msg:msg+' Lihat pembahasan di bawah.'}; }
-    else m.fb={ok:false,msg:msg};
+    var r = s.salah ? s.salah(v, ok) : null;
+    if(!r){
+      var f = salahPertama, x = v[f.key];
+      if(f.unit!=='persen' && (x===f.jawab*10 || x*10===f.jawab || x===f.jawab*100 || x*100===f.jawab)) r = {msg:'Hampir benar! Cek lagi banyaknya angka nol.', mk:'MK7'};
+      else r = {msg:f.cekLagi};
+    }
+    mk(r.mk);
+    if(m.tries>=2){ m.ok=false; S.stats.dijawab++; saveStats(); m.step='hasil'; m.fb={ok:false,msg:r.msg+' Lihat pembahasan di bawah.'}; window.scrollTo(0,0); }
+    else m.fb={ok:false,msg:r.msg};
     buzz(30);
   },
-  cek:function(a){ S.m.cek=a; S.m.bahas=1; },
-  bahasNext:function(){ S.m.bahas++; },
-  soalNext:function(){ if(S.m.i<S.m.soal.length-1){ S.m.i++; resetSoal(); } else { S.m.tahap='paas'; S.m.paas=null; } window.scrollTo(0,0); },
-  paas:function(a){ S.m.paas=+a; },
-  paasKirim:function(){ S.stats.paas.push(S.m.paas); saveStats(); S.m.tahap='ringkasan'; },
+  cek:function(a){ var m=M(), s=m.soal[m.i], i=+a; m.cek=i; m.bahas=1; if(!s.cek.opsi[i][1]) mk(s.cek.mkNo); },
+  bahasNext:function(){ M().bahas++; },
+  soalNext:function(){ var m=M(); if(m.i<m.soal.length-1){ m.i++; resetSoal(); } else { m.tahap='paas'; m.paas=null; S.active=null; } window.scrollTo(0,0); },
+  paas:function(a){ M().paas=+a; },
+  paasKirim:function(){
+    var m=M(), prev=S.stats.modul[S.cur];
+    S.stats.paas.push(m.paas);
+    S.stats.modul[S.cur] = {benar: prev ? Math.max(prev.benar, m.benar) : m.benar, total:m.soal.length};
+    saveStats(); m.tahap='ringkasan';
+  },
 
   zoom:function(){ S.zoom=!S.zoom; },
+
+  /* ----- Tantangan Literasi ----- */
+  bukaLit:function(id){ if(S.lit.id!==id) S.lit=newLit(id); S.litOpen=true; clearFields(); if(S.route!=='literasi') go('literasi'); window.scrollTo(0,0); },
+  tutupLit:function(){ S.litOpen=false; S.active=null; S.zoom=false; },
   info:function(a){ var L=S.lit; L.info[a]=!L.info[a]; L.fb=null; },
   litCek1:function(){
-    var L=S.lit, extra=null, miss=0;
-    INFO.forEach(function(x){ if(x[2] && !L.info[x[0]]) miss++; if(!x[2] && L.info[x[0]] && !extra) extra=x[1]; });
-    if(extra) L.fb={ok:false,msg:'"'+extra+'" tidak dibutuhkan untuk menghitung harga. Batalkan pilihannya.'};
+    var L=S.lit, T=litById(L.id), extra=null, miss=0;
+    T.info.forEach(function(x){ if(x[2] && !L.info[x[0]]) miss++; if(!x[2] && L.info[x[0]] && !extra) extra=x; });
+    if(extra) L.fb={ok:false,msg:extra[3] || ('"'+extra[1]+'" tidak dibutuhkan untuk menghitung. Batalkan pilihannya.')};
     else if(miss) L.fb={ok:false,msg:'Masih ada '+miss+' info penting yang belum dipilih.'};
     else { L.fb={ok:true,msg:'Kamu memilih semua info yang dibutuhkan dan mengabaikan info yang tidak penting.'}; L.ok[1]=true; buzz(15); }
   },
-  litLanjut:function(){ var L=S.lit; L.step++; L.fb=null; clearFields(); if(L.step===3){ S.active='totA'; } window.scrollTo(0,0); },
-  ubah:function(a){ var p=a.split(':'); S.lit['u'+p[0]]=p[1]; S.lit.fb=null; },
+  litLanjut:function(){ var L=S.lit, T=litById(L.id); L.step++; L.fb=null; clearFields(); if(L.step===3){ S.active=T.hitung[0].key; } window.scrollTo(0,0); },
+  ubah:function(a){ var p=a.split(':'); S.lit.u[p[0]]=p[1]; S.lit.fb=null; },
   litCek2:function(){
-    var L=S.lit, msg=[];
-    if(L.uA==='a2') msg.push('Toko A: diskon mengurangi harga, bukan menambah.');
-    if(L.uA==='a3') msg.push('Toko A: kamu butuh 3 buku, jadi hitung harga 3 buku dulu.');
-    if(L.uB==='b1') msg.push('Toko B: dengan promo beli 2 gratis 1, satu buku gratis.');
-    if(L.uB==='b3') msg.push('Toko B: yang gratis hanya 1 buku. Kamu tetap membayar 2 buku.');
-    if(msg.length) L.fb={ok:false,msg:msg.join(' ')};
-    else { L.fb={ok:true,msg:'Kamu sudah mengubah promo menjadi cara menghitung.'}; L.ok[2]=true; buzz(15); }
+    var L=S.lit, T=litById(L.id), msg=[];
+    T.ubah.forEach(function(u,qi){ u.opsi.forEach(function(o){ if(o[0]===L.u[qi] && !o[2]){ msg.push(o[3]); mk(o[4]); } }); });
+    if(msg.length){ L.fb={ok:false,msg:msg.join(' ')}; buzz(30); }
+    else { L.fb={ok:true,msg:'Kamu sudah mengubah situasi menjadi cara menghitung.'}; L.ok[2]=true; buzz(15); }
   },
   litHint:function(){ if(S.lit.hint<3) S.lit.hint++; },
   litCek3:function(){
-    var L=S.lit, a=num('totA'), b=num('totB'), msg=[];
-    S.fs={totA:a===25200?'ok':'no', totB:b===24000?'ok':'no'};
-    if(a!==25200){
-      if(a===10800){ msg.push('Rp10.800 itu potongan di Toko A. Kurangi Rp36.000 dengan potongan itu.'); mk('MK1'); }
-      else if(a===36000) msg.push('Rp36.000 itu harga sebelum diskon. Kurangi dulu 30%.');
-      else if(a===252000 || a===2520){ msg.push('Toko A hampir benar! Cek lagi banyaknya angka nol.'); mk('MK7'); }
-      else msg.push('Cek lagi total Toko A.');
-    }
-    if(b!==24000){
-      if(b===36000) msg.push('Di Toko B satu buku gratis, jadi kamu hanya membayar 2 buku.');
-      else if(b===12000) msg.push('Di Toko B kamu tetap membayar 2 buku.');
-      else msg.push('Cek lagi total Toko B.');
-    }
+    var L=S.lit, T=litById(L.id), msg=[];
+    T.hitung.forEach(function(h){ var u=h.unit||'rp', v=val(h.key,u), ok=sama(v,h.jawab,u); S.fs[h.key]=ok?'ok':'no'; if(!ok) msg.push(pesanSalah(h,v,u)); });
     if(msg.length){ L.fb={ok:false,msg:msg.join(' ')}; buzz(30); }
-    else { L.fb={ok:true,msg:'Toko A Rp25.200 dan Toko B Rp24.000.'}; L.ok[3]=true; buzz(15); }
+    else { L.fb={ok:true,msg:'Semua hitunganmu benar.'}; L.ok[3]=true; buzz(15); }
   },
-  pilihToko:function(a){ S.lit.pilih=a; S.lit.fb=null; },
+  litPilih:function(a){ S.lit.pilih=a; S.lit.fb=null; },
   alasan:function(a){ S.lit.alasan=a; S.lit.fb=null; },
   litCek4:function(){
-    var L=S.lit;
-    if(L.pilih==='B' && L.alasan==='r1'){
-      L.fb={ok:true,msg:'Toko B lebih hemat Rp1.200 karena total yang dibayar lebih kecil.'}; L.ok[4]=true;
-      if(!L.counted){ L.counted=true; S.stats.literasi++; saveStats(); } buzz(15); return;
+    var L=S.lit, T=litById(L.id), P=T.putus, al=null;
+    P.alasan.forEach(function(a){ if(a[0]===L.alasan) al=a; });
+    if(L.pilih===P.benar && al && al[2]){
+      L.fb={ok:true,msg:P.ok}; L.ok[4]=true;
+      if(!S.stats.litDone[L.id]){ S.stats.litDone[L.id]=1; saveStats(); }
+      buzz(15); return;
     }
-    var msg = [];
-    if(L.pilih!=='B') msg.push('Bandingkan total bayarnya: Toko A Rp25.200, Toko B Rp24.000.');
-    if(L.alasan==='r2') msg.push('Persen diskon yang besar belum tentu lebih hemat. Bandingkan total yang dibayar.');
-    if(L.alasan==='r3') msg.push('Ada barang gratis belum tentu lebih murah. Bandingkan total yang dibayar.');
-    if(!msg.length) msg.push('Pilihanmu sudah tepat. Periksa lagi alasannya.');
+    var msg=[];
+    if(L.pilih!==P.benar) msg.push(P.salahPilih);
+    if(al && !al[2]){ msg.push(al[3]); mk(al[4]); }
+    if(!msg.length) msg.push('Periksa lagi pilihan dan alasanmu.');
     L.fb={ok:false,msg:msg.join(' ')}; buzz(30);
   },
   litPikir:function(){ S.lit.pikir=true; },
-  litUlang:function(){ S.lit=newLit(); clearFields(); window.scrollTo(0,0); },
+  litUlang:function(){ S.lit=newLit(S.lit.id); clearFields(); window.scrollTo(0,0); },
 
+  /* ----- Pasar Pintar ----- */
+  bukaMisi:function(id){ if(S.pasar.id!==id || S.pasar.step==='hasil') S.pasar=newPasar(id); S.pasarOpen=true; clearFields(); if(S.route!=='pasar') go('pasar'); window.scrollTo(0,0); },
+  tutupMisi:function(){ S.pasarOpen=false; S.active=null; },
   barang:function(a){ var k=S.pasar.keranjang, i=k.indexOf(a); if(i>-1) k.splice(i,1); else k.push(a); S.pasar.fb=null; },
   keKasir:function(){ var P=S.pasar; P.step='kasir'; P.fb=null; P.over=false; clearFields(); S.active='f_'+P.keranjang[0]; S.scrollTo=true; window.scrollTo(0,0); },
   pasarBack:function(){ S.pasar.step='pilih'; S.pasar.fb=null; S.pasar.over=false; S.active=null; },
   kasirPeriksa:function(){
-    var P=S.pasar, salah=null, tot=0;
+    var P=S.pasar, Mi=misiById(P.id), salah=null, subt=0;
     P.keranjang.forEach(function(id){
-      var b=barang(id), harus=hargaAkhir(b.h,b.d), v=num('f_'+id);
-      tot += harus;
+      var b=barangMisi(Mi,id), harus=hargaB(b), v=num('f_'+id);
+      subt += harus;
       S.fs['f_'+id] = v===harus ? 'ok' : 'no';
       if(v!==harus && !salah) salah={b:b, v:v};
     });
@@ -876,18 +1682,39 @@ var ACT = {
       else msg=b.nama+' tidak didiskon, jadi harganya tetap '+fmt(b.h)+'.';
       P.fb={ok:false,msg:msg}; buzz(30); return;
     }
+    var tot = subt;
+    if(Mi.pajak){
+      var s=num('sub'); S.fs.sub = s===subt ? 'ok' : 'no';
+      if(s!==subt){ P.fb={ok:false,msg:'Harga tiap barang sudah benar. Sekarang jumlahkan semuanya untuk subtotal.'}; buzz(30); return; }
+      var ppn = subt*Mi.pajak/100, p=num('ppn'); S.fs.ppn = p===ppn ? 'ok' : 'no';
+      if(p!==ppn){ P.fb={ok:false,msg:'PPN = '+Mi.pajak+'% × subtotal '+fmt(subt)+'.'}; buzz(30); return; }
+      tot = subt+ppn;
+    }
     var t=num('total');
     S.fs.total = t===tot ? 'ok' : 'no';
-    if(t!==tot){ P.fb={ok:false,msg:'Harga tiap barang sudah benar. Sekarang jumlahkan semua harga bayarnya.'}; buzz(30); return; }
-    if(tot>ANGGARAN){ P.over=true; S.fs.kembali=''; P.fb={ok:false,title:'Uangmu tidak cukup',msg:'Hitunganmu benar. Totalnya '+fmt(tot)+', lebih dari '+fmt(ANGGARAN)+' (kurang '+fmt(tot-ANGGARAN)+'). Ganti barang yang kamu pilih.'}; buzz(30); return; }
+    if(t!==tot){ P.fb={ok:false,msg: Mi.pajak ? 'Total = subtotal + PPN.' : 'Harga tiap barang sudah benar. Sekarang jumlahkan semua harga bayarnya.'}; buzz(30); return; }
+    if(tot>Mi.anggaran){ P.over=true; S.fs.kembali=''; P.fb={ok:false,title:'Uangmu tidak cukup',msg:'Hitunganmu benar. Totalnya '+fmt(tot)+', lebih dari '+fmt(Mi.anggaran)+' (kurang '+fmt(tot-Mi.anggaran)+'). Ganti barang yang kamu pilih.'}; buzz(30); return; }
     var k=num('kembali');
-    S.fs.kembali = k===ANGGARAN-tot ? 'ok' : 'no';
-    if(k!==ANGGARAN-tot){ P.fb={ok:false,msg:'Kembalian = uangmu − total belanja.'}; buzz(30); return; }
+    S.fs.kembali = k===Mi.anggaran-tot ? 'ok' : 'no';
+    if(k!==Mi.anggaran-tot){ P.fb={ok:false,msg:'Kembalian = uangmu − total bayar.'}; buzz(30); return; }
     P.step='hasil'; P.fb=null;
-    if(!P.counted){ P.counted=true; S.stats.pasar++; saveStats(); }
+    if(!S.stats.pasarDone[P.id]){ S.stats.pasarDone[P.id]=1; saveStats(); }
     buzz(15); window.scrollTo(0,0);
   },
-  pasarUlang:function(){ S.pasar=newPasar(); clearFields(); window.scrollTo(0,0); },
+  pasarUlang:function(){ S.pasar=newPasar(S.pasar.id); clearFields(); window.scrollTo(0,0); },
+  jualHint:function(){ if(S.pasar.hint<3) S.pasar.hint++; },
+  jualPeriksa:function(){
+    var P=S.pasar, Mi=misiById(P.id), salah=null;
+    Mi.f.forEach(function(f){ var u=f.unit||'rp', v=val(f.key,u), ok=sama(v,f.jawab,u); S.fs[f.key]=ok?'ok':'no'; if(!ok && !salah) salah=pesanSalah(f,v,u); });
+    if(salah){ P.fb={ok:false,msg:salah}; buzz(30); return; }
+    P.step='putus'; P.fb={ok:true,msg:'Semua hitunganmu benar. Sekarang ambil keputusan.'}; buzz(15); window.scrollTo(0,0);
+  },
+  jualPutus:function(a){
+    var P=S.pasar, Mi=misiById(P.id), o=Mi.putus.opsi[+a]; P.putus=+a;
+    if(o[1]){ P.putusOk=true; P.fb={ok:true,msg:o[2]||'Keputusanmu tepat.'}; buzz(15); }
+    else { P.putusOk=false; P.fb={ok:false,msg:o[2]}; mk(o[3]); buzz(30); }
+  },
+  jualSelesai:function(){ var P=S.pasar; P.step='hasil'; P.fb=null; if(!S.stats.pasarDone[P.id]){ S.stats.pasarDone[P.id]=1; saveStats(); } window.scrollTo(0,0); },
 
   pasang:function(){
     if(!pasang.prompt) return;
@@ -896,26 +1723,28 @@ var ACT = {
   },
   resetTanya:function(){ S.confirmReset=true; },
   resetBatal:function(){ S.confirmReset=false; },
-  resetYa:function(){ S.stats=defStats(); saveStats(); S.confirmReset=false; S.m=null; S.mOpen=false; S.lit=newLit(); S.pasar=newPasar(); clearFields(); }
+  resetYa:function(){ S.stats=defStats(); saveStats(); S.confirmReset=false; S.mods={}; S.cur=null; S.mOpen=false; S.lit=newLit(); S.litOpen=false; S.pasar=newPasar(); S.pasarOpen=false; clearFields(); }
 };
 
-/* ---------- Keypad Rupiah ---------- */
+/* ================= Keypad Rupiah ================= */
 function renderKeypad(){
   var open = !!S.active;
   kp.hidden = !open;
   document.body.classList.toggle('kp-open', open);
   if(!open){ kp.innerHTML=''; return; }
-  var keys = ['1','2','3','4','5','6','7','8','9','000','0','del'];
+  var unit = S.units[S.active]||'rp', v = S.vals[S.active]||'';
+  var keys = ['1','2','3','4','5','6','7','8','9', unit==='persen'?',':'000', '0','del'];
+  var tampil = unit==='persen' ? (v||'0')+'%' : (unit==='rp' ? fmt(v||0) : grp(v||0)+(unit==='kg'?' kg':''));
   kp.innerHTML = '<div class="kp-in" role="group" aria-label="Keypad angka">'+
-    '<div class="kp-lab"><span>Mengisi: <b>'+esc(S.labels[S.active]||'')+'</b></span><span class="num">'+(S.vals[S.active]?fmt(S.vals[S.active]):'Rp0')+'</span></div>'+
-    keys.map(function(k){ return '<button class="k'+(k==='000'||k==='del'?' sm':'')+'" data-act="key" data-arg="'+k+'" aria-label="'+(k==='del'?'Hapus':k)+'">'+(k==='del'?'⌫':k)+'</button>'; }).join('')+
+    '<div class="kp-lab"><span>Mengisi: <b>'+esc(S.labels[S.active]||'')+'</b></span><span class="num">'+esc(tampil)+'</span></div>'+
+    keys.map(function(k){ return '<button class="k'+(k==='000'||k==='del'?' sm':'')+'" data-act="key" data-arg="'+k+'" aria-label="'+(k==='del'?'Hapus':(k===','?'Koma':k))+'">'+(k==='del'?'⌫':k)+'</button>'; }).join('')+
     '<button class="k sm" data-act="kpClose">Tutup</button>'+
     '<button class="k go" data-act="kpGo">'+(S.keyAction?'Periksa ✓':'Selesai')+'</button></div>';
 }
 
-/* ---------- Render ---------- */
+/* ================= Render ================= */
 function render(){
-  S.keyAction=null; S.labels={};
+  S.keyAction=null; S.labels={}; S.units={};
   var html;
   if(S.nama===null) html = rOnboard();
   else if(S.route==='belajar') html = rBelajar();
@@ -945,11 +1774,11 @@ document.addEventListener('keydown', function(e){
   if(e.key==='Enter' && e.target && e.target.id==='nama'){ ACT.mulaiNama(); render(); return; }
   if(!S.active) return;
   if(/^[0-9]$/.test(e.key)){ ACT.key(e.key); render(); e.preventDefault(); }
+  else if(e.key===',' || e.key==='.'){ ACT.key(','); render(); e.preventDefault(); }
   else if(e.key==='Backspace'){ ACT.key('del'); render(); e.preventDefault(); }
   else if(e.key==='Enter'){ ACT.kpGo(); render(); e.preventDefault(); }
   else if(e.key==='Escape'){ ACT.kpClose(); render(); }
 });
-
 window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); pasang.prompt = e; render(); });
 window.addEventListener('appinstalled', function(){ pasang.installed = true; pasang.prompt = null; render(); });
 
