@@ -38,7 +38,25 @@ API DeepSeek (model deepseek-chat)
 - **Tambahkan di lembar persetujuan orang tua/wali**: aplikasi memiliki fitur AI opsional yang mengirim teks pertanyaan siswa (tanpa identitas) ke penyedia AI pihak ketiga.
 - Ingatkan siswa agar tidak menulis data pribadi di kolom pertanyaan.
 
-## 4. Langkah Pemasangan (dikerjakan pemilik akun)
+## 3b. Dua Pilihan Penyedia AI
+
+Worker memilih penyedia secara otomatis:
+
+| Penyedia | Syarat | Biaya | Model |
+|---|---|---|---|
+| **Cloudflare Workers AI** (paling mudah) | Binding **Workers AI** bernama `AI` di worker. Tanpa API key | Ada jatah gratis harian; jika habis, Pinta menampilkan pesan "Jatah AI gratis hari ini sudah habis" | `@cf/meta/llama-3.3-70b-instruct-fp8-fast` (bisa diganti lewat variabel `MODEL_CF`) |
+| **DeepSeek** | Secret `DEEPSEEK_API_KEY` berisi kunci yang **diawali `sk-`** | Berbayar per pemakaian (isi saldo) | `deepseek-chat` |
+
+Jika ada kunci DeepSeek yang valid, DeepSeek dipakai. Jika tidak, Workers AI dipakai.
+
+### Memasang Cloudflare Workers AI (tanpa API key)
+1. Tempel kode terbaru `ai-worker/worker.js` di **Edit code**, lalu **Deploy**.
+2. Buka worker **pinta-ai** → **Settings** → **Bindings** → **Add** → pilih **Workers AI**.
+3. Isi **Variable name**: `AI`, lalu **Add/Deploy**.
+4. (Disarankan) hapus Secret `DEEPSEEK_API_KEY` jika isinya bukan kunci DeepSeek.
+5. Buka alamat worker. Hasilnya harus `"penyedia":"Cloudflare Workers AI"`.
+
+## 4. Langkah Pemasangan dengan DeepSeek (opsional, dikerjakan pemilik akun)
 
 > **Jangan pernah** menempel API key di aplikasi, di GitHub, atau di chat. API key hanya dimasukkan di dashboard Cloudflare sebagai **Secret**. Nama menu di dashboard bisa sedikit berbeda dari panduan ini.
 
@@ -61,8 +79,8 @@ API DeepSeek (model deepseek-chat)
 
 ### Langkah 4 — Cek
 1. Buka alamat worker di browser, misalnya `https://pinta-ai.<nama-akun>.workers.dev`.
-2. Harus muncul: `{"status":"ok","pesan":"Pinta AI siap","apiKeyTerpasang":true}`.
-3. Jika `apiKeyTerpasang` bernilai `false`, ulangi Langkah 3.
+2. Harus muncul `"status":"ok"` dan `"penyedia":"DeepSeek"` (atau `"Cloudflare Workers AI"`).
+3. Jika `kunciDeepSeek` berbunyi "bukan kunci DeepSeek", berarti Secret berisi kunci yang salah. Isi kuncinya sendiri tidak pernah ditampilkan.
 
 ### Langkah 5 — Menyambungkan ke aplikasi
 Kirim **alamat worker** (bukan API key) ke pengembang/Claude. Alamat itu diisikan ke `var AI_URL = '...'` di `prototipe/pasar-pintar.html`, lalu web dibangun ulang (`build-web.ps1`) dan di-push.

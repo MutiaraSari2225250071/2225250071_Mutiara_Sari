@@ -1,5 +1,11 @@
 /**
- * Pinta AI: perantara (Cloudflare Worker) antara aplikasi Pasar Pintar dan API DeepSeek.
+ * Pinta AI: perantara (Cloudflare Worker) antara aplikasi Pasar Pintar dan layanan AI.
+ *
+ * Dua penyedia (dipilih otomatis):
+ *   1. DeepSeek               → jika Secret DEEPSEEK_API_KEY berisi kunci yang valid (diawali sk-)
+ *   2. Cloudflare Workers AI  → jika tidak ada kunci DeepSeek yang valid, dan binding Workers AI bernama "AI" sudah ditambahkan
+ *                               (Settings → Bindings → Add → Workers AI → Variable name: AI). Tanpa API key, ada jatah gratis harian.
+ *   Variabel opsional MODEL_CF untuk mengganti model Workers AI (bawaan: @cf/meta/llama-3.3-70b-instruct-fp8-fast).
  *
  * Mengapa perlu perantara?
  *   Aplikasi berjalan di HP siswa dan kodenya bisa dilihat siapa saja. Jika API key ditaruh di aplikasi,
@@ -15,6 +21,7 @@
  */
 
 const ASAL_BAWAAN = 'https://mutiarasari2225250071.github.io';
+const MODEL_CF_BAWAAN = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 const BATAS_PERMINTAAN = 40;              // per alamat IP ...
 const JENDELA_MS = 10 * 60 * 1000;        // ... setiap 10 menit
 const jejak = new Map();
@@ -53,15 +60,19 @@ export default {
     };
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     const kunci = bersihkanKunci(env.DEEPSEEK_API_KEY);
+    const kunciValid = /^sk-[A-Za-z0-9]{20,}$/.test(kunci);
+    const penyedia = kunciValid ? 'DeepSeek' : (env.AI && typeof env.AI.run === 'function' ? 'Cloudflare Workers AI' : null);
     // Cek kesehatan: buka alamat worker di browser untuk memastikan sudah benar (isi kunci TIDAK ditampilkan)
     if (req.method === 'GET') return json({
-      status: 'ok', pesan: 'Pinta AI siap', apiKeyTerpasang: !!kunci,
-      formatKunci: !kunci ? 'kosong' : (/^sk-[A-Za-z0-9]{20,}$/.test(kunci) ? 'tampak benar (diawali sk-)' : 'TIDAK diawali sk- atau berisi karakter aneh, periksa lagi'),
-      panjangKunci: kunci.length
+      status: penyedia ? 'ok' : 'belum siap',
+      pesan: penyedia ? 'Pinta AI siap memakai ' + penyedia : 'Belum ada penyedia AI. Tambahkan binding Workers AI bernama AI, atau Secret DEEPSEEK_API_KEY (diawali sk-).',
+      penyedia: penyedia || 'belum ada',
+      model: penyedia === 'DeepSeek' ? (env.MODEL || 'deepseek-chat') : (penyedia ? (env.MODEL_CF || MODEL_CF_BAWAAN) : '-'),
+      kunciDeepSeek: !kunci ? 'kosong' : (kunciValid ? 'tampak benar (diawali sk-)' : 'bukan kunci DeepSeek (diabaikan)')
     }, 200, cors);
     if (req.method !== 'POST') return json({ galat: 'Metode tidak didukung.' }, 405, cors);
     if (!izin.includes(asal)) return json({ galat: 'Asal permintaan tidak diizinkan.' }, 403, cors);
-    if (!kunci) return json({ galat: 'API key belum diatur di Cloudflare.' }, 500, cors);
+    if (!penyedia) return json({ galat: 'Layanan AI belum diatur di Cloudflare.' }, 500, cors);
     if (terlaluSering(req.headers.get('CF-Connecting-IP') || 'tanpa-ip')) {
       return json({ galat: 'Pinta sedang istirahat sebentar karena banyak pertanyaan. Coba lagi beberapa menit lagi, ya.' }, 429, cors);
     }
@@ -82,24 +93,33 @@ export default {
       ? 'Pertanyaan siswa: ' + (pertanyaan || 'Aku bingung, bantu aku mulai.')
       : 'Jelaskan kesalahanku pada soal ini.' });
 
-    let hasil;
-    try {
-      const r = await fetch('https://api.deepseek.com/chat/completions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + kunci },
-        body: JSON.stringify({ model: env.MODEL || 'deepseek-chat', messages, max_tokens: 250, temperature: 0.4 })
-      });
-      if (!r.ok) {
-        const pesan = r.status === 401 ? 'API key DeepSeek tidak valid.' : (r.status === 402 ? 'Saldo DeepSeek habis.' : 'Layanan AI sedang bermasalah (' + r.status + ').');
+    let teks = '';
+    if (penyedia === 'DeepSeek') {
+      try {
+        const r = await fetch('https://api.deepseek.com/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + kunci },
+          body: JSON.stringify({ model: env.MODEL || 'deepseek-chat', messages, max_tokens: 250, temperature: 0.4 })
+        });
+        if (!r.ok) {
+          const pesan = r.status === 401 ? 'API key DeepSeek tidak valid.' : (r.status === 402 ? 'Saldo DeepSeek habis.' : 'Layanan AI sedang bermasalah (' + r.status + ').');
+          return json({ galat: pesan + ' Coba lagi nanti.' }, 502, cors);
+        }
+        const hasil = await r.json();
+        teks = (((hasil.choices || [])[0] || {}).message || {}).content || '';
+      } catch (e) {
+        return json({ galat: 'Layanan AI tidak bisa dihubungi. Coba lagi nanti.' }, 502, cors);
+      }
+    } else {
+      try {
+        const hasil = await env.AI.run(env.MODEL_CF || MODEL_CF_BAWAAN, { messages, max_tokens: 250, temperature: 0.4 });
+        teks = (hasil && (hasil.response || (((hasil.choices || [])[0] || {}).message || {}).content)) || '';
+      } catch (e) {
+        const pesan = /quota|limit|neuron|4006|429/i.test(String(e && e.message)) ? 'Jatah AI gratis hari ini sudah habis.' : 'Layanan AI sedang bermasalah.';
         return json({ galat: pesan + ' Coba lagi nanti.' }, 502, cors);
       }
-      hasil = await r.json();
-    } catch (e) {
-      return json({ galat: 'Layanan AI tidak bisa dihubungi. Coba lagi nanti.' }, 502, cors);
     }
-
-    let teks = (((hasil.choices || [])[0] || {}).message || {}).content || '';
-    teks = teks.trim();
+    teks = String(teks).replace(/<think>[\s\S]*?<\/think>/gi, '').trim();   // buang "proses berpikir" jika model menampilkannya
     if (!teks) return json({ galat: 'Pinta belum menemukan jawaban. Coba tanya dengan kalimat lain.' }, 502, cors);
     if (jenis === 'petunjuk') teks = sembunyikanJawaban(teks, data.rahasia);
     return json({ jawab: teks }, 200, cors);
