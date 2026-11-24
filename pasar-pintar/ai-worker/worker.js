@@ -52,11 +52,16 @@ export default {
       'Vary': 'Origin'
     };
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
-    // Cek kesehatan: buka alamat worker di browser untuk memastikan sudah benar
-    if (req.method === 'GET') return json({ status: 'ok', pesan: 'Pinta AI siap', apiKeyTerpasang: !!env.DEEPSEEK_API_KEY }, 200, cors);
+    const kunci = bersihkanKunci(env.DEEPSEEK_API_KEY);
+    // Cek kesehatan: buka alamat worker di browser untuk memastikan sudah benar (isi kunci TIDAK ditampilkan)
+    if (req.method === 'GET') return json({
+      status: 'ok', pesan: 'Pinta AI siap', apiKeyTerpasang: !!kunci,
+      formatKunci: !kunci ? 'kosong' : (/^sk-[A-Za-z0-9]{20,}$/.test(kunci) ? 'tampak benar (diawali sk-)' : 'TIDAK diawali sk- atau berisi karakter aneh, periksa lagi'),
+      panjangKunci: kunci.length
+    }, 200, cors);
     if (req.method !== 'POST') return json({ galat: 'Metode tidak didukung.' }, 405, cors);
     if (!izin.includes(asal)) return json({ galat: 'Asal permintaan tidak diizinkan.' }, 403, cors);
-    if (!env.DEEPSEEK_API_KEY) return json({ galat: 'API key belum diatur di Cloudflare.' }, 500, cors);
+    if (!kunci) return json({ galat: 'API key belum diatur di Cloudflare.' }, 500, cors);
     if (terlaluSering(req.headers.get('CF-Connecting-IP') || 'tanpa-ip')) {
       return json({ galat: 'Pinta sedang istirahat sebentar karena banyak pertanyaan. Coba lagi beberapa menit lagi, ya.' }, 429, cors);
     }
@@ -81,7 +86,7 @@ export default {
     try {
       const r = await fetch('https://api.deepseek.com/chat/completions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + env.DEEPSEEK_API_KEY },
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + kunci },
         body: JSON.stringify({ model: env.MODEL || 'deepseek-chat', messages, max_tokens: 250, temperature: 0.4 })
       });
       if (!r.ok) {
@@ -105,6 +110,12 @@ function json(isi, status, headers) {
   return new Response(JSON.stringify(isi), { status, headers: { ...headers, 'Content-Type': 'application/json; charset=utf-8' } });
 }
 function potong(s, n) { return s.length > n ? s.slice(0, n) : s; }
+/* Membuang spasi, baris baru, tanda kutip, atau tulisan "Bearer " yang tidak sengaja ikut tertempel */
+function bersihkanKunci(k) {
+  let s = String(k || '').trim();
+  for (let i = 0; i < 3; i++) s = s.replace(/^["'`]+|["'`]+$/g, '').trim().replace(/^bearer\s+/i, '').trim();
+  return s.replace(/\s+/g, '');
+}
 function terlaluSering(ip) {
   const kini = Date.now();
   const daftar = (jejak.get(ip) || []).filter(t => kini - t < JENDELA_MS);
