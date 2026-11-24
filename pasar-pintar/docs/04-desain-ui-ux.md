@@ -306,9 +306,9 @@ Semua suara dibuat langsung dengan **Web Audio API** (tanpa file audio): ringan,
 
 | Unsur | Aturan |
 |---|---|
-| Musik latar | Melodi pentatonik lembut (akor C–Am–F–G, tempo 92, 8 birama diulang). Mulai setelah sentuhan pertama karena aturan browser |
+| Musik latar (v0.5.1, gaya *relaxing/ambient*) | Pad hangat (gelombang sinus) yang muncul dan menghilang perlahan, akor Cmaj7–Am7–Fmaj7–G6, sekitar 4,2 detik per akor, dengan denting lembut yang jarang seperti lonceng angin. Diredam dengan filter *low-pass* dan diberi gema halus agar tidak nyaring. Mulai setelah sentuhan pertama karena aturan browser |
 | Volume menyesuaikan | Volume normal di menu. **Dikecilkan otomatis** saat siswa mengerjakan soal latihan, contoh rumpang, Tantangan Literasi, atau kasir/hitung di Pasar Pintar |
-| Efek suara | Klik lembut (semua tombol), "tik" (keypad), nada naik (benar), nada turun lembut (salah), nada meriah (modul/tantangan/misi selesai) |
+| Efek suara | Semua memakai sinus yang diredam: "pop" lembut bernada rendah (semua tombol), "tik" sangat pelan (keypad), dua denting lembut (benar), nada rendah yang turun perlahan (salah), empat denting pelan (modul/tantangan/misi selesai) |
 | Hemat baterai | Suara berhenti saat aplikasi ditutup atau layar HP mati, dan lanjut saat dibuka lagi |
 | Kendali | Tombol speaker di Beranda, serta saklar **Musik latar** dan **Efek suara tombol** di Rapor Saya. Pilihan tersimpan di HP |
 
