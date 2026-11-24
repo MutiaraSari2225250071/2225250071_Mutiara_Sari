@@ -92,6 +92,7 @@ body.kp-open .wrap{padding-bottom:340px}
 .top h1{font-size:1.1rem}
 .top p{color:var(--muted);font-size:.85rem}
 .icon-btn{min-width:48px;min-height:48px;border:0;background:transparent;border-radius:12px;display:grid;place-items:center;margin-left:-10px}
+.icon-btn.kanan{margin-left:0;margin-right:-10px;color:var(--primary)}
 .pill-btn{min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--primary);background:var(--primary-soft);color:var(--primary);font-weight:800;font-size:.9rem}
 
 .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
@@ -374,7 +375,11 @@ function hargaAkhir(h,d){ return h - potongan(h,d); }
 function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
 function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
 function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
-function buzz(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms); }catch(e){} }
+/* Getar + tandai jenis efek suara: 8 = ketik angka, 15 = jawaban benar, 30 = jawaban salah */
+function buzz(ms){
+  try{ if(navigator.vibrate) navigator.vibrate(ms); }catch(e){}
+  if(typeof S==='object' && S) S.sfx = ms>=30 ? 'salah' : (ms>=15 ? 'benar' : 'ketik');
+}
 var reduceMotion = false;
 try{ reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
 
@@ -393,6 +398,8 @@ var I = {
   cart:'<svg class="ic" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/><path d="M3 4h2l2.4 11h10.2L20 8H6.2"/></svg>',
   chart:'<svg class="ic" viewBox="0 0 24 24"><path d="M5 20V11M11 20V5M17 20v-6M3 20h18"/></svg>',
   search:'<svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>',
+  suara:'<svg class="ic" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg>',
+  bisu:'<svg class="ic" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>',
   tag:'<svg class="ic" viewBox="0 0 16 16"><path d="M1.5 8.5V2.5a1 1 0 0 1 1-1h6l6 6-6.5 6.5z"/><circle cx="5" cy="5" r="1"/></svg>',
   cut:'<svg class="ic" viewBox="0 0 16 16"><circle cx="4" cy="4" r="2"/><circle cx="4" cy="12" r="2"/><path d="M5.6 5.2L14 12M5.6 10.8L14 4"/></svg>',
   pay:'<svg class="ic" viewBox="0 0 16 16"><rect x="1.5" y="3.5" width="13" height="9" rx="1.5"/><path d="M1.5 6.5h13"/></svg>',
@@ -1229,6 +1236,7 @@ var S = {
   route:'beranda', nama:store.get('nama', null), stats:store.get('stats', defStats()),
   mods:{}, cur:null, mOpen:false, lit:newLit(), litOpen:false, pasar:newPasar(), pasarOpen:false,
   anim:store.get('anim', true), kunci:'', rayakan:false,
+  musik:store.get('musik', true), efek:store.get('efek', true), sfx:null,
   vals:{}, fs:{}, units:{}, active:null, keyAction:null, labels:{}, scrollTo:false, zoom:false, confirmReset:false
 };
 if(!S.stats || typeof S.stats!=='object') S.stats = defStats();
@@ -1343,7 +1351,8 @@ function rBeranda(){
     '<div class="prog prog-hero" role="progressbar" aria-label="Modul selesai" aria-valuemin="0" aria-valuemax="'+URUTAN.length+'" aria-valuenow="'+selesai+'"><i style="width:'+pr+'%"></i></div>'+
     '<span class="small">'+selesai+' dari '+URUTAN.length+' modul selesai</span>'+
     (k ? btn(label,'bukaModul',{arg:k}) : btn('Lihat modul','go',{arg:'belajar'}))+'</section>';
-  return header('Halo, '+esc(S.nama)+'!', selesai+' dari '+URUTAN.length+' modul selesai')+wrap(
+  var tombolMusik = Suara.ada ? '<button class="icon-btn kanan" data-act="musikToggle" aria-pressed="'+(S.musik?'true':'false')+'" aria-label="'+(S.musik?'Matikan musik':'Nyalakan musik')+'">'+(S.musik?I.suara:I.bisu)+'</button>' : '';
+  return header('Halo, '+esc(S.nama)+'!', selesai+' dari '+URUTAN.length+' modul selesai', null, tombolMusik)+wrap(
     hero+
     '<div class="grid2">'+
       '<button class="tile warna" style="--h:265" data-act="go" data-arg="literasi">'+ILUS.lup+'<strong>Tantangan Literasi</strong><span>'+Object.keys(S.stats.litDone).length+' dari '+LIT.length+' tantangan selesai</span></button>'+
@@ -1668,9 +1677,10 @@ function rRapor(){
       var r = st.modul[k]; return '<div class="rapor-mod"><span><b>'+k+'</b> '+MODUL[k].judul+'</span><span class="num muted">'+(r? r.benar+'/'+r.total : 'belum')+'</span></div>'; }).join('')+'</section>'+
     '<section class="card"><span class="eyebrow">Perlu diperhatikan</span>'+
       (mkList.length ? '<ul style="margin:0;padding-left:20px">'+mkList.map(function(k){return '<li>'+MK_TEKS[k]+' ('+st.mk[k]+'×)</li>';}).join('')+'</ul>' : '<p class="muted">Belum ada kesalahan yang berulang.</p>')+'</section>'+
-    '<section class="card"><span class="eyebrow">Pengaturan tampilan</span><div class="dk-row"><span id="lbl-anim">Animasi dan efek perayaan</span>'+
-      '<button class="saklar" role="switch" aria-labelledby="lbl-anim" aria-checked="'+(S.anim?'true':'false')+'" data-act="animToggle"><span></span></button></div>'+
-      '<p class="small muted">Matikan jika animasi terasa mengganggu saat belajar.</p></section>'+
+    '<section class="card"><span class="eyebrow">Pengaturan</span>'+
+      (Suara.ada ? saklarRow('lbl-musik','Musik latar',S.musik,'musikToggle')+saklarRow('lbl-efek','Efek suara tombol',S.efek,'efekToggle') : '')+
+      saklarRow('lbl-anim','Animasi dan efek perayaan',S.anim,'animToggle')+
+      '<p class="small muted">Musik otomatis dikecilkan saat kamu mengerjakan soal. Matikan apa saja yang terasa mengganggu.</p></section>'+
     (S.confirmReset ? '<section class="card"><p><b>Hapus semua progres di HP ini?</b> Tindakan ini tidak bisa dibatalkan.</p><div class="row">'+btn('Batal','resetBatal',{cls:'secondary'})+btn('Hapus','resetYa')+'</div></section>'
       : btn('Hapus progres','resetTanya',{cls:'ghost'}))
   )+nav();
@@ -1911,6 +1921,8 @@ var ACT = {
     try{ p.prompt(); p.userChoice.then(function(){ render(); }, function(){}); }catch(e){}
   },
   animToggle:function(){ S.anim=!S.anim; store.set('anim', S.anim); },
+  musikToggle:function(){ S.musik=!S.musik; store.set('musik', S.musik); if(S.musik) Suara.mulai(); else Suara.henti(); },
+  efekToggle:function(){ S.efek=!S.efek; store.set('efek', S.efek); },
   resetTanya:function(){ S.confirmReset=true; },
   resetBatal:function(){ S.confirmReset=false; },
   resetYa:function(){ S.stats=defStats(); saveStats(); S.confirmReset=false; S.mods={}; S.cur=null; S.mOpen=false; S.lit=newLit(); S.litOpen=false; S.pasar=newPasar(); S.pasarOpen=false; clearFields(); }
@@ -1930,6 +1942,93 @@ function renderKeypad(){
     keys.map(function(k){ return '<button class="k'+(k==='000'||k==='del'?' sm':'')+'" data-act="key" data-arg="'+k+'" aria-label="'+(k==='del'?'Hapus':(k===','?'Koma':k))+'">'+(k==='del'?'⌫':k)+'</button>'; }).join('')+
     '<button class="k sm" data-act="kpClose">Tutup</button>'+
     '<button class="k go" data-act="kpGo">'+(S.keyAction?'Periksa ✓':'Selesai')+'</button></div>';
+}
+
+/* ================= Suara: musik latar & efek tombol (Web Audio, tanpa file, tetap offline) ================= */
+var Suara = (function(){
+  var AC = window.AudioContext || window.webkitAudioContext;
+  var ctx = null, gMusik = null, gEfek = null, timer = null, tNext = 0, langkah = 0, fokus = false;
+  var TEMPO = 92, DELAPAN = 60/TEMPO/2;            // durasi 1/8 ketukan (detik)
+  function hz(m){ return 440*Math.pow(2,(m-69)/12); }
+  function siap(){
+    if(!AC) return false;
+    try{
+      if(!ctx){
+        ctx = new AC();
+        var master = ctx.createGain(); master.gain.value = 0.9; master.connect(ctx.destination);
+        gMusik = ctx.createGain(); gMusik.gain.value = 0; gMusik.connect(master);
+        gEfek = ctx.createGain(); gEfek.gain.value = 0.55; gEfek.connect(master);
+      }
+      if(ctx.state==='suspended') ctx.resume();
+      return true;
+    }catch(e){ return false; }
+  }
+  function nada(midi, t, dur, tipe, vol, tujuan){
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = tipe; o.frequency.value = hz(midi);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vol, t+0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+    o.connect(g); g.connect(tujuan); o.start(t); o.stop(t+dur+0.05);
+  }
+  /* Musik: progresi C – Am – F – G, melodi pentatonik lembut, 8 birama lalu diulang */
+  var AKOR = [[48,[60,64,67]],[45,[57,60,64]],[41,[53,57,60]],[43,[55,59,62]]];
+  var MELODI = [
+    [72,0,76,0,79,0,76,0],[76,0,72,0,69,0,72,74],[72,0,76,0,74,0,72,0],[74,0,79,0,76,0,74,0],
+    [79,0,76,74,72,0,0,0],[76,0,72,0,69,0,0,72],[69,72,74,0,76,0,74,0],[74,0,72,0,67,0,0,0]
+  ];
+  function jadwal(){
+    while(tNext < ctx.currentTime + 0.25){
+      var bir = Math.floor(langkah/8)%8, pos = langkah%8, ak = AKOR[bir%4];
+      if(pos===0){ nada(ak[0], tNext, DELAPAN*3.6, 'sine', 0.10, gMusik); ak[1].forEach(function(m){ nada(m, tNext, DELAPAN*7.5, 'sine', 0.035, gMusik); }); }
+      if(pos===4) nada(ak[0]+7, tNext, DELAPAN*3.2, 'sine', 0.07, gMusik);
+      var mel = MELODI[bir][pos]; if(mel) nada(mel, tNext, DELAPAN*1.8, 'triangle', 0.06, gMusik);
+      tNext += DELAPAN; langkah++;
+    }
+  }
+  function volMusik(){ return fokus ? 0.12 : 0.4; }   // dikecilkan saat siswa mengerjakan soal
+  function mulai(){
+    if(timer || !siap()) return;
+    tNext = ctx.currentTime + 0.1; langkah = 0;
+    gMusik.gain.cancelScheduledValues(ctx.currentTime);
+    gMusik.gain.setTargetAtTime(volMusik(), ctx.currentTime, 0.8);
+    jadwal(); timer = setInterval(jadwal, 80);
+  }
+  function henti(){
+    if(!ctx) return;
+    gMusik.gain.cancelScheduledValues(ctx.currentTime);
+    gMusik.gain.setTargetAtTime(0, ctx.currentTime, 0.3);
+    if(timer){ clearInterval(timer); timer = null; }
+  }
+  function efek(jenis){
+    if(!siap()) return;
+    var t = ctx.currentTime + 0.01;
+    if(jenis==='ketik') nada(96, t, 0.04, 'sine', 0.12, gEfek);
+    else if(jenis==='benar'){ nada(76,t,0.18,'sine',0.3,gEfek); nada(79,t+0.09,0.18,'sine',0.3,gEfek); nada(84,t+0.18,0.32,'sine',0.3,gEfek); }
+    else if(jenis==='salah'){ nada(67,t,0.16,'triangle',0.22,gEfek); nada(63,t+0.13,0.26,'triangle',0.22,gEfek); }
+    else if(jenis==='rayakan'){ [72,76,79,84,88].forEach(function(m,i){ nada(m,t+i*0.09,0.3,'triangle',0.24,gEfek); }); nada(91,t+0.5,0.6,'sine',0.18,gEfek); }
+    else nada(84, t, 0.07, 'triangle', 0.16, gEfek);   // klik tombol biasa
+  }
+  return {
+    ada: !!AC,
+    mulai: mulai, henti: henti, efek: efek,
+    jalan: function(){ return !!timer; },
+    fokus: function(f){ fokus = f; if(timer && ctx){ gMusik.gain.setTargetAtTime(volMusik(), ctx.currentTime, 0.6); } },
+    jeda: function(){ if(ctx && ctx.state==='running') ctx.suspend(); },
+    lanjut: function(){ if(ctx && ctx.state==='suspended') ctx.resume(); }
+  };
+})();
+/* Layar "fokus" = siswa sedang mengerjakan; musik dikecilkan */
+function layarFokus(){
+  var m = M();
+  if(S.route==='belajar' && S.mOpen && m && (m.tahap==='latihan' || m.tahap==='rumpang')) return true;
+  if(S.route==='literasi' && S.litOpen && S.lit.id && !S.lit.ok[4]) return true;
+  if(S.route==='pasar' && S.pasarOpen && S.pasar.id && S.pasar.step!=='pilih' && S.pasar.step!=='hasil') return true;
+  return false;
+}
+document.addEventListener('visibilitychange', function(){ if(document.hidden) Suara.jeda(); else if(S.musik) Suara.lanjut(); });
+function saklarRow(id, label, on, act){
+  return '<div class="dk-row"><span id="'+id+'">'+label+'</span><button class="saklar" role="switch" aria-labelledby="'+id+'" aria-checked="'+(on?'true':'false')+'" data-act="'+act+'"><span></span></button></div>';
 }
 
 /* ================= Animasi layar & perayaan ================= */
@@ -1970,7 +2069,8 @@ function render(){
   document.body.classList.toggle('no-anim', !S.anim);
   var kunci = kunciLayar();
   if(kunci!==S.kunci){ S.kunci = kunci; var w = app.querySelector('.wrap'); if(w) w.classList.add('masuk'); }
-  if(S.rayakan){ S.rayakan = false; konfeti(); }
+  if(S.rayakan){ S.rayakan = false; S.sfx = 'rayakan'; konfeti(); }
+  Suara.fokus(layarFokus());
   if(S.active && !S.labels[S.active]) S.active = null;
   renderKeypad();
   if(S.scrollTo){
@@ -1980,21 +2080,28 @@ function render(){
   }
 }
 
+function bunyikan(){
+  var jenis = S.sfx || 'klik'; S.sfx = null;
+  if(S.efek) Suara.efek(jenis);
+}
 document.addEventListener('click', function(e){
   var t = e.target.closest('[data-act]');
+  if(S.musik && !Suara.jalan()) Suara.mulai();   // browser baru mengizinkan suara setelah sentuhan pertama
   if(!t || t.disabled) return;
   var f = ACT[t.getAttribute('data-act')];
   if(!f) return;
+  S.sfx = null;
   f(t.getAttribute('data-arg'));
   render();
+  bunyikan();
 });
 document.addEventListener('keydown', function(e){
   if(e.key==='Enter' && e.target && e.target.id==='nama'){ ACT.mulaiNama(); render(); return; }
   if(!S.active) return;
-  if(/^[0-9]$/.test(e.key)){ ACT.key(e.key); render(); e.preventDefault(); }
-  else if(e.key===',' || e.key==='.'){ ACT.key(','); render(); e.preventDefault(); }
-  else if(e.key==='Backspace'){ ACT.key('del'); render(); e.preventDefault(); }
-  else if(e.key==='Enter'){ ACT.kpGo(); render(); e.preventDefault(); }
+  if(/^[0-9]$/.test(e.key)){ ACT.key(e.key); render(); bunyikan(); e.preventDefault(); }
+  else if(e.key===',' || e.key==='.'){ ACT.key(','); render(); bunyikan(); e.preventDefault(); }
+  else if(e.key==='Backspace'){ ACT.key('del'); render(); bunyikan(); e.preventDefault(); }
+  else if(e.key==='Enter'){ S.sfx = null; ACT.kpGo(); render(); bunyikan(); e.preventDefault(); }
   else if(e.key==='Escape'){ ACT.kpClose(); render(); }
 });
 window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); pasang.prompt = e; render(); });

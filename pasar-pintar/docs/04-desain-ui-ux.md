@@ -299,3 +299,17 @@ Agar pilihan ganda benar-benar menguji pemahaman, bukan menebak dengan mengetuk 
 4. **Dicatat.** Hasil percobaan pertama setiap pilihan ganda disimpan (`stats.pg`) dan ditampilkan di Rapor sebagai "Pilihan ganda benar di percobaan pertama".
 
 Berlaku untuk: Apa yang ditanya, Pilih operasi, Cek kewajaran (1 kali periksa), keputusan misi berjualan, serta langkah Ubah dan Putuskan (pilihan + alasan) di Tantangan Literasi.
+
+## 10. Musik Latar dan Efek Suara (v0.5)
+
+Semua suara dibuat langsung dengan **Web Audio API** (tanpa file audio): ringan, tetap offline, dan bebas masalah hak cipta.
+
+| Unsur | Aturan |
+|---|---|
+| Musik latar | Melodi pentatonik lembut (akor C–Am–F–G, tempo 92, 8 birama diulang). Mulai setelah sentuhan pertama karena aturan browser |
+| Volume menyesuaikan | Volume normal di menu. **Dikecilkan otomatis** saat siswa mengerjakan soal latihan, contoh rumpang, Tantangan Literasi, atau kasir/hitung di Pasar Pintar |
+| Efek suara | Klik lembut (semua tombol), "tik" (keypad), nada naik (benar), nada turun lembut (salah), nada meriah (modul/tantangan/misi selesai) |
+| Hemat baterai | Suara berhenti saat aplikasi ditutup atau layar HP mati, dan lanjut saat dibuka lagi |
+| Kendali | Tombol speaker di Beranda, serta saklar **Musik latar** dan **Efek suara tombol** di Rapor Saya. Pilihan tersimpan di HP |
+
+> Catatan penelitian: pengaruh musik latar terhadap beban kognitif masih beragam dalam penelitian. Saat uji coba, catat pengaturan musik siswa dan pertimbangkan membandingkan skor Paas antara kelompok yang menyalakan dan mematikan musik.
