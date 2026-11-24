@@ -274,3 +274,17 @@ Stimulus tetap terlihat (menempel/terlipat di atas) selama keempat langkah agar 
 - Semua ikon punya `aria-label`
 - Fokus keyboard terlihat (untuk versi web)
 - Tidak ada konten yang berkedip
+
+## 8. Ilustrasi, Maskot, dan Animasi (v0.4)
+
+Tujuannya membuat aplikasi lebih menarik **tanpa menambah beban ekstrinsik** (DS03, EL03).
+
+| Unsur | Aturan |
+|---|---|
+| Ilustrasi | Hanya gambar yang berhubungan dengan isi: ikon tiap modul (persen, mangga, grafik naik, label harga, diskon, struk, timbangan, celengan) dan barang di Pasar Pintar. Semua SVG agar tajam |
+| Warna modul | Setiap modul punya warna pastel sendiri (dari satu rumus HSL, mengikuti mode terang/gelap). Warna label harga (docs/04 bagian 2.1) **tidak berubah** |
+| Aksen | Hijau toska (utama) dan kuning matahari (tombol pada kartu utama, bilah kemajuan, bintang) |
+| Maskot "Pinta" | Tas belanja tersenyum. Hanya muncul di sambutan, Beranda, kotak umpan balik (senang atau berpikir), dan ringkasan. **Tidak muncul di soal** |
+| Animasi | Pendek (≤ 0,6 detik): layar masuk, umpan balik muncul (salah: bergoyang pelan), model batang tumbuh, bintang muncul. Animasi diputar hanya saat layar berganti, bukan setiap kali tombol ditekan |
+| Perayaan | Konfeti hanya saat modul, tantangan literasi, atau misi selesai |
+| Kendali siswa | Saklar "Animasi dan efek perayaan" di Rapor Saya. Otomatis mati jika HP memakai pengaturan "kurangi gerakan" |

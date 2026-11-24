@@ -20,6 +20,10 @@
   --toko-a:#FFF1C2; --toko-a-ink:#6B4500;
   --toko-b:#FCE4F1; --toko-b-ink:#9D174D;
   --shadow:0 -6px 20px rgba(15,31,28,.12);
+  --sun:#FFC83D; --sun-ink:#4A3300; --sun-soft:#FFF3C4; --cheek:#FF8F80;
+  --hero-a:#0F766E; --hero-b:#0E7490; --hero-ink:#FFFFFF;
+  --tile-sat:75%; --tile-light:91%; --tile-ink:28%;
+  --lift:0 6px 18px rgba(15,60,55,.10);
   --display:'Fredoka','Nunito',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
   --font:'Nunito',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
 }
@@ -38,6 +42,10 @@
     --toko-a:#3B3112; --toko-a-ink:#FFE08A;
     --toko-b:#3D1A2C; --toko-b-ink:#F9A8D4;
     --shadow:0 -6px 20px rgba(0,0,0,.45);
+  --sun:#FACC15; --sun-ink:#3A2A00; --sun-soft:#3A3212; --cheek:#F58C7E;
+  --hero-a:#115E59; --hero-b:#155E75; --hero-ink:#F0FDFA;
+  --tile-sat:35%; --tile-light:22%; --tile-ink:80%;
+  --lift:0 6px 18px rgba(0,0,0,.35);
     color-scheme:dark;
   }
 }
@@ -55,6 +63,10 @@
   --toko-a:#3B3112; --toko-a-ink:#FFE08A;
   --toko-b:#3D1A2C; --toko-b-ink:#F9A8D4;
   --shadow:0 -6px 20px rgba(0,0,0,.45);
+  --sun:#FACC15; --sun-ink:#3A2A00; --sun-soft:#3A3212; --cheek:#F58C7E;
+  --hero-a:#115E59; --hero-b:#155E75; --hero-ink:#F0FDFA;
+  --tile-sat:35%; --tile-light:22%; --tile-ink:80%;
+  --lift:0 6px 18px rgba(0,0,0,.35);
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -273,6 +285,73 @@ body.kp-open .actionbar,body.kp-open .bnav{display:none}
 .lapor .ln{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .cerita p{line-height:1.7}
 
+/* ---------- Ilustrasi, maskot, warna modul ---------- */
+.ilu{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;display:block}
+.ilu .f{fill:currentColor;fill-opacity:.22}
+.ilu .s{fill:currentColor;stroke:none}
+.ikon{width:48px;height:48px;flex:none;border-radius:14px;display:grid;place-items:center;background:hsl(var(--h,170) var(--tile-sat) var(--tile-light));color:hsl(var(--h,170) 65% var(--tile-ink))}
+.ikon.besar{width:64px;height:64px;border-radius:18px}
+.ikon.besar .ilu{width:40px;height:40px}
+.judul-ikon{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.item .ikon{width:56px;height:56px}
+.item .ikon .ilu{width:36px;height:36px}
+.mod{box-shadow:var(--lift);border-color:transparent}
+.mod .tx .eyebrow{font-size:.7rem}
+.mod.done .ikon{box-shadow:0 0 0 3px var(--benar)}
+.tile.warna{border:0;background:hsl(var(--h) var(--tile-sat) var(--tile-light));box-shadow:var(--lift)}
+.tile.warna .ilu{color:hsl(var(--h) 65% var(--tile-ink));width:34px;height:34px}
+.tile.warna strong{color:var(--text)}
+.card{box-shadow:0 1px 2px rgba(15,40,35,.05)}
+.btn{transition:transform .12s ease}
+.btn:active{transform:scale(.97)}
+.btn.primary{box-shadow:0 4px 12px rgba(15,118,110,.28)}
+.home-hero{background:linear-gradient(135deg,var(--hero-a),var(--hero-b));color:var(--hero-ink);position:relative;overflow:hidden;box-shadow:var(--lift)}
+.home-hero::after{content:"";position:absolute;right:-40px;bottom:-60px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none}
+.home-hero .eyebrow{color:inherit;opacity:.85}
+.home-hero > .eyebrow,.home-hero > h2,.home-hero > p{padding-right:76px}
+.home-hero .btn{background:var(--sun);color:var(--sun-ink);box-shadow:0 4px 12px rgba(0,0,0,.18);position:relative;z-index:1}
+.maskot{display:block;flex:none}
+.maskot.mini{width:38px;height:38px}
+.maskot.besar{width:96px;height:96px;margin:0 auto}
+.maskot.hero{position:absolute;right:12px;top:12px;width:68px;height:68px;z-index:1}
+.m-badan{fill:var(--sun)} .m-tali{fill:none;stroke:var(--primary);stroke-width:5;stroke-linecap:round}
+.home-hero .m-tali{stroke:var(--hero-ink)}
+.m-wajah{fill:var(--sun-ink)} .m-garis{fill:none;stroke:var(--sun-ink);stroke-width:3;stroke-linecap:round} .m-pipi{fill:var(--cheek);opacity:.75}
+.sambut{align-items:center;text-align:center}
+.bintang-row{display:flex;gap:6px;justify-content:center}
+.bintang{width:30px;height:30px;fill:var(--line)}
+.bintang.on{fill:var(--sun)}
+.prog{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--primary),var(--sun));transition:width .45s ease}
+.top .prog{height:4px;border-radius:0}
+.prog-hero{background:rgba(255,255,255,.25)}
+.prog-hero i{background:var(--sun)}
+.saklar{width:56px;height:34px;border-radius:99px;border:0;background:var(--line);position:relative;flex:none}
+.saklar span{position:absolute;top:4px;left:4px;width:26px;height:26px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .2s}
+.saklar[aria-checked="true"]{background:var(--primary)}
+.saklar[aria-checked="true"] span{left:26px}
+
+/* ---------- Animasi (pendek; mati jika "kurangi gerakan" atau saklar animasi mati) ---------- */
+@keyframes naik{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}70%{transform:scale(1.05);opacity:1}100%{transform:scale(1)}}
+@keyframes geleng{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes tumbuh{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes melayang{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes loncat{0%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}}
+@keyframes jatuh{0%{transform:translate(0,-20px) rotate(0);opacity:1}100%{transform:translate(var(--dx),105vh) rotate(540deg);opacity:.9}}
+.masuk > *{animation:naik .32s ease-out both}
+.masuk > *:nth-child(2){animation-delay:.04s} .masuk > *:nth-child(3){animation-delay:.08s}
+.masuk > *:nth-child(4){animation-delay:.12s} .masuk > *:nth-child(5){animation-delay:.16s} .masuk > *:nth-child(n+6){animation-delay:.2s}
+.masuk .bar rect{transform-box:fill-box;transform-origin:left center;animation:tumbuh .6s ease-out both}
+.masuk .bintang.on{animation:pop .4s ease-out both}
+.masuk .bintang.on:nth-child(2){animation-delay:.12s} .masuk .bintang.on:nth-child(3){animation-delay:.24s} .masuk .bintang.on:nth-child(4){animation-delay:.36s}
+.fb.baru{animation:pop .3s ease-out}
+.fb.no.baru{animation:geleng .35s ease-in-out}
+.fb.baru .maskot,.maskot.loncat{animation:loncat .6s ease-out}
+.maskot.melayang{animation:melayang 3.2s ease-in-out infinite}
+.konfeti{position:fixed;top:0;width:9px;height:13px;border-radius:3px;z-index:70;pointer-events:none;animation:jatuh 1.7s cubic-bezier(.2,.6,.4,1) forwards}
+body.no-anim *,body.no-anim *::before,body.no-anim *::after{animation:none!important;transition:none!important}
+
 @media (min-width:600px){ .items{grid-template-columns:repeat(4,1fr)} }
 @media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important;scroll-behavior:auto!important} }
 </style>
@@ -343,6 +422,60 @@ var MK_TEKS = {
   MK8:'Lupa menyesuaikan bunga dengan lama bulan',
   MK9:'Memakai bruto, padahal seharusnya neto'
 };
+
+/* ================= Ilustrasi (SVG, hanya yang berhubungan dengan isi) ================= */
+function ilu(isi){ return '<svg class="ilu" viewBox="0 0 48 48" aria-hidden="true">'+isi+'</svg>'; }
+var ILUS = {
+  persen:ilu('<circle cx="24" cy="24" r="16" class="f"/><path d="M24 24V8a16 16 0 0 1 16 16z" class="s"/><circle cx="24" cy="24" r="16"/>'),
+  mangga:ilu('<path d="M12 30c0-10 8-18 18-18 4 0 7 3 7 7 0 12-9 21-19 21-3 0-6-4-6-10z" class="f"/><path d="M12 30c0-10 8-18 18-18 4 0 7 3 7 7 0 12-9 21-19 21-3 0-6-4-6-10z"/><path d="M31 12c1-3 3-5 6-6"/><path d="M34 9c3-2 7-1 8 1-3 2-6 2-8-1z" class="s"/>'),
+  naik:ilu('<rect x="8" y="28" width="7" height="12" rx="2" class="f"/><rect x="20" y="20" width="7" height="20" rx="2" class="f"/><rect x="32" y="12" width="7" height="28" rx="2" class="s"/><path d="M8 20l10-8 6 4 12-10"/><path d="M31 6h5v5"/>'),
+  label:ilu('<path d="M8 24V10a2 2 0 0 1 2-2h14l16 16-16 16z" class="f"/><path d="M8 24V10a2 2 0 0 1 2-2h14l16 16-16 16z"/><circle cx="16" cy="16" r="3" class="s"/>'),
+  diskon:ilu('<path d="M8 24V10a2 2 0 0 1 2-2h14l16 16-16 16z" class="f"/><path d="M8 24V10a2 2 0 0 1 2-2h14l16 16-16 16z"/><circle cx="20" cy="22" r="2.4" class="s"/><circle cx="29" cy="31" r="2.4" class="s"/><path d="M30 21l-11 11"/>'),
+  struk:ilu('<path d="M12 6h24v36l-4-3-4 3-4-3-4 3-4-3-4 3z" class="f"/><path d="M12 6h24v36l-4-3-4 3-4-3-4 3-4-3-4 3z"/><path d="M18 16h12M18 22h12M18 28h7"/>'),
+  timbang:ilu('<path d="M10 41h28M24 41V16M9 16h30"/><path d="M14 16l-6 11h12z" class="f"/><path d="M14 16l-6 11h12z"/><path d="M34 16l-6 11h12z" class="f"/><path d="M34 16l-6 11h12z"/><circle cx="24" cy="12" r="3" class="s"/>'),
+  celengan:ilu('<ellipse cx="23" cy="27" rx="15" ry="11" class="f"/><ellipse cx="23" cy="27" rx="15" ry="11"/><path d="M38 24h4v6h-4M15 37v4M31 37v4M19 16h8"/><circle cx="30" cy="24" r="1.8" class="s"/><circle cx="23" cy="9" r="4" class="s"/>'),
+  lup:ilu('<circle cx="21" cy="21" r="12" class="f"/><circle cx="21" cy="21" r="12"/><path d="M30 30l10 10M15 21h12M21 15v12"/>'),
+  keranjang:ilu('<path d="M14 16h28l-5 16H17z" class="f"/><path d="M6 10h6l5 22h20l5-16H14"/><circle cx="19" cy="39" r="3" class="s"/><circle cx="35" cy="39" r="3" class="s"/>'),
+  piala:ilu('<path d="M16 8h16v10a8 8 0 0 1-16 0z" class="f"/><path d="M16 8h16v10a8 8 0 0 1-16 0zM16 12H9a6 6 0 0 0 7 8M32 12h7a6 6 0 0 1-7 8M24 26v8M17 41h14M19 34h10"/>'),
+  tas:ilu('<rect x="10" y="16" width="28" height="24" rx="6" class="f"/><rect x="10" y="16" width="28" height="24" rx="6"/><path d="M18 16v-3a6 6 0 0 1 12 0v3M16 26h16"/>'),
+  botol:ilu('<rect x="16" y="14" width="16" height="28" rx="5" class="f"/><rect x="16" y="14" width="16" height="28" rx="5"/><rect x="19" y="6" width="10" height="8" rx="2"/><path d="M16 24h16"/>'),
+  buku:ilu('<path d="M8 12h14a3 3 0 0 1 3 3v25a3 3 0 0 0-3-3H8z" class="f"/><path d="M8 12h14a3 3 0 0 1 3 3v25a3 3 0 0 0-3-3H8zM40 12H28a3 3 0 0 0-3 3v25a3 3 0 0 1 3-3h12z"/>'),
+  pensil:ilu('<path d="M10 38l4-10 18-18 6 6-18 18z" class="f"/><path d="M10 38l4-10 18-18 6 6-18 18zM28 14l6 6"/><path d="M10 38l3-8 5 5z" class="s"/>'),
+  sepatu:ilu('<path d="M6 34c0-6 2-14 6-16l6 6c4 2 10 2 16 4 5 1 8 3 8 6v2H6z" class="f"/><path d="M6 34c0-6 2-14 6-16l6 6c4 2 10 2 16 4 5 1 8 3 8 6v2H6zM6 38h36M20 26l3-3M25 27l3-3"/>'),
+  kauskaki:ilu('<path d="M18 6h12v18l-10 14a5 5 0 0 1-8-6l6-8z" class="f"/><path d="M18 6h12v18l-10 14a5 5 0 0 1-8-6l6-8zM18 12h12"/>'),
+  topi:ilu('<path d="M10 30a14 14 0 0 1 28 0z" class="f"/><path d="M10 30a14 14 0 0 1 28 0zM6 30h36"/><circle cx="24" cy="15" r="2" class="s"/>'),
+  handuk:ilu('<rect x="12" y="8" width="24" height="32" rx="3" class="f"/><rect x="12" y="8" width="24" height="32" rx="3"/><path d="M12 31h24M12 35h24"/>'),
+  jaket:ilu('<path d="M16 8l8 4 8-4 8 8-4 6v20H12V22l-4-6z" class="f"/><path d="M16 8l8 4 8-4 8 8-4 6v20H12V22l-4-6zM24 12v30"/>'),
+  celana:ilu('<path d="M14 8h20l2 34h-8l-4-22-4 22h-8z" class="f"/><path d="M14 8h20l2 34h-8l-4-22-4 22h-8zM14 13h20"/>'),
+  kaos:ilu('<path d="M16 8l-8 6 4 6 4-2v22h16V18l4 2 4-6-8-6c-1 3-4 5-8 5s-7-2-8-5z" class="f"/><path d="M16 8l-8 6 4 6 4-2v22h16V18l4 2 4-6-8-6c-1 3-4 5-8 5s-7-2-8-5z"/>'),
+  ikat:ilu('<rect x="4" y="20" width="40" height="8" rx="2" class="f"/><rect x="4" y="20" width="40" height="8" rx="2"/><rect x="18" y="16" width="12" height="16" rx="2"/><path d="M24 24h6"/>'),
+  donat:ilu('<circle cx="24" cy="24" r="15" class="f"/><circle cx="24" cy="24" r="15"/><circle cx="24" cy="24" r="5"/><path d="M15 17l2 1M30 13l1 2M33 28l-2 1M17 31l2-1"/>'),
+  jeruk:ilu('<circle cx="24" cy="27" r="14" class="f"/><circle cx="24" cy="27" r="14"/><path d="M24 13c0-3 2-5 5-6"/><path d="M26 10c3-2 7-1 8 1-3 2-6 2-8-1z" class="s"/>')
+};
+var ILUS_MOD = {M0:'persen',M1:'mangga',M2:'naik',M3:'label',M4:'diskon',M5:'struk',M6:'timbang',M7:'celengan'};
+var HUE = {M0:170,M1:35,M2:140,M3:205,M4:15,M5:265,M6:190,M7:330};
+var ILUS_BARANG = {'Tas sekolah':'tas','Botol minum':'botol','Buku gambar':'buku','Pensil warna':'pensil','Sepatu olahraga':'sepatu','Kaos kaki':'kauskaki','Topi':'topi','Handuk kecil':'handuk','Jaket':'jaket','Celana panjang':'celana','Kaos':'kaos','Ikat pinggang':'ikat'};
+var ILUS_MISI = {B1:['tas',200],B2:['sepatu',140],B3:['jaket',265],J1:['mangga',35],J2:['donat',330],J3:['jeruk',25]};
+function ikonTile(nama, hue, cls){ return '<span class="ikon'+(cls?' '+cls:'')+'" style="--h:'+hue+'">'+(ILUS[nama]||'')+'</span>'; }
+
+/* Maskot "Pinta": tas belanja. Muncul hanya di sambutan, beranda, umpan balik, dan perayaan. */
+function maskot(mood, cls){
+  var mata = mood==='hore' ? '<path d="M25 44q5-6 10 0M45 44q5-6 10 0" class="m-garis"/>'
+           : (mood==='mikir' ? '<circle cx="32" cy="42" r="3.5" class="m-wajah"/><circle cx="52" cy="42" r="3.5" class="m-wajah"/>'
+           : '<circle cx="30" cy="44" r="4" class="m-wajah"/><circle cx="50" cy="44" r="4" class="m-wajah"/>');
+  var mulut = mood==='hore' ? '<path d="M30 53q10 12 20 0z" class="m-wajah"/>'
+            : (mood==='mikir' ? '<path d="M34 58q6-3 12 0" class="m-garis"/>' : '<path d="M32 54q8 8 16 0" class="m-garis"/>');
+  return '<svg class="maskot '+(cls||'')+'" viewBox="0 0 80 80" aria-hidden="true">'+
+    '<path d="M28 26v-7a12 12 0 0 1 24 0v7" class="m-tali"/>'+
+    '<rect x="12" y="22" width="56" height="52" rx="14" class="m-badan"/>'+
+    '<ellipse cx="23" cy="55" rx="5" ry="3" class="m-pipi"/><ellipse cx="57" cy="55" rx="5" ry="3" class="m-pipi"/>'+
+    mata+mulut+'</svg>';
+}
+function bintang(n, total){
+  var s = '<div class="bintang-row" aria-label="'+n+' dari '+total+' bintang">';
+  for(var i=0;i<total;i++) s += '<svg class="bintang'+(i<n?' on':'')+'" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>';
+  return s + '</div>';
+}
 
 /* ================= Visual (SVG) ================= */
 function barModel(h, pot, tampil){
@@ -1095,6 +1228,7 @@ function newPasar(id){ var Mi = id ? misiById(id) : null; return {id:id||null, s
 var S = {
   route:'beranda', nama:store.get('nama', null), stats:store.get('stats', defStats()),
   mods:{}, cur:null, mOpen:false, lit:newLit(), litOpen:false, pasar:newPasar(), pasarOpen:false,
+  anim:store.get('anim', true), kunci:'', rayakan:false,
   vals:{}, fs:{}, units:{}, active:null, keyAction:null, labels:{}, scrollTo:false, zoom:false, confirmReset:false
 };
 if(!S.stats || typeof S.stats!=='object') S.stats = defStats();
@@ -1118,11 +1252,14 @@ function go(r){ if(location.hash==='#'+r){ readHash(); render(); } else { locati
 window.addEventListener('hashchange', function(){ readHash(); render(); window.scrollTo(0,0); });
 
 /* ================= Komponen ================= */
+var headerBawah = '';   // diisi layar latihan dengan bilah kemajuan; dipakai sekali oleh header()
 function header(title, sub, backAct, extra){
+  var bawah = headerBawah; headerBawah = '';
   return '<header class="top"><div class="top-in">'+
     (backAct ? '<button class="icon-btn" data-act="'+backAct+'" aria-label="Kembali">'+I.back+'</button>' : '')+
-    '<div class="top-t"><h1>'+title+'</h1>'+(sub?'<p>'+sub+'</p>':'')+'</div>'+(extra||'')+'</div></header>';
+    '<div class="top-t"><h1>'+title+'</h1>'+(sub?'<p>'+sub+'</p>':'')+'</div>'+(extra||'')+'</div>'+bawah+'</header>';
 }
+function progBar(persen, label){ return '<div class="prog" role="progressbar" aria-label="'+label+'" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+Math.round(persen)+'"><i style="width:'+Math.round(persen)+'%"></i></div>'; }
 function btn(label, act, o){
   o = o||{};
   return '<button class="btn '+(o.cls||'primary')+'" data-act="'+act+'"'+(o.arg!==undefined?' data-arg="'+o.arg+'"':'')+(o.dis?' disabled':'')+'>'+label+'</button>';
@@ -1143,9 +1280,11 @@ function field(key, label, unit){
   return '<button class="'+cls+'" data-act="focus" data-arg="'+key+'" aria-label="Isi '+esc(label)+'">'+
     (unit==='rp'?'<span class="rp">Rp</span>':'')+'<span>'+isi+'</span>'+(unit==='persen'?'<span class="rp">%</span>':(unit==='kg'?'<span class="rp">kg</span>':''))+'</button>';
 }
+var fbSeen = (typeof WeakSet!=='undefined') ? new WeakSet() : null;
 function fbBox(fb){
   if(!fb) return '';
-  return '<div class="fb '+(fb.ok?'ok':'no')+'" role="status"><span class="badge">'+(fb.ok?'✓':'!')+'</span><div><strong>'+(fb.title || (fb.ok?'Tepat!':'Belum tepat'))+'</strong><p>'+fb.msg+'</p></div></div>';
+  var baru = fbSeen ? !fbSeen.has(fb) : false; if(fbSeen) fbSeen.add(fb);
+  return '<div class="fb '+(fb.ok?'ok':'no')+(baru?' baru':'')+'" role="status">'+maskot(fb.ok?'senang':'mikir','mini')+'<div><strong>'+(fb.title || (fb.ok?'Tepat!':'Belum tepat'))+'</strong><p>'+fb.msg+'</p></div></div>';
 }
 function opt(label, act, arg, pressed, state){
   return '<button class="opt'+(state?' '+state:'')+'" data-act="'+act+'" data-arg="'+arg+'" aria-pressed="'+(pressed?'true':'false')+'"><span class="mark"></span><span>'+label+'</span></button>';
@@ -1166,7 +1305,7 @@ function pasangUI(){
 }
 function rOnboard(){
   return header('Pasar Pintar','Belajar Aritmetika Sosial')+wrap(
-    '<section class="card"><h2>Halo! Siapa nama panggilanmu?</h2>'+
+    '<section class="card">'+maskot('hore','besar loncat')+'<h2>Halo! Aku Pinta, teman belanjamu.</h2><p>Siapa nama panggilanmu?</p>'+
     '<p class="muted">Nama ini hanya tersimpan di HP ini.</p>'+
     '<label class="eyebrow" for="nama">Nama panggilan</label>'+
     '<input id="nama" class="input" maxlength="20" autocomplete="off" autocapitalize="words" enterkeyhint="done" placeholder="Contoh: Rani"></section>'+
@@ -1182,16 +1321,21 @@ function rBeranda(){
   if(S.cur && M() && M().tahap!=='ringkasan'){ k=S.cur; judul='Lanjutkan '+k+' '+MODUL[k].judul; teks=MODUL[k].sub+'.'; label='Lanjutkan'; }
   else { k = modulBerikut(); if(k){ judul=k+' '+MODUL[k].judul; teks=MODUL[k].sub+'.'; label='Mulai belajar'; } }
   var selesai = URUTAN.filter(function(x){ return S.stats.modul[x]; }).length;
-  var hero = k ? '<section class="home-hero"><span class="eyebrow" style="color:inherit;opacity:.85">Modul '+(URUTAN.indexOf(k)+1)+' dari '+URUTAN.length+'</span><h2>'+judul+'</h2><p>'+teks+'</p>'+btn(label,'bukaModul',{arg:k})+'</section>'
-               : '<section class="home-hero"><span class="eyebrow" style="color:inherit;opacity:.85">Semua modul selesai</span><h2>Hebat! Kamu sudah menyelesaikan '+URUTAN.length+' modul.</h2><p>Ulangi modul mana pun atau coba Tantangan Literasi dan Pasar Pintar.</p>'+btn('Lihat modul','go',{arg:'belajar'})+'</section>';
+  var pr = Math.round(selesai/URUTAN.length*100);
+  var hero = '<section class="home-hero">'+maskot(k?'senang':'hore','hero melayang')+
+    (k ? '<span class="eyebrow">Modul '+(URUTAN.indexOf(k)+1)+' dari '+URUTAN.length+'</span><h2>'+judul+'</h2><p>'+teks+'</p>'
+       : '<span class="eyebrow">Semua modul selesai</span><h2>Hebat! Kamu sudah menyelesaikan '+URUTAN.length+' modul.</h2><p>Ulangi modul mana pun atau coba Tantangan Literasi dan Pasar Pintar.</p>')+
+    '<div class="prog prog-hero" role="progressbar" aria-label="Modul selesai" aria-valuemin="0" aria-valuemax="'+URUTAN.length+'" aria-valuenow="'+selesai+'"><i style="width:'+pr+'%"></i></div>'+
+    '<span class="small">'+selesai+' dari '+URUTAN.length+' modul selesai</span>'+
+    (k ? btn(label,'bukaModul',{arg:k}) : btn('Lihat modul','go',{arg:'belajar'}))+'</section>';
   return header('Halo, '+esc(S.nama)+'!', selesai+' dari '+URUTAN.length+' modul selesai')+wrap(
     hero+
     '<div class="grid2">'+
-      '<button class="tile" data-act="go" data-arg="literasi">'+I.search+'<strong>Tantangan Literasi</strong><span>'+Object.keys(S.stats.litDone).length+' dari '+LIT.length+' tantangan selesai</span></button>'+
-      '<button class="tile" data-act="go" data-arg="pasar">'+I.cart+'<strong>Pasar Pintar</strong><span>'+Object.keys(S.stats.pasarDone).length+' dari '+MISI.length+' misi belanja dan berjualan</span></button>'+
-      '<button class="tile wide" data-act="go" data-arg="rapor">'+I.chart+'<div><strong>Rapor Saya</strong><br><span>'+S.stats.benar+' dari '+S.stats.dijawab+' soal benar</span></div></button>'+
+      '<button class="tile warna" style="--h:265" data-act="go" data-arg="literasi">'+ILUS.lup+'<strong>Tantangan Literasi</strong><span>'+Object.keys(S.stats.litDone).length+' dari '+LIT.length+' tantangan selesai</span></button>'+
+      '<button class="tile warna" style="--h:35" data-act="go" data-arg="pasar">'+ILUS.keranjang+'<strong>Pasar Pintar</strong><span>'+Object.keys(S.stats.pasarDone).length+' dari '+MISI.length+' misi belanja dan berjualan</span></button>'+
+      '<button class="tile wide warna" style="--h:170" data-act="go" data-arg="rapor">'+ILUS.piala+'<div><strong>Rapor Saya</strong><br><span>'+S.stats.benar+' dari '+S.stats.dijawab+' soal benar</span></div></button>'+
     '</div>'+
-    pasangUI()+'<p class="note">Prototipe v0.3. Progres hanya tersimpan di HP ini.</p>'
+    pasangUI()+'<p class="note">Prototipe v0.4. Progres hanya tersimpan di HP ini.</p>'
   )+nav();
 }
 
@@ -1202,7 +1346,7 @@ function rBelajar(){
     '<div class="modlist">'+URUTAN.map(function(k){
       var d = MODUL[k], r = S.stats.modul[k], st = S.mods[k];
       var info = r ? 'Selesai · '+r.benar+'/'+r.total+' benar' : (st && st.tahap!=='ringkasan' ? 'Sedang dipelajari' : d.sub);
-      return '<button class="mod'+(r?' done':'')+'" data-act="bukaModul" data-arg="'+k+'"><span class="code">'+k+'</span><span class="tx"><strong>'+d.judul+'</strong><span>'+info+'</span></span>'+I.next+'</button>';
+      return '<button class="mod'+(r?' done':'')+'" data-act="bukaModul" data-arg="'+k+'">'+ikonTile(ILUS_MOD[k],HUE[k])+'<span class="tx"><span class="eyebrow">Modul '+k+'</span><strong>'+d.judul+'</strong><span>'+info+'</span></span>'+I.next+'</button>';
     }).join('')+'</div>'+
     '<p class="note">M0 berisi pemanasan persen dan pecahan. Mulai dari M0 jika kamu masih ragu menghitung persen.</p>'
   )+nav();
@@ -1228,7 +1372,7 @@ function rModul(){
   if(m.tahap==='istilah'){
     var it = d.istilah[m.i];
     return header('Kenali istilah', tag+' · '+(m.i+1)+' dari '+d.istilah.length,'tutupModul')+wrap(
-      '<section class="card">'+it.lbl+'<h2>'+it.judul+'</h2><p>'+it.teks+'</p>'+(it.vis||'')+(it.contoh?'<p class="muted num">'+it.contoh+'</p>':'')+'</section>'+
+      '<section class="card"><div class="judul-ikon">'+ikonTile(ILUS_MOD[d.kode],HUE[d.kode])+it.lbl+'</div><h2>'+it.judul+'</h2><p>'+it.teks+'</p>'+(it.vis||'')+(it.contoh?'<p class="muted num">'+it.contoh+'</p>':'')+'</section>'+
       '<div class="dots">'+d.istilah.map(function(_,i){return '<i class="'+(i===m.i?'on':'')+'"></i>';}).join('')+'</div>'+
       btn('Sudah paham? Langsung ke latihan','keLatihan',{cls:'ghost'})
     )+actionbar((m.i>0?btn('Kembali','istPrev',{cls:'secondary'}):'')+btn(m.i<d.istilah.length-1?'Lanjut':'Lihat contoh','istNext'));
@@ -1266,7 +1410,7 @@ function rModul(){
     var lt = LIT.filter(function(x){ return x.modul===d.kode; })[0];
     var ekstra = lt ? btn('Tantangan Literasi: '+lt.judul,'bukaLit',{arg:lt.id,cls:'secondary'}) : '';
     return header('Latihan selesai', tag,'tutupModul')+wrap(
-      '<section class="card"><span class="eyebrow">Hasilmu</span><h2 class="num">'+m.benar+' dari '+m.soal.length+' soal benar</h2><p>'+pesan+'</p></section>'+
+      '<section class="card sambut">'+maskot(m.benar>=3?'hore':'senang','besar')+'<span class="eyebrow">Hasilmu</span><h2 class="num">'+m.benar+' dari '+m.soal.length+' soal benar</h2>'+bintang(m.benar,m.soal.length)+'<p>'+pesan+'</p></section>'+
       ekstra+btn('Ulangi latihan','keLatihan',{cls:'secondary'})+btn('Lihat contoh lagi','ulangContoh',{cls:'secondary'})
     )+actionbar(next ? btn('Lanjut ke '+next+' '+MODUL[next].judul,'keModul',{arg:next}) : btn('Ke Beranda','go',{arg:'beranda'}));
   }
@@ -1276,6 +1420,8 @@ function rModul(){
 function rLatihan(d, m){
   var s = m.soal[m.i];
   var title = 'Soal '+(m.i+1)+' dari '+m.soal.length, sub = d.kode+' '+d.judul+' · Level '+s.level;
+  var fraksi = {pahami:0.1, operasi:0.35, hitung:0.6, hasil:1}[m.step] || 0;
+  headerBawah = progBar((m.i+fraksi)/m.soal.length*100, 'Kemajuan latihan');
   if(m.step==='pahami'){
     var kal = s.kal.map(function(t){ return '<p>'+t.replace(/\{\{(\w+)\}\}/g, function(_,k){
       var c = s.chips[k]; if(!c) return ''; var st = m.tapped[k];
@@ -1348,7 +1494,7 @@ function rLiterasi(){
       '<p class="note">Setiap tantangan memakai siklus yang sama: <b>Pahami → Ubah → Hitung → Cek &amp; Putuskan</b>. Kerjakan setelah menyelesaikan modulnya.</p>'+
       '<div class="modlist">'+LIT.map(function(t){
         var done = S.stats.litDone[t.id];
-        return '<button class="mod'+(done?' done':'')+'" data-act="bukaLit" data-arg="'+t.id+'"><span class="code">'+t.modul+'</span><span class="tx"><strong>'+t.judul+'</strong><span>'+(done?'Selesai · ':'')+t.sub+'</span></span>'+I.next+'</button>';
+        return '<button class="mod'+(done?' done':'')+'" data-act="bukaLit" data-arg="'+t.id+'">'+ikonTile(ILUS_MOD[t.modul],HUE[t.modul])+'<span class="tx"><span class="eyebrow">Literasi '+t.modul+'</span><strong>'+t.judul+'</strong><span>'+(done?'Selesai · ':'')+t.sub+'</span></span>'+I.next+'</button>';
       }).join('')+'</div>'
     )+nav();
   }
@@ -1401,7 +1547,7 @@ function rPasar(){
     var kel = function(jenis, judul, ket){
       return '<h2 class="sec-t">'+judul+'</h2><p class="small muted">'+ket+'</p><div class="modlist">'+MISI.filter(function(x){ return x.jenis===jenis; }).map(function(x){
         var done = S.stats.pasarDone[x.id];
-        return '<button class="mod'+(done?' done':'')+'" data-act="bukaMisi" data-arg="'+x.id+'"><span class="code">L'+x.level+'</span><span class="tx"><strong>'+x.judul+'</strong><span>'+(done?'Selesai · ':'')+x.ringkas+'</span></span>'+I.next+'</button>';
+        return '<button class="mod'+(done?' done':'')+'" data-act="bukaMisi" data-arg="'+x.id+'">'+ikonTile(ILUS_MISI[x.id][0],ILUS_MISI[x.id][1])+'<span class="tx"><span class="eyebrow">Level '+x.level+'</span><strong>'+x.judul+'</strong><span>'+(done?'Selesai · ':'')+x.ringkas+'</span></span>'+I.next+'</button>';
       }).join('')+'</div>';
     };
     return header('Pasar Pintar','Misi belanja dan berjualan')+wrap(
@@ -1420,7 +1566,7 @@ function rBelanja(Mi, P){
       '<section class="card"><div class="uang"><span class="eyebrow">Uangmu</span><strong>'+fmt(Mi.anggaran)+'</strong></div><p><b>Misi:</b> '+Mi.misi+'</p></section>'+
       '<div class="items">'+Mi.barang.map(function(b){
         var on = P.keranjang.indexOf(b.id)>-1;
-        return '<button class="item" data-act="barang" data-arg="'+b.id+'" aria-pressed="'+on+'"><span class="nm">'+b.nama+'</span>'+
+        return '<button class="item" data-act="barang" data-arg="'+b.id+'" aria-pressed="'+on+'">'+ikonTile(ILUS_BARANG[b.nama],ILUS_MISI[Mi.id][1])+'<span class="nm">'+b.nama+'</span>'+
           (b.d?'<span class="tag-d">Diskon '+b.d+'%</span><s>'+fmt(b.h)+'</s>':'<span class="harga">'+fmt(b.h)+'</span>')+
           '<span class="pick">'+(on?'✓ Di keranjang':'Ketuk untuk pilih')+'</span></button>';
       }).join('')+'</div>'+
@@ -1455,7 +1601,7 @@ function rBelanja(Mi, P){
 
 function rJual(Mi, P){
   var sub = 'Misi berjualan · Level '+Mi.level;
-  var cerita = '<section class="card cerita"><span class="eyebrow">Ceritanya</span>'+Mi.cerita.map(function(c){ return '<p>'+c+'</p>'; }).join('')+
+  var cerita = '<section class="card cerita"><div class="judul-ikon">'+ikonTile(ILUS_MISI[Mi.id][0],ILUS_MISI[Mi.id][1],'besar')+'<span class="eyebrow">Ceritanya</span></div>'+Mi.cerita.map(function(c){ return '<p>'+c+'</p>'; }).join('')+
     '<div class="lapor">'+Mi.data.map(function(d){ return '<div class="ln"><span class="muted">'+d[0]+'</span><b>'+d[1]+'</b></div>'; }).join('')+'</div></section>';
   if(P.step==='hitung'){
     S.keyAction = 'jualPeriksa';
@@ -1499,6 +1645,9 @@ function rRapor(){
       var r = st.modul[k]; return '<div class="rapor-mod"><span><b>'+k+'</b> '+MODUL[k].judul+'</span><span class="num muted">'+(r? r.benar+'/'+r.total : 'belum')+'</span></div>'; }).join('')+'</section>'+
     '<section class="card"><span class="eyebrow">Perlu diperhatikan</span>'+
       (mkList.length ? '<ul style="margin:0;padding-left:20px">'+mkList.map(function(k){return '<li>'+MK_TEKS[k]+' ('+st.mk[k]+'×)</li>';}).join('')+'</ul>' : '<p class="muted">Belum ada kesalahan yang berulang.</p>')+'</section>'+
+    '<section class="card"><span class="eyebrow">Pengaturan tampilan</span><div class="dk-row"><span id="lbl-anim">Animasi dan efek perayaan</span>'+
+      '<button class="saklar" role="switch" aria-labelledby="lbl-anim" aria-checked="'+(S.anim?'true':'false')+'" data-act="animToggle"><span></span></button></div>'+
+      '<p class="small muted">Matikan jika animasi terasa mengganggu saat belajar.</p></section>'+
     (S.confirmReset ? '<section class="card"><p><b>Hapus semua progres di HP ini?</b> Tindakan ini tidak bisa dibatalkan.</p><div class="row">'+btn('Batal','resetBatal',{cls:'secondary'})+btn('Hapus','resetYa')+'</div></section>'
       : btn('Hapus progres','resetTanya',{cls:'ghost'}))
   )+nav();
@@ -1590,7 +1739,7 @@ var ACT = {
     var m=M(), prev=S.stats.modul[S.cur];
     S.stats.paas.push(m.paas);
     S.stats.modul[S.cur] = {benar: prev ? Math.max(prev.benar, m.benar) : m.benar, total:m.soal.length};
-    saveStats(); m.tahap='ringkasan';
+    saveStats(); m.tahap='ringkasan'; S.rayakan=true;
   },
 
   zoom:function(){ S.zoom=!S.zoom; },
@@ -1629,7 +1778,7 @@ var ACT = {
     if(L.pilih===P.benar && al && al[2]){
       L.fb={ok:true,msg:P.ok}; L.ok[4]=true;
       if(!S.stats.litDone[L.id]){ S.stats.litDone[L.id]=1; saveStats(); }
-      buzz(15); return;
+      S.rayakan=true; buzz(15); return;
     }
     var msg=[];
     if(L.pilih!==P.benar) msg.push(P.salahPilih);
@@ -1676,7 +1825,7 @@ var ACT = {
     var k=num('kembali');
     S.fs.kembali = k===Mi.anggaran-tot ? 'ok' : 'no';
     if(k!==Mi.anggaran-tot){ P.fb={ok:false,msg:'Kembalian = uangmu − total bayar.'}; buzz(30); return; }
-    P.step='hasil'; P.fb=null;
+    P.step='hasil'; P.fb=null; S.rayakan=true;
     if(!S.stats.pasarDone[P.id]){ S.stats.pasarDone[P.id]=1; saveStats(); }
     buzz(15); window.scrollTo(0,0);
   },
@@ -1693,13 +1842,14 @@ var ACT = {
     if(o[1]){ P.putusOk=true; P.fb={ok:true,msg:o[2]||'Keputusanmu tepat.'}; buzz(15); }
     else { P.putusOk=false; P.fb={ok:false,msg:o[2]}; mk(o[3]); buzz(30); }
   },
-  jualSelesai:function(){ var P=S.pasar; P.step='hasil'; P.fb=null; if(!S.stats.pasarDone[P.id]){ S.stats.pasarDone[P.id]=1; saveStats(); } window.scrollTo(0,0); },
+  jualSelesai:function(){ var P=S.pasar; P.step='hasil'; P.fb=null; S.rayakan=true; if(!S.stats.pasarDone[P.id]){ S.stats.pasarDone[P.id]=1; saveStats(); } window.scrollTo(0,0); },
 
   pasang:function(){
     if(!pasang.prompt) return;
     var p = pasang.prompt; pasang.prompt = null;
     try{ p.prompt(); p.userChoice.then(function(){ render(); }, function(){}); }catch(e){}
   },
+  animToggle:function(){ S.anim=!S.anim; store.set('anim', S.anim); },
   resetTanya:function(){ S.confirmReset=true; },
   resetBatal:function(){ S.confirmReset=false; },
   resetYa:function(){ S.stats=defStats(); saveStats(); S.confirmReset=false; S.mods={}; S.cur=null; S.mOpen=false; S.lit=newLit(); S.litOpen=false; S.pasar=newPasar(); S.pasarOpen=false; clearFields(); }
@@ -1721,6 +1871,30 @@ function renderKeypad(){
     '<button class="k go" data-act="kpGo">'+(S.keyAction?'Periksa ✓':'Selesai')+'</button></div>';
 }
 
+/* ================= Animasi layar & perayaan ================= */
+/* Animasi masuk hanya diputar saat layar berganti, bukan setiap tombol keypad ditekan */
+function kunciLayar(){
+  var m = M();
+  return [S.nama===null, S.route, S.mOpen, S.cur, m&&m.tahap, m&&m.step, m&&m.i, m&&m.c,
+          S.litOpen, S.lit.id, S.lit.step, S.pasarOpen, S.pasar.id, S.pasar.step].join('|');
+}
+function konfeti(){
+  if(reduceMotion || !S.anim) return;
+  var warna = ['var(--sun)','var(--primary)','var(--cheek)','var(--awal)','var(--akhir)','var(--pajak)'];
+  for(var i=0;i<28;i++){
+    (function(i){
+      var d = document.createElement('i');
+      d.className = 'konfeti';
+      d.style.left = (Math.random()*90+2)+'vw';
+      d.style.background = warna[i%warna.length];
+      d.style.setProperty('--dx', (Math.random()*80-40)+'px');
+      d.style.animationDelay = (Math.random()*0.35)+'s';
+      document.body.appendChild(d);
+      setTimeout(function(){ if(d.parentNode) d.parentNode.removeChild(d); }, 2400);
+    })(i);
+  }
+}
+
 /* ================= Render ================= */
 function render(){
   S.keyAction=null; S.labels={}; S.units={};
@@ -1732,6 +1906,10 @@ function render(){
   else if(S.route==='rapor') html = rRapor();
   else html = rBeranda();
   app.innerHTML = html;
+  document.body.classList.toggle('no-anim', !S.anim);
+  var kunci = kunciLayar();
+  if(kunci!==S.kunci){ S.kunci = kunci; var w = app.querySelector('.wrap'); if(w) w.classList.add('masuk'); }
+  if(S.rayakan){ S.rayakan = false; konfeti(); }
   if(S.active && !S.labels[S.active]) S.active = null;
   renderKeypad();
   if(S.scrollTo){
