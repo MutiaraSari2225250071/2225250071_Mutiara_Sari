@@ -310,6 +310,7 @@ Semua suara dibuat langsung dengan **Web Audio API** (tanpa file audio): ringan,
 | Volume menyesuaikan | Volume normal di menu. **Dikecilkan otomatis** saat siswa mengerjakan soal latihan, contoh rumpang, Tantangan Literasi, atau kasir/hitung di Pasar Pintar |
 | Efek suara | Semua memakai sinus yang diredam: "pop" lembut bernada rendah (semua tombol), "tik" sangat pelan (keypad), dua denting lembut (benar), nada rendah yang turun perlahan (salah), empat denting pelan (modul/tantangan/misi selesai) |
 | Hemat baterai | Suara berhenti saat aplikasi ditutup atau layar HP mati, dan lanjut saat dibuka lagi |
-| Kendali | Tombol speaker di Beranda, serta saklar **Musik latar** dan **Efek suara tombol** di Rapor Saya. Pilihan tersimpan di HP |
+| Kendali | Tombol speaker di Beranda, serta saklar **Musik latar** dan **Efek suara tombol** di Rapor Saya, masing-masing dengan **slider volume** (bawaan: musik 70%, efek 80%). Pilihan tersimpan di HP |
+| Kejelasan di HP (v0.5.2) | Volume dinaikkan dan memakai *compressor* agar jelas tanpa pecah. Nada bas dinaikkan satu oktaf karena speaker HP tidak bisa memutar nada sangat rendah. Saat mengerjakan soal, musik dikecilkan menjadi separuh, tidak sampai hampir hilang |
 
 > Catatan penelitian: pengaruh musik latar terhadap beban kognitif masih beragam dalam penelitian. Saat uji coba, catat pengaturan musik siswa dan pertimbangkan membandingkan skor Paas antara kelompok yang menyalakan dan mematikan musik.

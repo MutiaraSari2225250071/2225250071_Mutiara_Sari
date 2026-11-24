@@ -112,6 +112,8 @@ body.kp-open .wrap{padding-bottom:340px}
 .top p{color:var(--muted);font-size:.85rem}
 .icon-btn{min-width:48px;min-height:48px;border:0;background:transparent;border-radius:12px;display:grid;place-items:center;margin-left:-10px}
 .icon-btn.kanan{margin-left:0;margin-right:-10px;color:var(--primary)}
+.vol-row{display:grid;gap:2px}
+.vol-row input[type=range]{width:100%;min-height:36px;accent-color:var(--primary)}
 .pill-btn{min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--primary);background:var(--primary-soft);color:var(--primary);font-weight:800;font-size:.9rem}
 
 .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
@@ -1699,7 +1701,10 @@ function rRapor(){
     '<section class="card"><span class="eyebrow">Perlu diperhatikan</span>'+
       (mkList.length ? '<ul style="margin:0;padding-left:20px">'+mkList.map(function(k){return '<li>'+MK_TEKS[k]+' ('+st.mk[k]+'×)</li>';}).join('')+'</ul>' : '<p class="muted">Belum ada kesalahan yang berulang.</p>')+'</section>'+
     '<section class="card"><span class="eyebrow">Pengaturan</span>'+
-      (Suara.ada ? saklarRow('lbl-musik','Musik latar',S.musik,'musikToggle')+saklarRow('lbl-efek','Efek suara tombol',S.efek,'efekToggle') : '')+
+      (Suara.ada ? saklarRow('lbl-musik','Musik latar',S.musik,'musikToggle')+
+        '<label class="vol-row" for="vol-musik"><span class="small muted">Volume musik</span><input type="range" id="vol-musik" min="0" max="100" step="5" value="'+store.get('volMusik',70)+'"></label>'+
+        saklarRow('lbl-efek','Efek suara tombol',S.efek,'efekToggle')+
+        '<label class="vol-row" for="vol-efek"><span class="small muted">Volume efek suara</span><input type="range" id="vol-efek" min="0" max="100" step="5" value="'+store.get('volEfek',80)+'"></label>' : '')+
       saklarRow('lbl-anim','Animasi dan efek perayaan',S.anim,'animToggle')+
       '<p class="small muted">Musik otomatis dikecilkan saat kamu mengerjakan soal. Matikan apa saja yang terasa mengganggu.</p></section>'+
     (S.confirmReset ? '<section class="card"><p><b>Hapus semua progres di HP ini?</b> Tindakan ini tidak bisa dibatalkan.</p><div class="row">'+btn('Batal','resetBatal',{cls:'secondary'})+btn('Hapus','resetYa')+'</div></section>'
@@ -1970,6 +1975,7 @@ var Suara = (function(){
   var AC = window.AudioContext || window.webkitAudioContext;
   var ctx = null, gMusik = null, gEfek = null, timer = null, tBar = 0, bar = 0, fokus = false;
   var BIRAMA = 4.2;   // detik per akor: tempo lambat agar menenangkan
+  var volM = 0.7, volE = 0.8;   // pengaturan siswa (0–1), diisi dari penyimpanan
   function hz(m){ return 440*Math.pow(2,(m-69)/12); }
   /* Gema halus: respons impuls dari derau yang meluruh pelan */
   function buatGema(detik){
@@ -1982,17 +1988,21 @@ var Suara = (function(){
     try{
       if(!ctx){
         ctx = new AC();
-        var master = ctx.createGain(); master.gain.value = 0.8; master.connect(ctx.destination);
-        var gema = buatGema(3.2), basah = ctx.createGain(); basah.gain.value = 0.45;
+        /* Compressor: suara cukup keras di speaker HP tanpa pecah atau mengagetkan */
+        var komp = ctx.createDynamicsCompressor();
+        komp.threshold.value = -20; komp.knee.value = 12; komp.ratio.value = 4; komp.attack.value = 0.01; komp.release.value = 0.3;
+        var master = ctx.createGain(); master.gain.value = 1.4;
+        master.connect(komp); komp.connect(ctx.destination);
+        var gema = buatGema(3.0), basah = ctx.createGain(); basah.gain.value = 0.35;
         gema.connect(basah); basah.connect(master);
-        /* Musik: diredam (low-pass) agar tidak nyaring, sebagian dikirim ke gema */
-        var lpM = ctx.createBiquadFilter(); lpM.type = 'lowpass'; lpM.frequency.value = 1300; lpM.Q.value = 0.3;
+        /* Musik: diredam (low-pass) agar lembut, sebagian dikirim ke gema */
+        var lpM = ctx.createBiquadFilter(); lpM.type = 'lowpass'; lpM.frequency.value = 2400; lpM.Q.value = 0.3;
         gMusik = ctx.createGain(); gMusik.gain.value = 0;
         gMusik.connect(lpM); lpM.connect(master); lpM.connect(gema);
-        /* Efek tombol: juga diredam dan diberi sedikit gema supaya halus */
-        var lpE = ctx.createBiquadFilter(); lpE.type = 'lowpass'; lpE.frequency.value = 1800; lpE.Q.value = 0.3;
-        var kirimE = ctx.createGain(); kirimE.gain.value = 0.25;
-        gEfek = ctx.createGain(); gEfek.gain.value = 0.9;
+        /* Efek tombol: diredam sedikit dan diberi gema tipis supaya halus */
+        var lpE = ctx.createBiquadFilter(); lpE.type = 'lowpass'; lpE.frequency.value = 3000; lpE.Q.value = 0.3;
+        var kirimE = ctx.createGain(); kirimE.gain.value = 0.2;
+        gEfek = ctx.createGain(); gEfek.gain.value = volE;
         gEfek.connect(lpE); lpE.connect(master); lpE.connect(kirimE); kirimE.connect(gema);
       }
       if(ctx.state==='suspended') ctx.resume();
@@ -2004,8 +2014,8 @@ var Suara = (function(){
     var osc = ctx.createOscillator(), g = ctx.createGain();
     osc.type = 'sine'; osc.frequency.setValueAtTime(hz(midi), t);
     if(o.detune) osc.detune.value = o.detune;
-    if(o.geser) osc.frequency.exponentialRampToValueAtTime(hz(o.geser), t + (o.serang||0.01) + (o.tahan||0) + (o.lepas||0.2)*0.6);
     var a = o.serang||0.01, h = o.tahan||0, r = o.lepas||0.2;
+    if(o.geser) osc.frequency.exponentialRampToValueAtTime(hz(o.geser), t + a + h + r*0.6);
     g.gain.setValueAtTime(0.0001, t);
     g.gain.linearRampToValueAtTime(o.vol, t+a);
     if(h) g.gain.setValueAtTime(o.vol, t+a+h);
@@ -2021,52 +2031,57 @@ var Suara = (function(){
   ];
   function jadwalBirama(t, b){
     var ak = AKOR[b%4];
-    nada(ak[0]-12, t, {serang:1.2, tahan:BIRAMA-1.6, lepas:2.0, vol:0.05, ke:gMusik});            // bas sangat rendah
+    nada(ak[0], t, {serang:1.0, tahan:BIRAMA-1.4, lepas:1.8, vol:0.16, ke:gMusik});                 // bas (cukup tinggi agar terdengar di speaker HP)
     ak[1].forEach(function(m){                                                                        // pad hangat, dua suara sedikit beda
-      nada(m, t, {serang:1.6, tahan:BIRAMA-2.0, lepas:2.4, vol:0.018, ke:gMusik, detune:-5});
-      nada(m, t, {serang:1.6, tahan:BIRAMA-2.0, lepas:2.4, vol:0.018, ke:gMusik, detune:5});
+      nada(m, t, {serang:1.4, tahan:BIRAMA-1.8, lepas:2.2, vol:0.055, ke:gMusik, detune:-5});
+      nada(m, t, {serang:1.4, tahan:BIRAMA-1.8, lepas:2.2, vol:0.055, ke:gMusik, detune:5});
     });
     DENTING[b%8].forEach(function(d){
-      nada(d[1], t+d[0], {serang:0.03, lepas:2.6, vol:0.035, ke:gMusik});                              // denting seperti lonceng angin
-      nada(d[1]+12, t+d[0], {serang:0.03, lepas:1.2, vol:0.008, ke:gMusik});
+      nada(d[1], t+d[0], {serang:0.03, lepas:2.4, vol:0.13, ke:gMusik});                               // denting seperti lonceng angin
+      nada(d[1]+12, t+d[0], {serang:0.03, lepas:1.1, vol:0.03, ke:gMusik});
     });
   }
   function jadwal(){
     while(tBar < ctx.currentTime + 1.0){ jadwalBirama(tBar, bar); tBar += BIRAMA; bar++; }
   }
-  function volMusik(){ return fokus ? 0.28 : 0.7; }   // dikecilkan saat siswa mengerjakan soal
+  function volMusik(){ return volM * (fokus ? 0.5 : 1); }   // dikecilkan (separuh) saat siswa mengerjakan soal
   function mulai(){
     if(timer || !siap()) return;
     tBar = ctx.currentTime + 0.2; bar = 0;
     gMusik.gain.cancelScheduledValues(ctx.currentTime);
     gMusik.gain.setValueAtTime(0.0001, ctx.currentTime);
-    gMusik.gain.setTargetAtTime(volMusik(), ctx.currentTime, 2.0);   // muncul perlahan
+    gMusik.gain.setTargetAtTime(volMusik(), ctx.currentTime, 1.5);   // muncul perlahan
     jadwal(); timer = setInterval(jadwal, 250);
   }
   function henti(){
     if(!ctx) return;
     gMusik.gain.cancelScheduledValues(ctx.currentTime);
-    gMusik.gain.setTargetAtTime(0, ctx.currentTime, 0.6);            // menghilang perlahan
+    gMusik.gain.setTargetAtTime(0, ctx.currentTime, 0.5);            // menghilang perlahan
     if(timer){ clearInterval(timer); timer = null; }
   }
   function efek(jenis){
     if(!siap()) return;
     var t = ctx.currentTime + 0.01;
-    if(jenis==='ketik') nada(76, t, {serang:0.004, lepas:0.06, vol:0.03, ke:gEfek});
-    else if(jenis==='benar'){ nada(72, t, {serang:0.02, lepas:0.7, vol:0.07, ke:gEfek}); nada(79, t+0.14, {serang:0.02, lepas:0.9, vol:0.06, ke:gEfek}); }
-    else if(jenis==='salah') nada(57, t, {serang:0.03, lepas:0.4, vol:0.06, ke:gEfek, geser:55});
-    else if(jenis==='rayakan'){ [72,76,79,84].forEach(function(m,i){ nada(m, t+i*0.16, {serang:0.03, lepas:1.3, vol:0.055, ke:gEfek}); }); }
-    else nada(67, t, {serang:0.006, lepas:0.13, vol:0.05, ke:gEfek, geser:64});   // "pop" lembut untuk tombol biasa
+    if(jenis==='ketik') nada(79, t, {serang:0.004, lepas:0.08, vol:0.12, ke:gEfek});
+    else if(jenis==='benar'){ nada(72, t, {serang:0.02, lepas:0.7, vol:0.26, ke:gEfek}); nada(79, t+0.14, {serang:0.02, lepas:0.9, vol:0.22, ke:gEfek}); }
+    else if(jenis==='salah') nada(64, t, {serang:0.03, lepas:0.45, vol:0.24, ke:gEfek, geser:60});
+    else if(jenis==='rayakan'){ [72,76,79,84].forEach(function(m,i){ nada(m, t+i*0.16, {serang:0.03, lepas:1.3, vol:0.2, ke:gEfek}); }); }
+    else nada(72, t, {serang:0.006, lepas:0.14, vol:0.2, ke:gEfek, geser:68});   // "pop" lembut untuk tombol biasa
   }
   return {
     ada: !!AC,
     mulai: mulai, henti: henti, efek: efek,
     jalan: function(){ return !!timer; },
-    fokus: function(f){ if(f===fokus) return; fokus = f; if(timer && ctx){ gMusik.gain.setTargetAtTime(volMusik(), ctx.currentTime, 1.2); } },
+    fokus: function(f){ if(f===fokus) return; fokus = f; if(timer && ctx){ gMusik.gain.setTargetAtTime(volMusik(), ctx.currentTime, 1.0); } },
+    atur: function(m, e){
+      volM = m; volE = e;
+      if(ctx){ if(timer) gMusik.gain.setTargetAtTime(volMusik(), ctx.currentTime, 0.2); gEfek.gain.setTargetAtTime(volE, ctx.currentTime, 0.05); }
+    },
     jeda: function(){ if(ctx && ctx.state==='running') ctx.suspend(); },
     lanjut: function(){ if(ctx && ctx.state==='suspended') ctx.resume(); }
   };
 })();
+Suara.atur(store.get('volMusik', 70)/100, store.get('volEfek', 80)/100);
 /* Layar "fokus" = siswa sedang mengerjakan; musik dikecilkan */
 function layarFokus(){
   var m = M();
@@ -2075,6 +2090,17 @@ function layarFokus(){
   if(S.route==='pasar' && S.pasarOpen && S.pasar.id && S.pasar.step!=='pilih' && S.pasar.step!=='hasil') return true;
   return false;
 }
+/* Slider volume: diubah langsung tanpa menggambar ulang layar */
+document.addEventListener('input', function(e){
+  var id = e.target && e.target.id;
+  if(id!=='vol-musik' && id!=='vol-efek') return;
+  var vm = +document.getElementById('vol-musik').value, ve = +document.getElementById('vol-efek').value;
+  store.set('volMusik', vm); store.set('volEfek', ve);
+  Suara.atur(vm/100, ve/100);
+});
+document.addEventListener('change', function(e){
+  if(e.target && e.target.id==='vol-efek' && S.efek) Suara.efek('benar');   // contoh bunyi agar siswa mendengar volumenya
+});
 document.addEventListener('visibilitychange', function(){ if(document.hidden) Suara.jeda(); else if(S.musik) Suara.lanjut(); });
 function saklarRow(id, label, on, act){
   return '<div class="dk-row"><span id="'+id+'">'+label+'</span><button class="saklar" role="switch" aria-labelledby="'+id+'" aria-checked="'+(on?'true':'false')+'" data-act="'+act+'"><span></span></button></div>';
