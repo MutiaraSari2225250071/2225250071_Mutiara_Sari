@@ -81,10 +81,15 @@ function doPost(e) {
   var payload = { systemInstruction: { parts: [{ text: PROMPT[jenis] }] }, contents: contents };
   var h;
   try {
-    h = tanyaGemini(kunci, ambilModel(), payload);
+    var model = ambilModel();
+    h = tanyaGemini(kunci, model, payload);
     if (h.kode === 404 && !modelDiatur()) {           // model sudah dipensiunkan Google → cari model lain, lalu coba lagi
-      var pengganti = cariModel(kunci, true);
-      if (pengganti) h = tanyaGemini(kunci, pengganti, payload);
+      model = cariModel(kunci, true);
+      if (model) h = tanyaGemini(kunci, model, payload);
+    }
+    if (h.kode >= 500 && !modelDiatur()) {            // model sedang penuh (503) → coba model Flash cadangan, maksimal 2
+      var cadangan = daftarModel(kunci).filter(function (m) { return m !== model; }).slice(0, 2);
+      for (var c = 0; c < cadangan.length && h.kode >= 500; c++) h = tanyaGemini(kunci, cadangan[c], payload);
     }
   } catch (err) {
     return balas({ galat: 'Layanan AI tidak bisa dihubungi. Coba lagi nanti.' });
@@ -94,6 +99,7 @@ function doPost(e) {
     if (/API_KEY_INVALID|API key not valid/i.test(h.isi)) pesan = 'API key Gemini tidak valid.';
     else if (h.kode === 429) pesan = 'Jatah AI gratis sudah habis.';
     else if (h.kode === 404) pesan = 'Model AI tidak ditemukan.';
+    else if (h.kode >= 500) pesan = 'Pinta sedang ramai dipakai.';
     return balas({ galat: pesan + ' Coba lagi nanti.' });
   }
   var teks = String(h.teks).trim();
@@ -146,7 +152,14 @@ function cariModel(kunci, paksa) {
   if (!calon.length) return null;
   calon.sort(function (a, b) { return skorModel(b) - skorModel(a); });
   cache.put('model-aktif', calon[0], 21600);
+  cache.put('daftar-model', JSON.stringify(calon), 21600);
   return calon[0];
+}
+/* Semua model Flash yang tersedia, urut dari yang paling diutamakan (untuk cadangan) */
+function daftarModel(kunci) {
+  var tersimpan = CacheService.getScriptCache().get('daftar-model');
+  if (!tersimpan) { cariModel(kunci, true); tersimpan = CacheService.getScriptCache().get('daftar-model'); }
+  try { return JSON.parse(tersimpan) || []; } catch (e) { return []; }
 }
 /* Model stabil selalu diutamakan dari preview (preview cepat dipensiunkan); lalu versi terbaru; Flash diutamakan dari Flash-Lite */
 function skorModel(nama) {
