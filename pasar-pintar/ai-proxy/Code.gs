@@ -8,13 +8,13 @@
  *
  * Pengaturan (Apps Script → Project Settings → Script Properties):
  *   GEMINI_API_KEY  (WAJIB)     API key dari aistudio.google.com (biasanya diawali AIza, tapi bisa juga awalan lain)
- *   MODEL           (opsional)  bawaan: gemini-2.5-flash
+ *   MODEL           (opsional)  nama model tertentu. Jika kosong, model Gemini Flash terbaru yang tersedia dipilih otomatis.
  *
  * Aturan AI ditulis di sini (di server), bukan di aplikasi, agar tidak bisa diubah dari HP siswa.
  * Panduan pemasangan lengkap: docs/14-integrasi-ai.md
  */
 
-var MODEL_BAWAAN = 'gemini-2.5-flash';
+var MODEL_BAWAAN = 'gemini-2.5-flash';   // dicoba lebih dulu; jika tidak ada, dicari otomatis
 var BATAS_PERMINTAAN = 200;   // untuk seluruh pengguna ...
 var JENDELA_DETIK = 600;      // ... setiap 10 menit
 
@@ -44,11 +44,13 @@ var PROMPT = {
 function doGet() {
   var kunci = ambilKunci();
   var valid = kunciValid(kunci);
+  var model = ambilModel();
+  if (valid) { try { model = cariModel(kunci, false) || ('tidak ada model yang cocok (' + model + ')'); } catch (e) { model = 'belum bisa dicek'; } }
   return balas({
     status: valid ? 'ok' : 'belum siap',
     pesan: valid ? 'Pinta AI siap memakai Google Gemini' : (!kunci ? 'Isi GEMINI_API_KEY di Project Settings → Script Properties.' : (/^gen-lang-client/i.test(kunci) ? 'Yang diisi adalah ID proyek, bukan API key. Salin kuncinya dengan tombol Copy di daftar API keys.' : 'GEMINI_API_KEY terlalu pendek atau berisi karakter aneh, periksa lagi.')),
     penyedia: 'Google Gemini',
-    model: ambilModel(),
+    model: model,
     kunciGemini: !kunci ? 'kosong' : (valid ? 'terisi (' + kunci.length + ' karakter)' : 'format salah')
   });
 }
@@ -76,47 +78,90 @@ function doPost(e) {
     ? 'Pertanyaan siswa: ' + (pertanyaan || 'Aku bingung, bantu aku mulai.')
     : 'Jelaskan kesalahanku pada soal ini.');
 
-  var model = ambilModel();
-  var setelan = { maxOutputTokens: 300, temperature: 0.4 };
-  if (/2\.5-flash/.test(model)) setelan.thinkingConfig = { thinkingBudget: 0 };   // jawab langsung, tanpa "berpikir" yang memakan jatah token
-
-  var teks = '';
+  var payload = { systemInstruction: { parts: [{ text: PROMPT[jenis] }] }, contents: contents };
+  var h;
   try {
-    var res = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent', {
-      method: 'post',
-      contentType: 'application/json',
-      headers: { 'x-goog-api-key': kunci },
-      payload: JSON.stringify({ systemInstruction: { parts: [{ text: PROMPT[jenis] }] }, contents: contents, generationConfig: setelan }),
-      muteHttpExceptions: true
-    });
-    var kode = res.getResponseCode();
-    var isi = res.getContentText();
-    if (kode !== 200) {
-      var pesan = 'Layanan AI sedang bermasalah (' + kode + ').';
-      if (/API_KEY_INVALID|API key not valid/i.test(isi)) pesan = 'API key Gemini tidak valid.';
-      else if (kode === 429) pesan = 'Jatah AI gratis sudah habis.';
-      else if (kode === 404) pesan = 'Model AI tidak ditemukan.';
-      return balas({ galat: pesan + ' Coba lagi nanti.' });
+    h = tanyaGemini(kunci, ambilModel(), payload);
+    if (h.kode === 404 && !modelDiatur()) {           // model sudah dipensiunkan Google → cari model lain, lalu coba lagi
+      var pengganti = cariModel(kunci, true);
+      if (pengganti) h = tanyaGemini(kunci, pengganti, payload);
     }
-    var hasil = JSON.parse(isi);
-    var kandidat = (hasil.candidates || [])[0] || {};
-    var bagian = (kandidat.content && kandidat.content.parts) || [];
-    for (var j = 0; j < bagian.length; j++) if (bagian[j].text && !bagian[j].thought) teks += bagian[j].text;
   } catch (err) {
     return balas({ galat: 'Layanan AI tidak bisa dihubungi. Coba lagi nanti.' });
   }
-  teks = String(teks).trim();
+  if (h.kode !== 200) {
+    var pesan = 'Layanan AI sedang bermasalah (' + h.kode + ').';
+    if (/API_KEY_INVALID|API key not valid/i.test(h.isi)) pesan = 'API key Gemini tidak valid.';
+    else if (h.kode === 429) pesan = 'Jatah AI gratis sudah habis.';
+    else if (h.kode === 404) pesan = 'Model AI tidak ditemukan.';
+    return balas({ galat: pesan + ' Coba lagi nanti.' });
+  }
+  var teks = String(h.teks).trim();
   if (!teks) return balas({ galat: 'Pinta belum menemukan jawaban. Coba tanya dengan kalimat lain.' });
   if (jenis === 'petunjuk') teks = sembunyikanJawaban(teks, data.rahasia);
   return balas({ jawab: teks });
 }
 
-/* ---------- pembantu ---------- */
-function balas(isi) {
+/* ---------- Gemini ---------- */
+/* Memanggil Gemini. Jika model menolak pengaturan "berpikir", dicoba lagi tanpa pengaturan itu. */
+function tanyaGemini(kunci, model, payload) {
+  var setelan = { maxOutputTokens: 300, temperature: 0.4 };
+  if (/2\.5-flash/.test(model)) setelan.thinkingConfig = { thinkingBudget: 0 };        // jawab langsung, hemat token
+  else if (/gemini-[3-9]/.test(model)) { setelan.maxOutputTokens = 1500; setelan.thinkingConfig = { thinkingLevel: 'low' }; }
+  var h = kirimGemini(kunci, model, payload, setelan);
+  if (h.kode === 400 && setelan.thinkingConfig && /thinking/i.test(h.isi)) {
+    delete setelan.thinkingConfig; setelan.maxOutputTokens = 1500;
+    h = kirimGemini(kunci, model, payload, setelan);
+  }
+  return h;
+}
+function kirimGemini(kunci, model, payload, setelan) {
+  var body = JSON.parse(JSON.stringify(payload)); body.generationConfig = setelan;
+  var res = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent', {
+    method: 'post', contentType: 'application/json', headers: { 'x-goog-api-key': kunci },
+    payload: JSON.stringify(body), muteHttpExceptions: true
+  });
+  var h = { kode: res.getResponseCode(), isi: res.getContentText(), teks: '' };
+  if (h.kode === 200) {
+    var kandidat = (JSON.parse(h.isi).candidates || [])[0] || {};
+    var bagian = (kandidat.content && kandidat.content.parts) || [];
+    for (var j = 0; j < bagian.length; j++) if (bagian[j].text && !bagian[j].thought) h.teks += bagian[j].text;
+  }
+  return h;
+}
+/* Mencari model Gemini Flash terbaru yang tersedia untuk API key ini. Hasilnya diingat 6 jam. */
+function cariModel(kunci, paksa) {
+  if (modelDiatur()) return ambilModel();
+  var cache = CacheService.getScriptCache();
+  if (!paksa) { var tersimpan = cache.get('model-aktif'); if (tersimpan) return tersimpan; }
+  var res = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000', {
+    method: 'get', headers: { 'x-goog-api-key': kunci }, muteHttpExceptions: true
+  });
+  if (res.getResponseCode() !== 200) return null;
+  var calon = (JSON.parse(res.getContentText()).models || []).filter(function (m) {
+    var nama = String(m.name || '').replace(/^models\//, '');
+    return (m.supportedGenerationMethods || []).indexOf('generateContent') >= 0 &&
+      /^gemini-[\d.]+-flash/.test(nama) && !/image|tts|audio|live|embed|vision|thinking|exp/i.test(nama);
+  }).map(function (m) { return String(m.name).replace(/^models\//, ''); });
+  if (!calon.length) return null;
+  calon.sort(function (a, b) { return skorModel(b) - skorModel(a); });
+  cache.put('model-aktif', calon[0], 21600);
+  return calon[0];
+}
+/* Model stabil selalu diutamakan dari preview (preview cepat dipensiunkan); lalu versi terbaru; Flash diutamakan dari Flash-Lite */
+function skorModel(nama) {
+  var v = parseFloat((nama.match(/^gemini-([\d.]+)/) || [])[1] || '0');
+  return v * 100 - (/preview/.test(nama) ? 10000 : 0) - (/lite/.test(nama) ? 10 : 0) - (/-\d{3}$|\d{2}-\d{2}/.test(nama) ? 1 : 0);
+}
+function modelDiatur() { return !!PropertiesService.getScriptProperties().getProperty('MODEL'); }
+function ambilModel() {
+  return PropertiesService.getScriptProperties().getProperty('MODEL') || CacheService.getScriptCache().get('model-aktif') || MODEL_BAWAAN;
+}
+
+/* ---------- pembantu ---------- */function balas(isi) {
   return ContentService.createTextOutput(JSON.stringify(isi)).setMimeType(ContentService.MimeType.JSON);
 }
 function ambilKunci() { return bersihkanKunci(PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY')); }
-function ambilModel() { return PropertiesService.getScriptProperties().getProperty('MODEL') || MODEL_BAWAAN; }
 /* Bentuk kunci bisa berubah, jadi hanya dicek panjang dan karakternya. Benar tidaknya kunci ditentukan oleh Gemini. */
 function kunciValid(k) { return /^[0-9A-Za-z._\-]{20,}$/.test(k) && !/^gen-lang-client/i.test(k); }
 /* Gemini menolak dua pesan berurutan dengan peran yang sama, jadi pesan seperti itu digabung */

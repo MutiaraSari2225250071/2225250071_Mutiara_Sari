@@ -21,7 +21,7 @@ Google Apps Script Web App "pinta-ai"  (ai-proxy/Code.gs)
    • batas 200 permintaan / 10 menit untuk seluruh pengguna, jawaban maks. 300 token
    • lapisan pengaman: angka jawaban akhir disembunyikan ("…") jika AI menyebutnya
    ▼
-API Google Gemini (model gemini-2.5-flash)
+API Google Gemini (model Flash stabil terbaru, dipilih otomatis)
 ```
 
 - Mengapa perlu perantara? Aplikasi adalah halaman web statis, dan kodenya bisa dibaca siapa saja. API key yang ditaruh di aplikasi akan mudah dicuri dan dipakai orang lain atas nama akun Anda.
@@ -80,7 +80,7 @@ Klik **Deploy** → **Manage deployments** → ikon pensil → Version: **New ve
 | Nama | Bawaan | Fungsi |
 |---|---|---|
 | `GEMINI_API_KEY` | (wajib) | API key Gemini dari Google AI Studio |
-| `MODEL` | `gemini-2.5-flash` | Nama model Gemini, jika ingin diganti |
+| `MODEL` | (kosong = otomatis) | Nama model Gemini tertentu. Jika kosong, perantara memakai model Gemini Flash **stabil** terbaru yang tersedia untuk API key Anda, dan otomatis pindah jika model itu dipensiunkan Google. Model yang dipakai tampil di cek kesehatan |
 
 ## 6. Pengujian
 
