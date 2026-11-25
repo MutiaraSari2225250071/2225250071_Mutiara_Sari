@@ -48,7 +48,7 @@ API Google Gemini (model gemini-2.5-flash)
 ### Langkah 1 — API key Gemini
 1. Buka **aistudio.google.com** dan masuk dengan akun Google.
 2. Klik **Get API key** → **Create API key**.
-3. Salin kuncinya. Kunci Gemini **diawali `AIza`** (39 karakter).
+3. Di daftar **API keys**, klik tombol **Copy** di baris kunci. Kunci biasanya diawali `AIza`, tetapi Google kadang memberi awalan lain, dan itu tidak apa-apa. **Jangan** menyalin ID proyek (`gen-lang-client-...`) atau nama kunci.
 
 ### Langkah 2 — Membuat Apps Script
 1. Buka **script.google.com** → **New project**. Ganti nama proyek menjadi `pinta-ai`.
@@ -79,7 +79,7 @@ Klik **Deploy** → **Manage deployments** → ikon pensil → Version: **New ve
 
 | Nama | Bawaan | Fungsi |
 |---|---|---|
-| `GEMINI_API_KEY` | (wajib) | API key Gemini, diawali `AIza` |
+| `GEMINI_API_KEY` | (wajib) | API key Gemini dari Google AI Studio |
 | `MODEL` | `gemini-2.5-flash` | Nama model Gemini, jika ingin diganti |
 
 ## 6. Pengujian

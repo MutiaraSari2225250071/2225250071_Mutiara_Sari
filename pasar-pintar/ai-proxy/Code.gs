@@ -7,7 +7,7 @@
  *   yang tidak terlihat oleh siapa pun yang membuka aplikasi.
  *
  * Pengaturan (Apps Script → Project Settings → Script Properties):
- *   GEMINI_API_KEY  (WAJIB)     API key dari aistudio.google.com (diawali AIza)
+ *   GEMINI_API_KEY  (WAJIB)     API key dari aistudio.google.com (biasanya diawali AIza, tapi bisa juga awalan lain)
  *   MODEL           (opsional)  bawaan: gemini-2.5-flash
  *
  * Aturan AI ditulis di sini (di server), bukan di aplikasi, agar tidak bisa diubah dari HP siswa.
@@ -46,10 +46,10 @@ function doGet() {
   var valid = kunciValid(kunci);
   return balas({
     status: valid ? 'ok' : 'belum siap',
-    pesan: valid ? 'Pinta AI siap memakai Google Gemini' : (kunci ? 'GEMINI_API_KEY tidak diawali AIza, periksa lagi.' : 'Isi GEMINI_API_KEY di Project Settings → Script Properties.'),
+    pesan: valid ? 'Pinta AI siap memakai Google Gemini' : (!kunci ? 'Isi GEMINI_API_KEY di Project Settings → Script Properties.' : (/^gen-lang-client/i.test(kunci) ? 'Yang diisi adalah ID proyek, bukan API key. Salin kuncinya dengan tombol Copy di daftar API keys.' : 'GEMINI_API_KEY terlalu pendek atau berisi karakter aneh, periksa lagi.')),
     penyedia: 'Google Gemini',
     model: ambilModel(),
-    kunciGemini: !kunci ? 'kosong' : (valid ? 'tampak benar (diawali AIza)' : 'format salah')
+    kunciGemini: !kunci ? 'kosong' : (valid ? 'terisi (' + kunci.length + ' karakter)' : 'format salah')
   });
 }
 
@@ -117,7 +117,8 @@ function balas(isi) {
 }
 function ambilKunci() { return bersihkanKunci(PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY')); }
 function ambilModel() { return PropertiesService.getScriptProperties().getProperty('MODEL') || MODEL_BAWAAN; }
-function kunciValid(k) { return /^AIza[0-9A-Za-z_\-]{30,}$/.test(k); }
+/* Bentuk kunci bisa berubah, jadi hanya dicek panjang dan karakternya. Benar tidaknya kunci ditentukan oleh Gemini. */
+function kunciValid(k) { return /^[0-9A-Za-z._\-]{20,}$/.test(k) && !/^gen-lang-client/i.test(k); }
 /* Gemini menolak dua pesan berurutan dengan peran yang sama, jadi pesan seperti itu digabung */
 function tambahPesan(contents, peran, teks) {
   var akhir = contents[contents.length - 1];
