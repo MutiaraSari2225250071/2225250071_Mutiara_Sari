@@ -43,7 +43,7 @@ Pemilik proyek adalah mahasiswa S1 Pendidikan Matematika yang **masih belajar pe
 | PWA, APK, hosting, QR code? | [docs/11-distribusi-dan-instalasi.md](docs/11-distribusi-dan-instalasi.md) |
 | Analisis statistik Python? | [docs/12-analisis-data-python.md](docs/12-analisis-data-python.md) |
 | Agar berjalan baik di smartphone? | [docs/13-optimasi-smartphone.md](docs/13-optimasi-smartphone.md) |
-| Fitur AI (Tanya Pinta, DeepSeek)? | [docs/14-integrasi-ai.md](docs/14-integrasi-ai.md) |
+| Fitur AI (Tanya Pinta, Gemini)? | [docs/14-integrasi-ai.md](docs/14-integrasi-ai.md) |
 
 Jika permintaan pengguna bertentangan dengan dokumen-dokumen ini, tanyakan dulu sebelum mengerjakan.
 
@@ -178,9 +178,9 @@ Detail lengkap di docs/13. Ringkasnya:
 
 - Jangan menambah pengumpulan data pribadi (email, nomor HP, foto, lokasi).
 - Jangan menambah analitik pihak ketiga, iklan, atau SDK pelacak.
-- Aplikasi tidak mengirim data ke internet, **kecuali fitur Pinta AI** (docs/14): hanya konteks soal dan pertanyaan siswa yang dikirim ke Cloudflare Worker, **tanpa nama/kode siswa**. Data penelitian berpindah ke peneliti hanya lewat ekspor CSV manual.
-- **API key AI tidak boleh ada di aplikasi, di repositori, atau di chat.** API key hanya disimpan sebagai Secret di Cloudflare Worker (`ai-worker/worker.js`). Aturan AI (system prompt) hanya diubah di worker.
-- Fitur AI wajib bisa gagal dengan aman: jika `AI_URL` kosong, sedang offline, atau worker galat, aplikasi tetap berjalan normal.
+- Aplikasi tidak mengirim data ke internet, **kecuali fitur Pinta AI** (docs/14): hanya konteks soal dan pertanyaan siswa yang dikirim ke perantara Google Apps Script (lalu ke Gemini), **tanpa nama/kode siswa**. Data penelitian berpindah ke peneliti hanya lewat ekspor CSV manual.
+- **API key AI tidak boleh ada di aplikasi, di repositori, atau di chat.** API key hanya disimpan di Script Properties Google Apps Script (`ai-proxy/Code.gs`). Aturan AI (system prompt) hanya diubah di `ai-proxy/Code.gs`.
+- Fitur AI wajib bisa gagal dengan aman: jika `AI_URL` kosong, sedang offline, atau perantara galat, aplikasi tetap berjalan normal.
 - Jangan pernah meng-commit `analisis/data/mentah/`, `analisis/data/olahan/`, `analisis/hasil/`, atau file *keystore* APK.
 
 ### 9. Gaya kode JavaScript

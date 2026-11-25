@@ -158,7 +158,7 @@ Kerangka dan contoh lengkap ada di [docs/10-literasi-matematika.md](docs/10-lite
 
 **Aturan penting:** soal literasi baru muncul setelah siswa menyelesaikan Latihan Mandiri suatu modul, dan kerumitan stimulus naik bertahap. Tujuannya agar literasi tidak menambah beban kognitif berlebih pada pemula (lihat docs/10 bagian 3).
 
-### 6.6b Asisten AI (Pinta AI, DeepSeek)
+### 6.6b Asisten AI (Pinta AI, Google Gemini)
 
 Rincian, arsitektur, privasi, dan panduan pemasangan ada di [docs/14-integrasi-ai.md](docs/14-integrasi-ai.md).
 
@@ -166,7 +166,7 @@ Rincian, arsitektur, privasi, dan panduan pemasangan ada di [docs/14-integrasi-a
 |---|---|---|---|
 | F-70 | **Tanya Pinta**: petunjuk bertahap dari AI di layar soal, tanpa memberi jawaban akhir, maks. 5 pertanyaan per soal | S | GL03, IL05 |
 | F-71 | **Jelaskan kesalahanku**: setelah 2 kali salah, AI menjelaskan langkah yang keliru dan penyebabnya | S | IL02, F-22 |
-| NF-15 | API key hanya di Cloudflare Worker (Secret). Tidak ada identitas siswa yang dikirim ke AI. Fitur AI opsional dan aplikasi tetap berjalan tanpa AI/internet | M | NF-08 |
+| NF-15 | API key hanya di Script Properties Google Apps Script (perantara). Tidak ada identitas siswa yang dikirim ke AI. Fitur AI opsional dan aplikasi tetap berjalan tanpa AI/internet | M | NF-08 |
 
 ### 6.7 Akun dan Pengaturan
 

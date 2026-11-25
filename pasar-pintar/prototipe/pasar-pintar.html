@@ -388,7 +388,7 @@ body.no-anim *,body.no-anim *::before,body.no-anim *::after{animation:none!impor
 var app = document.getElementById('app');
 var kp = document.getElementById('keypad');
 
-/* Alamat perantara AI (Cloudflare Worker, lihat folder ai-worker/ dan docs/14).
+/* Alamat perantara AI (Google Apps Script Web App, lihat folder ai-proxy/ dan docs/14).
    Kosong = fitur AI disembunyikan. API key TIDAK PERNAH ditaruh di aplikasi. */
 var AI_URL = '';
 
@@ -2151,7 +2151,7 @@ function aiKirim(jenis, pertanyaan, riwayat, selesai){
     rahasia: jenis==='petunjuk' ? [s.f[s.f.length-1].jawab] : [] };
   var ctrl = (typeof AbortController!=='undefined') ? new AbortController() : null;
   var waktu = setTimeout(function(){ if(ctrl) ctrl.abort(); }, 25000);
-  fetch(AI_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body), signal: ctrl ? ctrl.signal : undefined})
+  fetch(AI_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(body), signal: ctrl ? ctrl.signal : undefined})
     .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j}; }, function(){ return {ok:false, j:{}}; }); })
     .then(function(x){ clearTimeout(waktu); selesai(x.ok && x.j.jawab ? {teks:x.j.jawab} : {galat:(x.j && x.j.galat) || 'Pinta belum bisa menjawab. Coba lagi.'}); })
     .catch(function(){ clearTimeout(waktu); selesai({galat:'Pinta tidak bisa dihubungi. Coba lagi sebentar lagi.'}); });
@@ -2186,7 +2186,7 @@ function aiUI(m){
         '<div class="chips">'+TANYA_CEPAT.map(function(t,i){ return '<button class="tog" data-act="aiCepat" data-arg="'+i+'"'+(ai.memuat?' disabled':'')+'>'+t+'</button>'; }).join('')+'</div>'+
         '<div class="kirim-row"><input id="ai-teks" class="input" maxlength="200" autocomplete="off" enterkeyhint="send" placeholder="Tulis pertanyaanmu…" value="'+esc(ai.draf)+'">'+
         btn('Kirim','aiKirimTeks',{dis:ai.memuat})+'</div>')+
-      '<p class="small muted">Pertanyaanmu dikirim ke layanan AI (DeepSeek) tanpa nama atau kode siswa.</p>'+
+      '<p class="small muted">Pertanyaanmu dikirim ke layanan AI (Google Gemini) tanpa nama atau kode siswa.</p>'+
     '</section>';
 }
 function aiJelasCard(m){

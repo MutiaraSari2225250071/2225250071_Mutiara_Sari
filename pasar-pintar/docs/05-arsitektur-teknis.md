@@ -254,7 +254,7 @@ streamlit run dasbor/app.py  # opsional
 
 ## 7b. Perantara AI (sudah dibuat)
 
-Fitur Pinta AI memakai **Cloudflare Worker** (`ai-worker/worker.js`, JavaScript) sebagai perantara ke API DeepSeek. Worker ini menyimpan API key sebagai Secret, memegang aturan AI, membatasi asal permintaan dan jumlah permintaan, serta menyembunyikan jawaban akhir. Rincian ada di [14-integrasi-ai.md](14-integrasi-ai.md). Worker hanya meneruskan permintaan AI dan tidak menyimpan data siswa.
+Fitur Pinta AI memakai **Google Apps Script** (`ai-proxy/Code.gs`, JavaScript) sebagai perantara ke API Google Gemini. Skrip ini menyimpan API key di Script Properties, memegang aturan AI, membatasi jumlah permintaan, serta menyembunyikan jawaban akhir. Rincian ada di [14-integrasi-ai.md](14-integrasi-ai.md). Perantara hanya meneruskan permintaan AI dan tidak menyimpan data siswa.
 
 ## 8. Rencana Versi 2
 
