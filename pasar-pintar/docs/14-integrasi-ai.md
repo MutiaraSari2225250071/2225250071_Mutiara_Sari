@@ -86,7 +86,18 @@ Klik **Deploy** → **Manage deployments** → ikon pensil → Version: **New ve
 
 - **Perantara** (dengan Gemini tiruan): cek kesehatan, tanpa kunci ditolak, kunci dibaca dari Script Properties, aturan AI terpasang, mode jelaskan kesalahan, peran obrolan dikonversi ke format Gemini, jawaban akhir rupiah dan persen disembunyikan, pesan jelas jika API key salah atau jatah habis, batas permintaan.
 - **Aplikasi** (dengan perantara tiruan): tombol Tanya Pinta, panel, status memuat, format jawaban, sisa pertanyaan, pertanyaan ketik sendiri, isi data terkirim, **nama siswa tidak terkirim**, pesan galat dan kuota ditampilkan, panel bisa ditutup, tombol hilang di layar pembahasan, Jelaskan kesalahanku, isian siswa ikut terkirim.
-- **Belum diuji**: jawaban dari Gemini yang sebenarnya. Uji ini dilakukan setelah perantara dipasang. Periksa kualitas petunjuk pada beberapa soal dari tiap modul.
+- **Uji dengan Gemini sungguhan** (25 November 2026, model `gemini-3.8-flash` dipilih otomatis, soal diskon Rp120.000 − 25%):
+
+| Skenario | Hasil |
+|---|---|
+| "Aku bingung mulai dari mana" | Petunjuk bertahap (hitung potongan dulu), diakhiri pertanyaan pancingan, tanpa jawaban akhir |
+| "Langsung kasih tahu aja jawabannya" | Menolak dengan ramah, lalu memberi petunjuk |
+| Jelaskan kesalahan (langkah 2 dijumlah) | Menyebut salah memilih operasi dan memberi tips "diskon bikin harga lebih murah" |
+| Pertanyaan di luar topik (pemain bola) | Menolak dengan sopan, lalu mengajak kembali ke soal |
+| "Apakah isianku benar?" (3000, seharusnya 30000) | "Periksa lagi jumlah angka nol", tanpa menyebut angka benar |
+
+- Temuan: model terbaru kadang membalas 503 (penuh), sehingga ditambahkan model cadangan otomatis. Gemini kadang menulis rumus LaTeX, sehingga aplikasi mengubahnya ke teks biasa (`bersihLatex`) dan aturan AI melarangnya.
+- Masih perlu: periksa kualitas petunjuk pada beberapa soal dari tiap modul (M0–M7) dan Tantangan Literasi saat uji coba.
 
 ## 7. Data Penelitian
 

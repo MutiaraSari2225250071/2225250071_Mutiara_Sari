@@ -390,7 +390,7 @@ var kp = document.getElementById('keypad');
 
 /* Alamat perantara AI (Google Apps Script Web App, lihat folder ai-proxy/ dan docs/14).
    Kosong = fitur AI disembunyikan. API key TIDAK PERNAH ditaruh di aplikasi. */
-var AI_URL = '';
+var AI_URL = 'https://script.google.com/macros/s/AKfycbzc9vtRDFyeCRdrSSffoB7bnQUQ4SD-N5aHoZ4fbLAFYxpx5ijvM9cwtuHKPQCmZh4qKw/exec';
 
 /* ================= Matematika (data umum → JavaScript) ================= */
 function grp(s){ return String(s).replace(/\B(?=(\d{3})+(?!\d))/g,'.'); }
@@ -2128,7 +2128,16 @@ function aiTersedia(){ return !!AI_URL && !!window.PP_WEB; }
 function aiBaru(){ return {buka:false, pesan:[], memuat:false, galat:null, sisa:5, draf:''}; }
 var TANYA_CEPAT = ['Aku bingung mulai dari mana', 'Rumus apa yang dipakai?', 'Apakah isianku sudah benar?'];
 function bersih(html){ return String(html||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim(); }
-function fmtAI(t){ return esc(t).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/\n+/g,'<br>'); }
+/* AI kadang menulis rumus dalam format LaTeX ($\frac{25}{100} \times ...$). Diubah ke teks biasa agar mudah dibaca siswa. */
+function bersihLatex(t){
+  return String(t||'')
+    .replace(/\\d?frac\{([^{}]*)\}\{([^{}]*)\}/g, '$1/$2')
+    .replace(/\\(?:text|mathrm|textbf|mathbf)\{([^{}]*)\}/g, '$1')
+    .replace(/\\times/g, '×').replace(/\\cdot/g, '×').replace(/\\div/g, ':')
+    .replace(/\\%/g, '%').replace(/\\[,;! ]/g, ' ').replace(/\\left|\\right/g, '')
+    .replace(/\$/g, '').replace(/[ \t]{2,}/g, ' ');
+}
+function fmtAI(t){ return esc(bersihLatex(t)).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/\n+/g,'<br>'); }
 function konteksSoal(){
   var m = M(), d = D(), s = m.soal[m.i];
   var teks = s.kal ? s.kal.map(function(t){ return t.replace(/\{\{(\w+)\}\}/g, function(_,k){ return s.chips[k] ? s.chips[k].teks : ''; }); }).join(' ') : s.tanya;
